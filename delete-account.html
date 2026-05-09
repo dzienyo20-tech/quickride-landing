@@ -9,8 +9,10 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F3EC;color:#111;line-height:1.7;font-size:16px}
 a{color:#0057FF;text-decoration:none}
-nav{background:#111;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
-nav .logo{color:#fff;font-size:20px;font-weight:800}
+nav{background:#111;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+nav .logo{display:flex;align-items:center;gap:10px}
+nav .logo img{width:40px;height:40px;border-radius:10px}
+nav .logo span{color:#fff;font-size:18px;font-weight:800}
 nav a{color:#fff;font-size:14px;opacity:0.7}
 .container{max-width:640px;margin:0 auto;padding:60px 24px 100px}
 h1{font-size:36px;font-weight:900;margin-bottom:8px}
@@ -32,7 +34,7 @@ footer{text-align:center;padding:32px;color:#6B6B6B;font-size:13px;border-top:1p
 </head>
 <body>
 <nav>
-  <span class="logo">⚡ QuickRide</span>
+  <div class="logo"><img src="/logo.png" alt="QuickRide"/><span>QuickRide</span></div>
   <a href="/">← Back to Home</a>
 </nav>
 

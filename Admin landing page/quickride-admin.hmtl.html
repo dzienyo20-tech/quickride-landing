@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>QuickRide Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F5F3EC;--bg2:#FFFFFF;--bg3:#EDE9DC;--card:#FFFFFF;--border:#E0DDD4;--blue:#0057FF;--green:#00B86B;--red:#EF4444;--gold:#FFB800;--text:#111111;--sub:#6B6B6B;--font:'DM Sans',sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+input,select,textarea,button{font-family:var(--font)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#C8C4B8;border-radius:2px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fade{animation:fadeIn .3s ease both}
+
+/* LOGIN & MFA */
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg)}
+.auth-box{width:100%;max-width:380px}
+.auth-logo{text-align:center;margin-bottom:24px}
+.auth-logo img{height:56px;margin:0 auto 10px}
+.auth-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.auth-sub{color:var(--sub);font-size:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.form-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sub);margin-bottom:5px}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;transition:border-color .15s;margin-bottom:14px}
+.form-input:focus{border-color:rgba(0,87,255,.5)}
+.form-input::placeholder{color:#AAA6A0}
+select.form-input option{background:var(--bg3)}
+.err-box{display:none;color:var(--red);font-size:12px;margin-bottom:12px;padding:8px 12px;background:rgba(239,68,68,.07);border-radius:8px;border:1px solid rgba(239,68,68,.2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-full{width:100%;padding:12px}
+.btn-sm{padding:6px 13px;font-size:12px}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--sub)}
+.btn-ghost:hover{background:var(--bg3);color:var(--text)}
+.btn-danger{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-success{background:rgba(0,184,107,.1);color:var(--green);border:1px solid rgba(0,184,107,.2)}
+.btn-success:hover{background:rgba(0,184,107,.2)}
+.btn-warning{background:rgba(255,184,0,.1);color:var(--gold);border:1px solid rgba(255,184,0,.2)}
+.demo-box{background:rgba(0,87,255,.05);border:1px solid rgba(0,87,255,.15);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:12px;color:var(--sub)}
+.demo-box b{color:var(--text)}
+
+/* OTP */
+.otp-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:18px}
+.otp-box{width:46px;height:54px;text-align:center;font-size:22px;font-weight:800;background:var(--bg3);border:2px solid var(--border);border-radius:12px;color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
+.otp-box:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,255,.1)}
+.otp-box.filled{border-color:var(--blue);background:rgba(0,87,255,.05)}
+
+/* APP LAYOUT */
+.app{display:none;min-height:100vh}
+.app.show{display:flex}
+.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;box-shadow:1px 0 12px rgba(0,0,0,.05)}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh;background:var(--bg)}
+
+/* SIDEBAR */
+.sb-head{padding:16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;background:var(--bg2)}
+.sb-head img{height:36px}
+.sb-badge{font-size:9px;background:var(--blue);color:#fff;padding:2px 7px;border-radius:100px;font-weight:700;margin-left:auto}
+.sb-nav{flex:1;padding:6px 8px;overflow-y:auto}
+.sb-grp{padding:12px 4px 3px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#AAA6A0}
+.ni{width:100%;display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:500;background:transparent;color:var(--sub);text-align:left;transition:all .15s;margin-bottom:1px;border-left:2px solid transparent}
+.ni:hover{background:var(--bg3);color:var(--text)}
+.ni.active{background:rgba(0,87,255,.08);color:var(--blue);font-weight:700;border-left-color:var(--blue)}
+.ni-ico{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.ni-badge{margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:100px}
+.sb-foot{padding:10px 8px;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:9px;padding:9px 10px;background:var(--bg3);border-radius:10px}
+.sb-av{width:30px;height:30px;border-radius:9px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.sb-uname{font-size:12px;font-weight:700}
+.sb-urole{font-size:10px;color:var(--sub)}
+.sb-out{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--sub);font-size:16px;padding:4px}
+
+/* TOPBAR */
+.topbar{height:58px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:14px;position:sticky;top:0;z-index:50;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.tb-title{font-size:17px;font-weight:800}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tb-search{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 14px;font-size:13px;color:var(--text);outline:none;width:200px}
+.tb-search::placeholder{color:#AAA6A0}
+
+/* PAGES */
+.pages{flex:1;padding:22px 24px}
+.page{display:none;animation:fadeIn .3s ease}
+.page.active{display:block}
+
+/* GRIDS */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+
+/* STAT CARDS */
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;transition:box-shadow .2s,transform .2s}
+.stat-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px)}
+.sc-ico{font-size:24px;margin-bottom:10px}
+.sc-val{font-size:26px;font-weight:800;margin-bottom:3px;letter-spacing:-.5px}
+.sc-lbl{font-size:12px;color:var(--sub)}
+.sc-trend{font-size:11px;font-weight:700;margin-top:5px}
+.up{color:var(--green)}.dn{color:var(--red)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;display:inline-block;margin-right:4px}
+
+/* TABLE */
+.card-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 12px;font-size:13px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(0,87,255,.03)}
+.td-name{display:flex;align-items:center;gap:9px}
+.av{border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;flex-shrink:0}
+.td-main{font-size:13px;font-weight:600}
+.td-sub{font-size:11px;color:var(--sub);margin-top:1px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap}
+.b-green{background:rgba(0,184,107,.1);color:var(--green);border:1px solid rgba(0,184,107,.2)}
+.b-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.b-blue{background:rgba(0,87,255,.1);color:var(--blue);border:1px solid rgba(0,87,255,.2)}
+.b-gold{background:rgba(255,184,0,.1);color:var(--gold);border:1px solid rgba(255,184,0,.2)}
+.b-gray{background:rgba(107,107,107,.08);color:var(--sub);border:1px solid var(--border)}
+
+/* MAP */
+.map-box{background:linear-gradient(135deg,#1a2d5a,#0d1f3c);border-radius:14px;height:400px;position:relative;overflow:hidden;border:1px solid var(--border)}
+.map-grid{position:absolute;inset:0;opacity:.15;background-image:linear-gradient(rgba(0,87,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(0,87,255,.4) 1px,transparent 1px);background-size:36px 36px}
+.map-road{position:absolute;background:rgba(255,255,255,.15)}
+.map-pin{position:absolute;cursor:pointer;transition:left .8s ease,top .8s ease}
+.map-pin .pico{font-size:20px;filter:drop-shadow(0 2px 8px rgba(0,200,100,.8))}
+.map-pin.rider .pico{filter:drop-shadow(0 2px 8px rgba(0,87,255,.8))}
+.map-pin-lbl{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;padding:2px 6px;border-radius:100px;color:#fff;background:var(--green);white-space:nowrap}
+.map-pin.rider .map-pin-lbl{background:var(--blue)}
+.map-legend{position:absolute;bottom:14px;left:14px;background:rgba(13,17,23,.85);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;display:flex;gap:14px}
+.ml-item{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.6)}
+.ml-dot{width:8px;height:8px;border-radius:50%}
+.map-stats{position:absolute;top:14px;left:14px;background:rgba(13,17,23,.85);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;display:flex;gap:18px}
+.ms-val{font-size:16px;font-weight:800;color:#fff}
+.ms-lbl{font-size:10px;color:rgba(255,255,255,.5)}
+.map-ctrl{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:6px}
+.map-btn{width:32px;height:32px;background:rgba(13,17,23,.85);border:1px solid rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#fff}
+.map-btn:hover{background:rgba(255,255,255,.1)}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border-radius:16px;padding:22px;width:100%;max-width:500px;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.15);animation:fadeIn .2s ease;max-height:90vh;overflow-y:auto}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-title{font-size:17px;font-weight:800}
+.modal-x{background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1}
+.d-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.d-row:last-child{border-bottom:none}
+.d-key{color:var(--sub)}
+.d-val{font-weight:600;text-align:right}
+.d-hd{display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg3);border-radius:12px;margin-bottom:14px;border:1px solid var(--border)}
+
+/* FILTER */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.f-btn{padding:6px 13px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--sub);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.f-btn.active,.f-btn:hover{background:var(--blue);color:#fff;border-color:transparent}
+.f-srch{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:7px 12px;font-size:13px;color:var(--text);outline:none;flex:1;min-width:160px}
+.f-srch::placeholder{color:#AAA6A0}
+
+/* FREEZE */
+.fr-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.fr-opt:hover,.fr-opt.sel{border-color:var(--red);background:rgba(239,68,68,.05)}
+.fr-title{font-size:13px;font-weight:700}
+.fr-desc{font-size:11px;color:var(--sub);margin-top:2px}
+
+/* EARNINGS BARS */
+.e-bars{display:flex;align-items:flex-end;gap:5px;height:80px;margin:10px 0}
+.e-bar-w{flex:1;display:flex;flex-direction:column;align-items:center;height:100%}
+.e-bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--blue),#00D4FF);min-height:4px;cursor:pointer}
+.e-bar:hover{filter:brightness(1.1)}
+.e-bar-d{font-size:9px;color:var(--sub);margin-top:4px}
+
+/* PROMO CARD */
+.promo-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s}
+.promo-card:hover{border-color:rgba(0,87,255,.3);box-shadow:0 4px 20px rgba(0,87,255,.08)}
+.promo-code{font-size:20px;font-weight:800;letter-spacing:1px;color:var(--blue);margin-bottom:5px}
+
+/* FORM GROUP */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sub);margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--text);outline:none;font-family:var(--font);transition:border-color .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(0,87,255,.5)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:#111;color:#fff;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.175,.885,.32,1.275);max-width:280px;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.1)}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.g4,.g3,.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="auth-page" id="loginPage">
+  <div class="auth-box">
+    <div class="auth-logo"><img src="/logo.png" alt="QuickRide" style="height:72px;width:72px;border-radius:18px;margin:0 auto 12px;display:block;"/><div class="auth-title">Admin Dashboard</div>
+      <div class="auth-sub">QuickRide Ghana — Secure Access</div>
+    </div>
+    <div class="card">
+      <label class="form-label">Phone Number or Email</label>
+      <input class="form-input" id="lPhone" placeholder="0200000000 or you@email.com" type="text" autocomplete="username" onkeydown="if(event.key==='Enter')login()"/>
+      <label class="form-label">Password</label>
+      <input class="form-input" id="lPass" placeholder="Password" type="password" onkeydown="if(event.key==='Enter')login()"/>
+      <div class="err-box" id="lErr"></div>
+      <button class="btn btn-primary btn-full" id="lBtn" onclick="login()">Sign In &#8594;</button>
+      <div class="demo-box">
+        <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">Demo Access</div>
+        Phone: <b>0200000000</b> or Email: <b>admin@quickride.com.gh</b> &middot; Password: <b>admin123</b>
+        <button onclick="document.getElementById('lPhone').value='0200000000';document.getElementById('lPass').value='admin123';login();" style="display:block;margin-top:8px;padding:5px 12px;background:var(--blue);border:none;border-radius:7px;color:#fff;font-size:11px;font-weight:700;cursor:pointer">Auto-fill &amp; Sign In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MFA -->
+<div class="auth-page" id="mfaPage" style="display:none">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--blue),#00D4FF);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px;box-shadow:0 8px 24px rgba(0,87,255,.25)">&#128272;</div>
+      <div class="auth-title">Two-Factor Auth</div>
+      <div class="auth-sub" id="mfaSub">Enter the 6-digit code sent to your phone</div>
+    </div>
+    <div class="card">
+      <div class="otp-wrap" id="otpWrap">
+        <input class="otp-box" id="otp0" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(0)" onkeydown="otpBack(event,0)"/>
+        <input class="otp-box" id="otp1" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(1)" onkeydown="otpBack(event,1)"/>
+        <input class="otp-box" id="otp2" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(2)" onkeydown="otpBack(event,2)"/>
+        <input class="otp-box" id="otp3" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(3)" onkeydown="otpBack(event,3)"/>
+        <input class="otp-box" id="otp4" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(4)" onkeydown="otpBack(event,4)"/>
+        <input class="otp-box" id="otp5" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(5)" onkeydown="otpBack(event,5)"/>
+      </div>
+      <div class="err-box" id="mfaErr" style="text-align:center"></div>
+      <button class="btn btn-primary btn-full" id="mfaBtn" onclick="verifyOTP()">Verify Code &#8594;</button>
+      <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--sub)">
+        Didn't get it? <button id="resendBtn" onclick="resendOTP()" style="background:none;border:none;color:var(--blue);font-size:12px;font-weight:700;cursor:pointer">Resend code</button>
+      </div>
+      <div class="demo-box" style="margin-top:14px">Demo code: <b style="color:var(--blue);letter-spacing:2px">123456</b></div>
+      <button onclick="backToLogin()" style="width:100%;margin-top:10px;background:none;border:none;color:var(--sub);font-size:12px;cursor:pointer">&#8592; Back to login</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="appWrap">
+  <div class="sidebar">
+    <div class="sb-head">
+      <img src="/logo.png" alt="QuickRide" style="height:48px;width:48px;border-radius:12px;">
+      <span class="sb-badge">Admin</span>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-grp">Overview</div>
+      <button class="ni active" onclick="go('dashboard')"><span class="ni-ico">&#128202;</span>Dashboard</button>
+      <button class="ni" onclick="go('map')"><span class="ni-ico">&#128506;</span>Live Map</button>
+      <div class="sb-grp">People</div>
+      <button class="ni" onclick="go('drivers')"><span class="ni-ico">&#128663;</span>Drivers<span class="ni-badge" id="pendBadge">0</span></button>
+      <button class="ni" onclick="go('passengers')"><span class="ni-ico">&#128101;</span>Passengers</button>
+      <div class="sb-grp">Money</div>
+      <button class="ni" onclick="go('payments')"><span class="ni-ico">&#128176;</span>Payments</button>
+      <button class="ni" onclick="go('payouts')"><span class="ni-ico">&#128184;</span>Driver Payouts</button>
+      <div class="sb-grp">Operations</div>
+      <button class="ni" onclick="go('trips')"><span class="ni-ico">&#128739;</span>All Trips</button>
+      <button class="ni" onclick="go('promos')"><span class="ni-ico">&#127903;</span>Promo Codes</button>
+      <button class="ni" onclick="go('notifications')"><span class="ni-ico">&#128276;</span>Notifications</button>
+      <button class="ni" onclick="go('settings')"><span class="ni-ico">&#9881;</span>Settings</button>
+    </div>
+    <div class="sb-foot">
+      <div class="sb-user">
+        <div class="sb-av" id="sbAv">A</div>
+        <div><div class="sb-uname" id="sbName">Admin</div><div class="sb-urole">Super Admin</div></div>
+        <button class="sb-out" onclick="logout()" title="Logout">&#8617;</button>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <div id="tbTitle" style="font-size:17px;font-weight:800">Dashboard</div>
+      <div class="tb-right">
+        <input class="tb-search" placeholder="Search..." id="gSearch"/>
+        <button class="btn btn-sm btn-ghost" onclick="logout()">Logout</button>
+      </div>
+    </div>
+    <div class="pages">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="p-dashboard">
+        <div class="g4">
+          <div class="stat-card"><div class="sc-ico">&#128101;</div><div class="sc-val" id="s-pass">—</div><div class="sc-lbl">Total Passengers</div><div class="sc-trend up">&#8593; 12% this month</div></div>
+          <div class="stat-card"><div class="sc-ico">&#128663;</div><div class="sc-val" id="s-drv">—</div><div class="sc-lbl">Total Drivers</div><div class="sc-trend up">&#8593; 8% this month</div></div>
+          <div class="stat-card"><div class="sc-ico">&#128739;</div><div class="sc-val">8,432</div><div class="sc-lbl">Trips Completed</div><div class="sc-trend up">&#8593; 15% this month</div></div>
+          <div class="stat-card"><div class="sc-ico">&#128176;</div><div class="sc-val">GH&#8373; 42,850</div><div class="sc-lbl">Revenue (30 days)</div><div class="sc-trend up">&#8593; 18% this month</div></div>
+        </div>
+        <div class="g4">
+          <div class="stat-card"><div class="sc-ico" style="font-size:14px"><span class="live-dot"></span>Live</div><div class="sc-val" id="s-online">23</div><div class="sc-lbl">Drivers Online Now</div></div>
+          <div class="stat-card"><div class="sc-ico">&#11088;</div><div class="sc-val">4.95</div><div class="sc-lbl">Avg. Driver Rating</div></div>
+          <div class="stat-card"><div class="sc-ico">&#9889;</div><div class="sc-val">3 min</div><div class="sc-lbl">Avg. Pickup Time</div></div>
+          <div class="stat-card"><div class="sc-ico">&#128203;</div><div class="sc-val" id="s-pend">—</div><div class="sc-lbl">Pending Approvals</div></div>
+        </div>
+        <div class="g2">
+          <div class="card"><div class="card-title">Recent Trips</div><div class="tbl-wrap"><table><thead><tr><th>Passenger</th><th>Driver</th><th>Route</th><th>Fare</th><th>Status</th></tr></thead><tbody id="d-trips"></tbody></table></div></div>
+          <div class="card"><div class="card-title">Pending Approvals <button class="btn btn-sm btn-primary" onclick="go('drivers')">View All</button></div><div id="d-pending"></div></div>
+        </div>
+      </div>
+
+      <!-- LIVE MAP -->
+      <div class="page" id="p-map">
+        <div class="g4" style="margin-bottom:16px">
+          <div class="stat-card"><div class="sc-ico" style="font-size:14px"><span class="live-dot"></span>Live</div><div class="sc-val">23</div><div class="sc-lbl">Drivers Online</div></div>
+          <div class="stat-card"><div class="sc-ico">&#128663;</div><div class="sc-val">14</div><div class="sc-lbl">Active Trips</div></div>
+          <div class="stat-card"><div class="sc-ico">&#9203;</div><div class="sc-val">5</div><div class="sc-lbl">Waiting for Driver</div></div>
+          <div class="stat-card"><div class="sc-ico">&#9889;</div><div class="sc-val">3 min</div><div class="sc-lbl">Avg ETA</div></div>
+        </div>
+        <div class="g2">
+          <div class="card" style="padding:0;overflow:hidden">
+            <div class="map-box" id="liveMap">
+              <div class="map-grid"></div>
+              <div class="map-road" style="height:2px;top:35%;left:0;right:0"></div>
+              <div class="map-road" style="height:2px;top:62%;left:0;right:0"></div>
+              <div class="map-road" style="width:2px;top:0;bottom:0;left:28%"></div>
+              <div class="map-road" style="width:2px;top:0;bottom:0;left:58%"></div>
+              <div class="map-road" style="width:2px;top:0;bottom:0;left:78%"></div>
+              <div class="map-pin" id="p1" style="left:20%;top:22%"><div class="map-pin-lbl">Kwame A.</div><div class="pico">&#128663;</div></div>
+              <div class="map-pin" id="p2" style="left:45%;top:40%"><div class="map-pin-lbl">Ama B.</div><div class="pico">&#128663;</div></div>
+              <div class="map-pin" id="p3" style="left:65%;top:28%"><div class="map-pin-lbl">Kofi M.</div><div class="pico">&#128663;</div></div>
+              <div class="map-pin" id="p4" style="left:32%;top:62%"><div class="map-pin-lbl">Efua D.</div><div class="pico">&#128663;</div></div>
+              <div class="map-pin" id="p5" style="left:73%;top:64%"><div class="map-pin-lbl">Yaw A.</div><div class="pico">&#128663;</div></div>
+              <div class="map-pin rider" style="left:28%;top:32%"><div class="map-pin-lbl">Selasie E.</div><div class="pico">&#128205;</div></div>
+              <div class="map-pin rider" style="left:54%;top:52%"><div class="map-pin-lbl">Kofi A.</div><div class="pico">&#128205;</div></div>
+              <div class="map-pin rider" style="left:70%;top:44%"><div class="map-pin-lbl">Felicia B.</div><div class="pico">&#128205;</div></div>
+              <div class="map-stats"><div class="ms-val" style="color:var(--green)">23</div><div class="ms-lbl" style="margin-right:14px">Online</div><div class="ms-val">14</div><div class="ms-lbl">Active</div></div>
+              <div class="map-ctrl"><div class="map-btn" onclick="mapZ(1)">+</div><div class="map-btn" onclick="mapZ(-1)">&#8722;</div><div class="map-btn" onclick="animPins()">&#8635;</div></div>
+              <div class="map-legend"><div class="ml-item"><div class="ml-dot" style="background:var(--green)"></div>Driver</div><div class="ml-item"><div class="ml-dot" style="background:var(--blue)"></div>Rider</div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card"><div class="card-title">Active Trips</div><div id="map-trips"></div></div>
+            <div class="card"><div class="card-title">Online Drivers</div><div id="map-drivers"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRIVERS -->
+      <div class="page" id="p-drivers">
+        <div class="filter-bar">
+          <input class="f-srch" id="dSrch" placeholder="Search name, phone, plate..." oninput="renderDrivers()"/>
+          <button class="f-btn active" onclick="setDF('all',this)">All</button>
+          <button class="f-btn" onclick="setDF('approved',this)">Approved</button>
+          <button class="f-btn" onclick="setDF('pending',this)">Pending</button>
+          <button class="f-btn" onclick="setDF('rejected',this)">Rejected</button>
+          <button class="f-btn" onclick="setDF('frozen',this)">Frozen</button>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Driver</th><th>Phone</th><th>Vehicle</th><th>Plate</th><th>Status</th><th>Rating</th><th>Trips</th><th>Earnings</th><th>Online</th><th>Actions</th></tr></thead>
+            <tbody id="dTbl"></tbody>
+          </table></div>
+          <div style="padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--sub)" id="dCount"></div>
+        </div>
+      </div>
+
+      <!-- PASSENGERS -->
+      <div class="page" id="p-passengers">
+        <div class="filter-bar">
+          <input class="f-srch" id="pSrch" placeholder="Search name, phone, email..." oninput="renderPassengers()"/>
+          <button class="f-btn active" onclick="setPF('all',this)">All</button>
+          <button class="f-btn" onclick="setPF('active',this)">Active</button>
+          <button class="f-btn" onclick="setPF('frozen',this)">Frozen</button>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Passenger</th><th>Phone</th><th>Email</th><th>Verified</th><th>Status</th><th>Wallet</th><th>Trips</th><th>Total Spend</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody id="pTbl"></tbody>
+          </table></div>
+          <div style="padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--sub)" id="pCount"></div>
+        </div>
+      </div>
+
+      <!-- TRIPS -->
+      <div class="page" id="p-trips">
+        <div class="g4" style="margin-bottom:16px">
+          <div class="stat-card"><div class="sc-val" style="color:var(--green)">8,432</div><div class="sc-lbl">Completed</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--blue)">14</div><div class="sc-lbl">In Progress</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--red)">342</div><div class="sc-lbl">Cancelled</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--gold)">GH&#8373; 42,850</div><div class="sc-lbl">Total Revenue</div></div>
+        </div>
+        <div class="filter-bar">
+          <input class="f-srch" id="tSrch" placeholder="Search passenger, driver, route..." oninput="renderTrips()"/>
+          <button class="f-btn active" onclick="setTF('all',this)">All</button>
+          <button class="f-btn" onclick="setTF('completed',this)">Completed</button>
+          <button class="f-btn" onclick="setTF('in_progress',this)">Active</button>
+          <button class="f-btn" onclick="setTF('cancelled',this)">Cancelled</button>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>ID</th><th>Passenger</th><th>Driver</th><th>Pickup</th><th>Dropoff</th><th>Type</th><th>Fare</th><th>Payment</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+            <tbody id="tTbl"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div class="page" id="p-payments">
+        <div class="g4" style="margin-bottom:16px">
+          <div class="stat-card"><div class="sc-val">GH&#8373; 42,850</div><div class="sc-lbl">Total Revenue</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--green)">GH&#8373; 34,280</div><div class="sc-lbl">Driver Payouts (80%)</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--blue)">GH&#8373; 8,570</div><div class="sc-lbl">Platform Revenue (20%)</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--gold)">GH&#8373; 8,432</div><div class="sc-lbl">This Week</div></div>
+        </div>
+        <div class="card"><div class="card-title">Transaction History</div>
+          <div class="tbl-wrap"><table><thead><tr><th>Reference</th><th>Passenger</th><th>Amount</th><th>Method</th><th>Type</th><th>Status</th><th>Date</th></tr></thead><tbody id="payTbl"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- PAYOUTS -->
+      <div class="page" id="p-payouts">
+        <div class="g4" style="margin-bottom:16px">
+          <div class="stat-card"><div class="sc-val">GH&#8373; 34,280</div><div class="sc-lbl">Total Paid Out</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--gold)">GH&#8373; 2,840</div><div class="sc-lbl">Pending</div></div>
+          <div class="stat-card"><div class="sc-val" style="color:var(--green)">47</div><div class="sc-lbl">Drivers Paid Today</div></div>
+          <div class="stat-card"><div class="sc-val">GH&#8373; 284</div><div class="sc-lbl">Avg. Daily Earnings</div></div>
+        </div>
+        <div class="card"><div class="card-title">Driver Payouts <button class="btn btn-sm btn-primary" onclick="processAll()">Process All Pending</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Driver</th><th>Account</th><th>Trips</th><th>Gross</th><th>Fee (20%)</th><th>Net (80%)</th><th>Method</th><th>Status</th><th>Action</th></tr></thead><tbody id="poTbl"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- PROMOS -->
+      <div class="page" id="p-promos">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px"><button class="btn btn-primary" onclick="openM('promoM')">+ Create Promo</button></div>
+        <div id="promosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px"></div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="page" id="p-notifications">
+        <div class="g2">
+          <div class="card">
+            <div class="card-title">Send Push Notification</div>
+            <div class="fg"><label>Send To</label><select id="nTarget"><option value="all">All Users</option><option value="passengers">Passengers Only</option><option value="drivers">Drivers Only</option></select></div>
+            <div class="fg"><label>Title</label><input id="nTitle" placeholder="e.g. New promo available!"/></div>
+            <div class="fg"><label>Message</label><textarea id="nBody" placeholder="Your message..." style="min-height:90px;resize:vertical"></textarea></div>
+            <button class="btn btn-primary btn-full" onclick="sendNotif()">Send Notification</button>
+          </div>
+          <div class="card"><div class="card-title">Quick Templates</div><div id="notifTpls"></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="p-settings">
+        <div class="g2">
+          <div class="card">
+            <div class="card-title">System Settings</div>
+            <div class="fg"><label>Backend API URL</label><input id="sApi" placeholder="https://..."/></div>
+            <div class="fg"><label>Platform Commission (%)</label><input type="number" value="20" id="sComm"/></div>
+            <div class="fg"><label>Minimum Fare (GH&#8373;)</label><input type="number" value="12" id="sMin"/></div>
+            <div class="fg"><label>Max Surge Multiplier</label><input type="number" value="3.0" step="0.1" id="sSurge"/></div>
+            <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+          </div>
+          <div class="card">
+            <div class="card-title">Quick Links</div>
+            <div id="qLinks"></div>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:10px">Danger Zone</div>
+              <button class="btn btn-danger btn-full" onclick="logout()">Sign Out of Admin</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- DRIVER MODAL -->
+<div class="modal-bg" id="driverM"><div class="modal" style="max-width:580px"><div class="modal-hd"><div class="modal-title">Driver Profile</div><button class="modal-x" onclick="closeM('driverM')">&#215;</button></div><div id="driverMC"></div></div></div>
+
+<!-- PASSENGER MODAL -->
+<div class="modal-bg" id="passM"><div class="modal" style="max-width:580px"><div class="modal-hd"><div class="modal-title">Passenger Profile</div><button class="modal-x" onclick="closeM('passM')">&#215;</button></div><div id="passMC"></div></div></div>
+
+<!-- FREEZE MODAL -->
+<div class="modal-bg" id="freezeM"><div class="modal"><div class="modal-hd"><div class="modal-title" id="freezeT">Freeze Account</div><button class="modal-x" onclick="closeM('freezeM')">&#215;</button></div><div id="freezeC"></div></div></div>
+
+<!-- TRIP MODAL -->
+<div class="modal-bg" id="tripM"><div class="modal"><div class="modal-hd"><div class="modal-title">Trip Details</div><button class="modal-x" onclick="closeM('tripM')">&#215;</button></div><div id="tripMC"></div></div></div>
+
+<!-- PROMO MODAL -->
+<div class="modal-bg" id="promoM"><div class="modal"><div class="modal-hd"><div class="modal-title">Create Promo Code</div><button class="modal-x" onclick="closeM('promoM')">&#215;</button></div>
+  <div class="fg"><label>Code</label><input id="pCode" placeholder="e.g. ACCRA20"/></div>
+  <div class="fg"><label>Description</label><input id="pDesc" placeholder="e.g. 20% off next 3 rides"/></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="fg"><label>Type</label><select id="pType"><option value="percentage">Percentage (%)</option><option value="fixed">Fixed (GH&#8373;)</option></select></div>
+    <div class="fg"><label>Value</label><input type="number" id="pVal" placeholder="20"/></div>
+  </div>
+  <div class="fg"><label>Expiry Date</label><input type="date" id="pExpiry"/></div>
+  <button class="btn btn-primary btn-full" onclick="createPromo()">Create Promo Code</button>
+</div></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg">Done!</span></div>
+
+<script>
+let API = localStorage.getItem('qr_api') || 'https://quickride-api-production.up.railway.app';
+let TOKEN = '', pendingUser = null, resendCooldown = false;
+let dF='all', pF='all', tF='all', selReason='';
+const CLR = ['#0057FF','#00B86B','#FFB800','#8B5CF6','#EF4444','#00D4FF'];
+
+// DATA
+const DRIVERS = [
+  {id:'d1',name:'Kwame Asante',phone:'0201111111',email:'kwame@gmail.com',vehicle:'Toyota Corolla 2020',color:'White',plate:'GR-2341-21',license:'DL-12345',ghana_card:'GHA-12345678-9',status:'approved',online:true,rating:4.93,trips:1842,earned:52400,week:1680,bank:'MTN MoMo',account:'0201111111',joined:'Jan 15, 2024',city:'Accra',frozen:false,reason:''},
+  {id:'d2',name:'Ama Boateng',phone:'0202222222',email:'ama.b@gmail.com',vehicle:'Hyundai Elantra 2019',color:'Silver',plate:'AS-5678-20',license:'DL-23456',ghana_card:'GHA-23456789-0',status:'approved',online:false,rating:4.87,trips:976,earned:28600,week:840,bank:'Vodafone Cash',account:'0202222222',joined:'Feb 10, 2024',city:'Kumasi',frozen:false,reason:''},
+  {id:'d3',name:'Kofi Mensah',phone:'0203333333',email:'kofi.m@yahoo.com',vehicle:'Honda Civic 2021',color:'Black',plate:'GW-9012-19',license:'DL-34567',ghana_card:'GHA-34567890-1',status:'pending',online:false,rating:0,trips:0,earned:0,week:0,bank:'MTN MoMo',account:'0203333333',joined:'May 1, 2024',city:'Takoradi',frozen:false,reason:''},
+  {id:'d4',name:'Efua Darko',phone:'0204444444',email:'efua.d@gmail.com',vehicle:'Kia Picanto 2022',color:'Blue',plate:'ER-3456-22',license:'DL-45678',ghana_card:'GHA-45678901-2',status:'pending',online:false,rating:0,trips:0,earned:0,week:0,bank:'AirtelTigo',account:'0204444444',joined:'Apr 20, 2024',city:'Cape Coast',frozen:false,reason:''},
+  {id:'d5',name:'Yaw Asiedu',phone:'0205555555',email:'yaw.a@gmail.com',vehicle:'Nissan Micra 2018',color:'Red',plate:'AW-7890-23',license:'DL-56789',ghana_card:'GHA-56789012-3',status:'approved',online:true,rating:4.75,trips:412,earned:11800,week:560,bank:'MTN MoMo',account:'0205555555',joined:'Mar 8, 2024',city:'Accra',frozen:true,reason:'Multiple passenger complaints'},
+  {id:'d6',name:'Akosua Frimpong',phone:'0206666666',email:'akosua.f@gmail.com',vehicle:'Toyota Yaris 2021',color:'Grey',plate:'GN-2020-21',license:'DL-67890',ghana_card:'GHA-67890123-4',status:'approved',online:true,rating:4.96,trips:2341,earned:67200,week:2100,bank:'MTN MoMo',account:'0206666666',joined:'Nov 5, 2023',city:'Accra',frozen:false,reason:''},
+];
+const PASSENGERS = [
+  {id:'p1',name:'Kwabena Owusu',phone:'0241234567',email:'kwabena.o@gmail.com',verified:true,active:true,wallet:125.50,trips:47,spend:1340,joined:'Jan 20, 2024',city:'Accra',last:'May 6, 2025',frozen:false,reason:''},
+  {id:'p2',name:'Abena Mensah',phone:'0551234567',email:'abena.m@yahoo.com',verified:true,active:true,wallet:45.00,trips:23,spend:620,joined:'Feb 14, 2024',city:'Kumasi',last:'May 5, 2025',frozen:false,reason:''},
+  {id:'p3',name:'Yaw Darko',phone:'0201234567',email:'',verified:false,active:true,wallet:0,trips:3,spend:80,joined:'Apr 1, 2024',city:'Takoradi',last:'Apr 28, 2025',frozen:false,reason:''},
+  {id:'p4',name:'Efua Boateng',phone:'0271234567',email:'efua.b@gmail.com',verified:true,active:false,wallet:20.00,trips:15,spend:420,joined:'Mar 15, 2024',city:'Accra',last:'Mar 20, 2025',frozen:true,reason:'Suspicious payment activity'},
+  {id:'p5',name:'Kofi Adu',phone:'0281234567',email:'kofi.adu@gmail.com',verified:true,active:true,wallet:75.00,trips:89,spend:2280,joined:'Dec 1, 2023',city:'Accra',last:'May 7, 2025',frozen:false,reason:''},
+  {id:'p6',name:'Selasie Enyonam',phone:'0561234567',email:'selasie.e@gmail.com',verified:true,active:true,wallet:200.00,trips:134,spend:3600,joined:'Nov 10, 2023',city:'Accra',last:'May 7, 2025',frozen:false,reason:''},
+];
+const TRIPS = [
+  {id:'T-1001',passenger:'Kwabena O.',driver:'Kwame A.',pickup:'East Legon',dropoff:'Accra Mall',type:'Comfort',fare:28.50,pay:'MTN MoMo',status:'completed',date:'Today 09:14'},
+  {id:'T-1002',passenger:'Abena M.',driver:'Ama B.',pickup:'Legon',dropoff:'Osu',type:'QuickGo',fare:18.00,pay:'Cash',status:'completed',date:'Today 08:32'},
+  {id:'T-1003',passenger:'Yaw D.',driver:'Kwame A.',pickup:'Airport',dropoff:'Cantonments',type:'Premium',fare:55.00,pay:'Vodafone Cash',status:'in_progress',date:'Today 11:00'},
+  {id:'T-1004',passenger:'Efua B.',driver:'—',pickup:'Spintex',dropoff:'Tema',type:'QuickGo',fare:0,pay:'—',status:'cancelled',date:'Today 07:45'},
+  {id:'T-1005',passenger:'Kofi A.',driver:'Ama B.',pickup:'Madina',dropoff:'Achimota',type:'QuickGo',fare:22.00,pay:'MTN MoMo',status:'completed',date:'Yesterday'},
+  {id:'T-1006',passenger:'Selasie E.',driver:'Akosua F.',pickup:'Cantonments',dropoff:'Airport',type:'Comfort',fare:45.00,pay:'AirtelTigo',status:'completed',date:'Yesterday'},
+];
+const PAYMENTS = [
+  {ref:'QR-001',passenger:'Kwabena O.',amount:28.50,method:'MTN MoMo',type:'Trip Fare',status:'success',date:'Today 09:14'},
+  {ref:'QR-002',passenger:'Selasie E.',amount:100,method:'Vodafone Cash',type:'Wallet Topup',status:'success',date:'Yesterday'},
+  {ref:'QR-003',passenger:'Abena M.',amount:18.00,method:'Cash',type:'Trip Fare',status:'success',date:'Mon 18:32'},
+  {ref:'QR-004',passenger:'Kofi A.',amount:55.00,method:'AirtelTigo',type:'Trip Fare',status:'success',date:'Sun 11:00'},
+  {ref:'QR-005',passenger:'Efua B.',amount:50.00,method:'MTN MoMo',type:'Wallet Topup',status:'failed',date:'Fri 09:12'},
+];
+const PROMOS = [
+  {id:'pr1',code:'ACCRA20',desc:'20% off next 3 rides',type:'percentage',val:20,uses:142,active:true,expiry:'Dec 31, 2026'},
+  {id:'pr2',code:'NEWUSER',desc:'Free ride up to GH&#8373;30',type:'fixed',val:30,uses:89,active:true,expiry:'Dec 31, 2026'},
+  {id:'pr3',code:'MOMO10',desc:'10% back with MoMo',type:'percentage',val:10,uses:234,active:true,expiry:'Dec 31, 2026'},
+  {id:'pr4',code:'LAUNCH50',desc:'50% off launch promo',type:'percentage',val:50,uses:500,active:false,expiry:'Mar 1, 2026'},
+];
+const FREEZE_REASONS = [
+  {title:'Multiple complaints',desc:'Driver/passenger has 3+ unresolved complaints'},
+  {title:'Fraudulent activity',desc:'Suspected fake trips, payment fraud or account manipulation'},
+  {title:'Inappropriate behavior',desc:'Reported harassment, unsafe driving or misconduct'},
+  {title:'Document issues',desc:'Expired license, insurance or vehicle documents'},
+  {title:'Payment problems',desc:'Chargebacks, unpaid balance or suspicious transactions'},
+  {title:'Policy violation',desc:'Repeated breach of QuickRide terms of service'},
+];
+const NOTIF_TPLS = [
+  {title:'New Promo Available',body:'Use code ACCRA20 for 20% off your next ride. Valid this week only!'},
+  {title:'Safety Reminder',body:'Always verify your driver name and plate before entering the vehicle.'},
+  {title:'Driver Approved',body:'Welcome to QuickRide! Your account is approved. Go online and start earning.'},
+  {title:'App Update',body:'A new version of the QuickRide app is available. Update now for the best experience.'},
+  {title:'Weekend Bonus',body:'Complete 10 trips this weekend and earn a GH&#8373;50 bonus!'},
+];
+
+// HELPERS
+const ghs = n => 'GH&#8373; ' + parseFloat(n||0).toFixed(2);
+function bdg(label,cls){return '<span class="badge b-'+cls+'">'+label+'</span>';}
+function sbdg(s){const m={completed:'green',in_progress:'blue',cancelled:'red',approved:'green',pending:'gold',rejected:'red',frozen:'red',active:'green',success:'green',failed:'red'};const l={completed:'Completed',in_progress:'Active',cancelled:'Cancelled',approved:'Approved',pending:'Pending',rejected:'Rejected',frozen:'Frozen',active:'Active',success:'Success',failed:'Failed'};return bdg(l[s]||s,m[s]||'gray');}
+function av(name,i,size){size=size||30;return '<div class="av" style="width:'+size+'px;height:'+size+'px;font-size:'+(size*.38)+'px;background:'+CLR[i%CLR.length]+'">'+((name||'?')[0])+'</div>';}
+function dr(k,v){return '<div class="d-row"><span class="d-key">'+k+'</span><span class="d-val">'+v+'</span></div>';}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+let toastTmr;
+function toast(msg){clearTimeout(toastTmr);const t=document.getElementById('toast');document.getElementById('toastMsg').innerHTML=msg;t.classList.add('show');toastTmr=setTimeout(()=>t.classList.remove('show'),3500);}
+
+// AUTH
+async function login(){
+  const id=document.getElementById('lPhone').value.trim();
+  const pw=document.getElementById('lPass').value.trim();
+  const btn=document.getElementById('lBtn');
+  const err=document.getElementById('lErr');
+  err.style.display='none';
+  if(!id||!pw){err.innerHTML='&#9888; Enter your phone/email and password';err.style.display='block';return;}
+  btn.innerHTML='Signing in&#8230;';btn.disabled=true;
+  const isDemo=(id==='0200000000'||id==='admin@quickride.com.gh'||id==='admin')&&pw==='admin123';
+  if(isDemo){
+    pendingUser={name:'QuickRide Admin',phone:'0200000000',email:'admin@quickride.com.gh'};
+    showMFA('0200000000');btn.innerHTML='Sign In &#8594;';btn.disabled=false;return;
+  }
+  try{
+    const r=await fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier:id,password:pw})});
+    const d=await r.json();
+    if(d.error){err.innerHTML=d.error;err.style.display='block';btn.innerHTML='Sign In &#8594;';btn.disabled=false;return;}
+    if(d.user?.role!=='admin'){err.innerHTML='Access denied &#8212; admin only.';err.style.display='block';btn.innerHTML='Sign In &#8594;';btn.disabled=false;return;}
+    TOKEN=d.accessToken;pendingUser=d.user;showMFA(id);
+  }catch(e){err.innerHTML='Cannot reach server. Use demo login.';err.style.display='block';}
+  btn.innerHTML='Sign In &#8594;';btn.disabled=false;
+}
+function showMFA(identifier){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('mfaPage').style.display='flex';
+  let m;
+  if(identifier.includes('@')){
+    const parts=identifier.split('@');
+    m=parts[0].substring(0,3)+'***@'+parts[1];
+  } else {
+    m=identifier.substring(0,4)+'****'+identifier.substring(identifier.length-2);
+  }
+  document.getElementById('mfaSub').textContent='Enter the 6-digit code sent to '+m;
+  for(let i=0;i<6;i++){const b=document.getElementById('otp'+i);b.value='';b.classList.remove('filled');}
+  document.getElementById('otp0').focus();
+  document.getElementById('mfaErr').style.display='none';
+}
+function otpNext(i){
+  const b=document.getElementById('otp'+i);
+  b.value=b.value.replace(/[^0-9]/g,'');
+  if(b.value){b.classList.add('filled');if(i<5)document.getElementById('otp'+(i+1)).focus();else verifyOTP();}
+  else b.classList.remove('filled');
+}
+function otpBack(e,i){if(e.key==='Backspace'&&!document.getElementById('otp'+i).value&&i>0)document.getElementById('otp'+(i-1)).focus();}
+function getOTP(){let c='';for(let i=0;i<6;i++)c+=document.getElementById('otp'+i).value;return c;}
+function verifyOTP(){
+  const code=getOTP();const err=document.getElementById('mfaErr');const btn=document.getElementById('mfaBtn');
+  err.style.display='none';
+  if(code.length<6){err.innerHTML='&#9888; Enter all 6 digits';err.style.display='block';return;}
+  btn.innerHTML='Verifying&#8230;';btn.disabled=true;
+  setTimeout(()=>{
+    if(code==='123456'){localStorage.setItem('qr_token','demo');btn.innerHTML='Verify Code &#8594;';btn.disabled=false;initApp(pendingUser);}
+    else{err.innerHTML='&#10060; Invalid code. Use 123456 for demo.';err.style.display='block';btn.innerHTML='Verify Code &#8594;';btn.disabled=false;
+      for(let i=0;i<6;i++){const b=document.getElementById('otp'+i);b.value='';b.classList.remove('filled');}
+      document.getElementById('otp0').focus();
+      document.getElementById('otpWrap').style.animation='shake .3s ease';
+      setTimeout(()=>document.getElementById('otpWrap').style.animation='',400);}
+  },700);
+}
+function resendOTP(){
+  if(resendCooldown)return;resendCooldown=true;
+  const btn=document.getElementById('resendBtn');let s=30;
+  btn.textContent='Resend in '+s+'s';btn.style.opacity='.5';
+  const iv=setInterval(()=>{s--;btn.textContent=s>0?'Resend in '+s+'s':'Resend code';if(s<=0){clearInterval(iv);resendCooldown=false;btn.style.opacity='1';}},1000);
+  toast('Code resent to your phone!');
+}
+function backToLogin(){document.getElementById('mfaPage').style.display='none';document.getElementById('loginPage').style.display='flex';pendingUser=null;}
+function initApp(user){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('mfaPage').style.display='none';
+  const app=document.getElementById('appWrap');app.style.display='flex';app.className='app show';
+  const n=user?.name||'Admin';
+  document.getElementById('sbName').textContent=n;document.getElementById('sbAv').textContent=n[0];if(pendingUser?.email)document.getElementById('sbAv').title=pendingUser.email;
+  document.getElementById('sbAv').style.background=CLR[0];
+  if(document.getElementById('sApi'))document.getElementById('sApi').value=API;
+  loadStats();renderAll();renderMapPanels();renderPromos();renderNotifTpls();renderQLinks();startMap();
+}
+function logout(){
+  localStorage.removeItem('qr_token');TOKEN='';pendingUser=null;
+  const app=document.getElementById('appWrap');app.style.display='none';app.className='app';
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('lPhone').value='';document.getElementById('lPass').value='';
+}
+
+// NAV
+const TITLES={dashboard:'Dashboard',map:'Live Map',drivers:'Drivers',passengers:'Passengers',payments:'Payments',payouts:'Driver Payouts',trips:'All Trips',promos:'Promo Codes',notifications:'Notifications',settings:'Settings'};
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('p-'+id);if(pg)pg.classList.add('active');
+  const ni=document.querySelector('.ni[onclick*="''+id+''"]');if(ni)ni.classList.add('active');
+  document.getElementById('tbTitle').textContent=TITLES[id]||id;
+}
+
+// STATS
+async function loadStats(){
+  document.getElementById('s-pass').textContent=PASSENGERS.length;
+  document.getElementById('s-drv').textContent=DRIVERS.length;
+  document.getElementById('s-online').textContent=DRIVERS.filter(d=>d.online).length;
+  const pend=DRIVERS.filter(d=>d.status==='pending').length;
+  document.getElementById('s-pend').textContent=pend;document.getElementById('pendBadge').textContent=pend;
+}
+
+function renderAll(){renderDTrips();renderDPending();renderDrivers();renderPassengers();renderTrips();renderPayments();renderPayouts();}
+
+// DASHBOARD
+function renderDTrips(){document.getElementById('d-trips').innerHTML=TRIPS.slice(0,4).map(t=>'<tr><td>'+t.passenger+'</td><td style="color:var(--sub)">'+t.driver+'</td><td style="font-size:12px;color:var(--sub)">'+t.pickup+' &rarr; '+t.dropoff+'</td><td style="font-weight:700;color:var(--green)">'+(t.status==='cancelled'?'&mdash;':ghs(t.fare))+'</td><td>'+sbdg(t.status)+'</td></tr>').join('');}
+function renderDPending(){
+  const pend=DRIVERS.filter(d=>d.status==='pending');
+  document.getElementById('d-pending').innerHTML=pend.length?pend.map((d,i)=>'<div style="display:flex;align-items:center;gap:10px;padding:11px;background:var(--bg3);border-radius:10px;margin-bottom:8px;border:1px solid var(--border)">'+av(d.name,i)+'<div style="flex:1"><div style="font-size:13px;font-weight:700">'+d.name+'</div><div style="font-size:11px;color:var(--sub)">'+d.phone+' &middot; '+d.vehicle+'</div></div><button class="btn btn-sm btn-success" onclick="approveDrv(''+d.id+'')">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectDrv(''+d.id+'')">Reject</button></div>').join(''):'<div style="text-align:center;padding:20px;color:var(--sub);font-size:13px">All clear &#10003;</div>';
+}
+
+// DRIVERS TABLE
+function renderDrivers(){
+  const s=(document.getElementById('dSrch')?.value||'').toLowerCase();
+  const data=DRIVERS.filter(d=>{
+    const ms=d.name.toLowerCase().includes(s)||d.phone.includes(s)||d.plate.toLowerCase().includes(s)||(d.email||'').toLowerCase().includes(s);
+    const mf=dF==='all'||(dF==='frozen'&&d.frozen)||(d.status===dF&&dF!=='frozen');
+    return ms&&mf;
+  });
+  document.getElementById('dCount').textContent='Showing '+data.length+' of '+DRIVERS.length+' drivers';
+  document.getElementById('dTbl').innerHTML=data.map((d,i)=>'<tr><td><div class="td-name">'+av(d.name,i)+'<div><div class="td-main">'+d.name+'</div><div class="td-sub">'+d.city+'</div></div></div></td><td style="color:var(--sub)">'+d.phone+'</td><td style="font-size:12px;color:var(--sub)">'+d.vehicle+'</td><td>'+bdg(d.plate,'blue')+'</td><td>'+(d.frozen?bdg('Frozen','red'):sbdg(d.status))+'</td><td style="color:var(--gold);font-weight:700">'+(d.rating>0?'&#11088; '+d.rating:'&mdash;')+'</td><td>'+d.trips.toLocaleString()+'</td><td style="color:var(--green);font-weight:700">'+ghs(d.earned)+'</td><td>'+(d.online?'<span class="live-dot"></span>Online':'<span style="color:var(--sub)">Offline</span>')+'</td><td><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-sm btn-ghost" onclick="viewDrv(''+d.id+'')">View</button>'+(d.status==='pending'?'<button class="btn btn-sm btn-success" onclick="approveDrv(''+d.id+'')">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectDrv(''+d.id+'')">Reject</button>':'')+(d.frozen?'<button class="btn btn-sm btn-success" onclick="unfreeze('driver',''+d.id+'')">Unfreeze</button>':'<button class="btn btn-sm btn-danger" onclick="freeze('driver',''+d.id+'')">Freeze</button>')+'</div></td></tr>').join('')||'<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--sub)">No drivers found</td></tr>';
+}
+function setDF(f,el){dF=f;document.querySelectorAll('#p-drivers .f-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderDrivers();}
+
+// PASSENGERS TABLE
+function renderPassengers(){
+  const s=(document.getElementById('pSrch')?.value||'').toLowerCase();
+  const data=PASSENGERS.filter(p=>{
+    const ms=p.name.toLowerCase().includes(s)||p.phone.includes(s)||p.email.toLowerCase().includes(s);
+    const mf=pF==='all'||(pF==='frozen'&&p.frozen)||(pF==='active'&&p.active&&!p.frozen);
+    return ms&&mf;
+  });
+  document.getElementById('pCount').textContent='Showing '+data.length+' of '+PASSENGERS.length+' passengers';
+  document.getElementById('pTbl').innerHTML=data.map((p,i)=>'<tr><td><div class="td-name">'+av(p.name,i+2)+'<div><div class="td-main">'+p.name+'</div><div class="td-sub">'+p.city+'</div></div></div></td><td style="color:var(--sub)">'+p.phone+'</td><td style="color:var(--sub);font-size:12px">'+(p.email||'&mdash;')+'</td><td>'+(p.verified?bdg('Verified','green'):bdg('Unverified','gray'))+'</td><td>'+(p.frozen?bdg('Frozen','red'):bdg(p.active?'Active':'Inactive',p.active?'green':'gray'))+'</td><td style="color:var(--green);font-weight:700">'+ghs(p.wallet)+'</td><td>'+p.trips+'</td><td style="font-weight:600">'+ghs(p.spend)+'</td><td style="color:var(--sub);font-size:12px">'+p.joined+'</td><td><div style="display:flex;gap:5px"><button class="btn btn-sm btn-ghost" onclick="viewPass(''+p.id+'')">View</button>'+(p.frozen?'<button class="btn btn-sm btn-success" onclick="unfreeze('passenger',''+p.id+'')">Unfreeze</button>':'<button class="btn btn-sm btn-danger" onclick="freeze('passenger',''+p.id+'')">Freeze</button>')+'</div></td></tr>').join('')||'<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--sub)">No passengers found</td></tr>';
+}
+function setPF(f,el){pF=f;document.querySelectorAll('#p-passengers .f-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderPassengers();}
+
+// VIEW DRIVER
+function viewDrv(id){
+  const d=DRIVERS.find(x=>x.id===id);if(!d)return;
+  const bars=[1680,2100,1420,1890,2640,3120,2890];const max=Math.max(...bars);
+  const bHtml=bars.map((v,i)=>{const days=['M','T','W','T','F','S','S'];return '<div class="e-bar-w"><div class="e-bar" style="height:'+(v/max*100)+'%" title="'+ghs(v)+'"></div><div class="e-bar-d">'+days[i]+'</div></div>';}).join('');
+  document.getElementById('driverMC').innerHTML='<div class="d-hd">'+av(d.name,0,52)+'<div><div style="font-size:18px;font-weight:800">'+d.name+'</div><div style="font-size:12px;color:var(--sub);margin-top:3px">'+d.city+' &middot; '+d.phone+'</div><div style="margin-top:6px;display:flex;gap:6px">'+(d.frozen?bdg('Frozen','red'):sbdg(d.status))+(d.online?' <span class="live-dot"></span><span style="font-size:11px;color:var(--green)">Online</span>':'')+'</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px"><div class="card" style="padding:14px"><div style="font-size:11px;color:var(--sub);margin-bottom:4px">TOTAL EARNINGS</div><div style="font-size:22px;font-weight:800;color:var(--green)">'+ghs(d.earned)+'</div><div style="font-size:11px;color:var(--sub)">This week: '+ghs(d.week)+'</div></div><div class="card" style="padding:14px"><div style="font-size:11px;color:var(--sub);margin-bottom:4px">TOTAL TRIPS</div><div style="font-size:22px;font-weight:800">'+d.trips.toLocaleString()+'</div><div style="font-size:11px;color:var(--gold)">&#11088; '+(d.rating>0?d.rating:'New driver')+'</div></div></div><div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Weekly Earnings</div><div class="e-bars" style="margin-bottom:14px">'+bHtml+'</div><div class="card" style="padding:14px;margin-bottom:12px"><div style="font-size:12px;font-weight:700;margin-bottom:8px">Personal Information</div>'+dr('Full Name',d.name)+dr('Phone',d.phone)+dr('Email',d.email||'&mdash;')+dr('City',d.city)+dr('Joined',d.joined)+'</div><div class="card" style="padding:14px;margin-bottom:12px"><div style="font-size:12px;font-weight:700;margin-bottom:8px">Vehicle &amp; Documents</div>'+dr('Vehicle',d.vehicle+' ('+d.color+')')+dr('Plate Number',d.plate)+dr("Driver's License",d.license)+dr('Ghana Card',d.ghana_card)+'</div><div class="card" style="padding:14px;margin-bottom:14px"><div style="font-size:12px;font-weight:700;margin-bottom:8px">Payment Details</div>'+dr('Payout Method',d.bank)+dr('Account Number',d.account)+'</div>'+(d.frozen?'<div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--red)"><strong>Frozen:</strong> '+d.reason+'</div>':'')+'<div style="display:flex;gap:10px;flex-wrap:wrap">'+(d.status==='pending'?'<button class="btn btn-success" onclick="approveDrv(''+d.id+'');closeM('driverM')">Approve</button><button class="btn btn-danger" onclick="rejectDrv(''+d.id+'');closeM('driverM')">Reject</button>':'')+(d.frozen?'<button class="btn btn-success" onclick="unfreeze('driver',''+d.id+'');closeM('driverM')">Unfreeze</button>':'<button class="btn btn-danger" onclick="closeM('driverM');freeze('driver',''+d.id+'')">Freeze Account</button>')+'<button class="btn btn-ghost" onclick="closeM('driverM')">Close</button></div>';
+  openM('driverM');
+}
+
+// VIEW PASSENGER
+function viewPass(id){
+  const p=PASSENGERS.find(x=>x.id===id);if(!p)return;
+  document.getElementById('passMC').innerHTML='<div class="d-hd">'+av(p.name,2,52)+'<div><div style="font-size:18px;font-weight:800">'+p.name+'</div><div style="font-size:12px;color:var(--sub);margin-top:3px">'+p.city+' &middot; '+p.phone+'</div><div style="margin-top:6px;display:flex;gap:6px">'+(p.frozen?bdg('Frozen','red'):bdg(p.active?'Active':'Inactive',p.active?'green':'gray'))+(p.verified?bdg('Verified','green'):bdg('Unverified','gray'))+'</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px"><div class="card" style="padding:12px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--green)">'+ghs(p.wallet)+'</div><div style="font-size:11px;color:var(--sub)">Wallet</div></div><div class="card" style="padding:12px;text-align:center"><div style="font-size:18px;font-weight:800">'+p.trips+'</div><div style="font-size:11px;color:var(--sub)">Trips</div></div><div class="card" style="padding:12px;text-align:center"><div style="font-size:18px;font-weight:800">'+ghs(p.spend)+'</div><div style="font-size:11px;color:var(--sub)">Total Spend</div></div></div><div class="card" style="padding:14px;margin-bottom:12px"><div style="font-size:12px;font-weight:700;margin-bottom:8px">Personal Information</div>'+dr('Full Name',p.name)+dr('Phone',p.phone)+dr('Email',p.email||'&mdash;')+dr('City',p.city)+dr('Joined',p.joined)+dr('Last Trip',p.last)+'</div>'+(p.frozen?'<div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--red)"><strong>Frozen:</strong> '+p.reason+'</div>':'')+'<div style="display:flex;gap:10px">'+(p.frozen?'<button class="btn btn-success" onclick="unfreeze('passenger',''+p.id+'');closeM('passM')">Unfreeze Account</button>':'<button class="btn btn-danger" onclick="closeM('passM');freeze('passenger',''+p.id+'')">Freeze Account</button>')+'<button class="btn btn-ghost" onclick="closeM('passM')">Close</button></div>';
+  openM('passM');
+}
+
+// FREEZE
+function freeze(type,id){
+  selReason='';
+  document.getElementById('freezeT').textContent='Freeze '+(type==='driver'?'Driver':'Passenger')+' Account';
+  document.getElementById('freezeC').innerHTML='<p style="font-size:13px;color:var(--sub);margin-bottom:12px">Select a reason. The user will be notified.</p><div id="frList">'+FREEZE_REASONS.map((r,i)=>'<div class="fr-opt" id="fr'+i+'" onclick="selFR(''+r.title+'','+i+')"><div style="font-size:15px;margin-top:1px">&#128274;</div><div><div class="fr-title">'+r.title+'</div><div class="fr-desc">'+r.desc+'</div></div></div>').join('')+'</div><div class="fg" style="margin-top:10px"><label>Additional Note (optional)</label><input id="frNote" placeholder="Any extra details..."/></div><div style="display:flex;gap:10px;margin-top:4px"><button class="btn btn-danger" style="flex:1" onclick="confirmFreeze(''+type+'',''+id+'')">Freeze Account</button><button class="btn btn-ghost" onclick="closeM('freezeM')">Cancel</button></div>';
+  openM('freezeM');
+}
+function selFR(r,i){selReason=r;document.querySelectorAll('.fr-opt').forEach(e=>e.classList.remove('sel'));document.getElementById('fr'+i).classList.add('sel');}
+function confirmFreeze(type,id){
+  if(!selReason){toast('&#9888; Please select a reason');return;}
+  const note=document.getElementById('frNote').value;
+  const reason=selReason+(note?' &mdash; '+note:'');
+  if(type==='driver'){const d=DRIVERS.find(x=>x.id===id);if(d){d.frozen=true;d.reason=reason;}renderDrivers();renderDPending();}
+  else{const p=PASSENGERS.find(x=>x.id===id);if(p){p.frozen=true;p.reason=reason;}renderPassengers();}
+  closeM('freezeM');toast('&#128274; Account frozen: '+selReason);
+}
+function unfreeze(type,id){
+  if(type==='driver'){const d=DRIVERS.find(x=>x.id===id);if(d){d.frozen=false;d.reason='';}renderDrivers();}
+  else{const p=PASSENGERS.find(x=>x.id===id);if(p){p.frozen=false;p.reason='';}renderPassengers();}
+  toast('&#10003; Account unfrozen successfully');
+}
+function approveDrv(id){const d=DRIVERS.find(x=>x.id===id);if(d)d.status='approved';renderDrivers();renderDPending();loadStats();toast('&#10003; Driver approved!');}
+function rejectDrv(id){const d=DRIVERS.find(x=>x.id===id);if(d)d.status='rejected';renderDrivers();renderDPending();loadStats();toast('&#10008; Driver rejected');}
+
+// TRIPS
+function renderTrips(){
+  const s=(document.getElementById('tSrch')?.value||'').toLowerCase();
+  const data=TRIPS.filter(t=>{const ms=t.passenger.toLowerCase().includes(s)||(t.driver||'').toLowerCase().includes(s)||t.pickup.toLowerCase().includes(s);const mf=tF==='all'||t.status===tF;return ms&&mf;});
+  document.getElementById('tTbl').innerHTML=data.map(t=>'<tr><td style="font-size:11px;color:var(--sub)">'+t.id+'</td><td style="font-weight:600">'+t.passenger+'</td><td style="color:var(--sub)">'+t.driver+'</td><td style="font-size:12px;color:var(--sub)">'+t.pickup+'</td><td style="font-size:12px;color:var(--sub)">'+t.dropoff+'</td><td>'+bdg(t.type,'blue')+'</td><td style="font-weight:700;color:'+(t.status==='cancelled'?'var(--sub)':'var(--green)');'">'+( t.status==='cancelled'?'&mdash;':ghs(t.fare))+'</td><td style="font-size:12px;color:var(--sub)">'+t.pay+'</td><td>'+sbdg(t.status)+'</td><td style="font-size:11px;color:var(--sub)">'+t.date+'</td><td><button class="btn btn-sm btn-ghost" onclick="viewTrip(''+t.id+'')">View</button></td></tr>').join('')||'<tr><td colspan="11" style="text-align:center;padding:28px;color:var(--sub)">No trips found</td></tr>';
+}
+function setTF(f,el){tF=f;document.querySelectorAll('#p-trips .f-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTrips();}
+function viewTrip(id){
+  const t=TRIPS.find(x=>x.id===id);if(!t)return;
+  document.getElementById('tripMC').innerHTML='<div style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><div><span style="font-size:13px;font-weight:700">'+t.id+'</span><div style="font-size:11px;color:var(--sub);margin-top:3px">'+t.date+'</div></div>'+sbdg(t.status)+'</div>'+dr('Passenger',t.passenger)+dr('Driver',t.driver)+dr('Pickup',t.pickup)+dr('Dropoff',t.dropoff)+dr('Ride Type',t.type)+dr('Fare',t.status==='cancelled'?'&mdash;':ghs(t.fare))+dr('Payment',t.pay)+'<div style="margin-top:14px"><button class="btn btn-ghost" onclick="closeM('tripM')">Close</button></div>';
+  openM('tripM');
+}
+
+// PAYMENTS
+function renderPayments(){document.getElementById('payTbl').innerHTML=PAYMENTS.map(p=>'<tr><td style="font-size:11px;color:var(--sub)">'+p.ref+'</td><td style="font-weight:600">'+p.passenger+'</td><td style="font-weight:700;color:var(--green)">'+ghs(p.amount)+'</td><td>'+bdg(p.method,'blue')+'</td><td style="color:var(--sub)">'+p.type+'</td><td>'+sbdg(p.status)+'</td><td style="font-size:11px;color:var(--sub)">'+p.date+'</td></tr>').join('');}
+
+// PAYOUTS
+function renderPayouts(){document.getElementById('poTbl').innerHTML=DRIVERS.filter(d=>d.status==='approved').map((d,i)=>{const g=d.week;const f=g*.2;const n=g*.8;const pd=i<2;return '<tr><td><div class="td-name">'+av(d.name,i)+'<div class="td-main">'+d.name+'</div></div></td><td style="color:var(--sub)">'+d.account+'</td><td>'+Math.floor(g/60)+'</td><td>'+ghs(g)+'</td><td style="color:var(--red)">- '+ghs(f)+'</td><td style="color:var(--green);font-weight:700">'+ghs(n)+'</td><td style="font-size:12px">'+d.bank+'</td><td>'+(pd?bdg('Pending','gold'):bdg('Paid','green'))+'</td><td>'+(pd?'<button class="btn btn-sm btn-primary" onclick="doPayout(''+d.id+'')">Pay Now</button>':'<span style="color:var(--sub);font-size:12px">Sent &#10003;</span>')+'</td></tr>';}).join('');}
+function doPayout(id){toast('Payout sent to MoMo!');renderPayouts();}
+function processAll(){toast('All pending payouts processed!');renderPayouts();}
+
+// PROMOS
+function renderPromos(){document.getElementById('promosGrid').innerHTML=PROMOS.map(p=>'<div class="promo-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px"><div class="promo-code">'+p.code+'</div>'+(p.active?bdg('Active','green'):bdg('Expired','gray'))+'</div><div style="font-size:13px;color:var(--sub);margin-bottom:12px">'+p.desc+'</div>'+dr('Discount',p.type==='percentage'?p.val+'% off':'GH&#8373; '+p.val+' off')+dr('Uses',p.uses.toLocaleString())+dr('Expires',p.expiry)+'<div style="margin-top:12px"><button class="btn btn-sm '+(p.active?'btn-danger':'btn-success')+'" onclick="togglePromo(''+p.id+'')">'+(p.active?'Deactivate':'Activate')+'</button></div></div>').join('');}
+function togglePromo(id){const p=PROMOS.find(x=>x.id===id);if(p)p.active=!p.active;renderPromos();toast(p.active?'Promo activated':'Promo deactivated');}
+function createPromo(){const code=document.getElementById('pCode').value.trim();if(!code){toast('Enter a promo code');return;}PROMOS.unshift({id:'pr'+Date.now(),code:code.toUpperCase(),desc:document.getElementById('pDesc').value||'Discount',type:document.getElementById('pType').value,val:parseFloat(document.getElementById('pVal').value)||10,uses:0,active:true,expiry:document.getElementById('pExpiry').value||'Dec 31, 2026'});renderPromos();closeM('promoM');toast('Promo '+code.toUpperCase()+' created!');}
+
+// NOTIFICATIONS
+function renderNotifTpls(){document.getElementById('notifTpls').innerHTML=NOTIF_TPLS.map(t=>'<div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer" onclick="document.getElementById('nTitle').value=''+t.title+'';document.getElementById('nBody').innerHTML=''+t.body+''"><div style="font-size:13px;font-weight:700;margin-bottom:2px">'+t.title+'</div><div style="font-size:11px;color:var(--sub)">'+t.body.substring(0,55)+'...</div></div>').join('');}
+function sendNotif(){const t=document.getElementById('nTitle').value.trim();const b=document.getElementById('nBody').value.trim();if(!t||!b){toast('Fill in title and message');return;}toast('Notification sent to '+document.getElementById('nTarget').value+'!');document.getElementById('nTitle').value='';document.getElementById('nBody').value='';}
+
+// MAP
+function renderMapPanels(){
+  const active=TRIPS.filter(t=>t.status==='in_progress');
+  document.getElementById('map-trips').innerHTML=active.map(t=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--bg3);border-radius:9px;margin-bottom:7px;border:1px solid var(--border)"><div><div style="font-size:12px;font-weight:700">'+t.passenger+' &rarr; '+t.driver+'</div><div style="font-size:11px;color:var(--sub)">'+t.pickup+' &rarr; '+t.dropoff+'</div></div><div style="font-size:13px;font-weight:700;color:var(--green)">'+ghs(t.fare)+'</div></div>').join('')||'<div style="text-align:center;padding:14px;color:var(--sub);font-size:12px">No active trips</div>';
+  document.getElementById('map-drivers').innerHTML=DRIVERS.filter(d=>d.online).map((d,i)=>'<div style="display:flex;align-items:center;gap:9px;padding:8px;background:var(--bg3);border-radius:9px;margin-bottom:6px"><span class="live-dot"></span>'+av(d.name,i)+'<div style="font-size:12px;font-weight:700">'+d.name+'</div><div style="margin-left:auto;font-size:11px;color:var(--sub)">'+d.city+'</div></div>').join('');
+}
+function startMap(){setInterval(()=>{['p1','p2','p3','p4','p5'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cl=parseFloat(el.style.left)||50;const ct=parseFloat(el.style.top)||50;el.style.left=Math.max(5,Math.min(90,cl+(Math.random()-.5)*6))+'%';el.style.top=Math.max(5,Math.min(85,ct+(Math.random()-.5)*6))+'%';});},3000);}
+function animPins(){['p1','p2','p3','p4','p5'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.left=(10+Math.random()*80)+'%';el.style.top=(10+Math.random()*75)+'%';}});}
+function mapZ(d){const m=document.getElementById('liveMap');const c=parseFloat(m.style.transform?.match(/scale\((.+?)\)/)?.[1]||1);const n=Math.max(.6,Math.min(2,c+d*.2));m.style.transform='scale('+n+')';m.style.transformOrigin='center';}
+
+// SETTINGS
+function saveSettings(){const u=document.getElementById('sApi').value.trim();if(u){API=u;localStorage.setItem('qr_api',u);}toast('Settings saved!');}
+function renderQLinks(){document.getElementById('qLinks').innerHTML='<a href="https://quickride-api-production.up.railway.app/health" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px">&#128279; API Health Check</a><a href="https://quickride-ghana.netlify.app" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px">&#127758; Landing Page</a><a href="https://railway.app" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500">&#128674; Railway Dashboard</a>';}
+
+// AUTO LOGIN
+window.onload=function(){const t=localStorage.getItem('qr_token');if(t){TOKEN=t;initApp({name:'QuickRide Admin'});}};
+</script>
+</body>
+</html>
