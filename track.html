@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Trip — QuickRide Ghana</title>
+  <meta property="og:title" content="Track My QuickRide"/>
+  <meta property="og:description" content="Follow my live trip on QuickRide Ghana"/>
+  <meta property="og:image" content="https://quickrideghana.com/logo.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f4f4; color: #111; min-height: 100vh; }
+
+    #map { width: 100%; height: 55vh; background: #e8e8e8; }
+
+    .card {
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      padding: 20px;
+      margin-top: -20px;
+      position: relative;
+      z-index: 10;
+      min-height: 45vh;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+    }
+
+    .handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px; }
+
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .logo img { height: 32px; }
+    .logo-text { font-size: 18px; font-weight: 800; color: #000; }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 13px; font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .status-badge.matching  { background: #FFF8E1; color: #F59E0B; }
+    .status-badge.accepted  { background: #E8F5E9; color: #2E7D32; }
+    .status-badge.arriving  { background: #E3F2FD; color: #1565C0; }
+    .status-badge.riding    { background: #EDE7F6; color: #512DA8; }
+    .status-badge.completed { background: #F5F5F5; color: #555; }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .driver-row {
+      display: flex; align-items: center; gap: 14px;
+      background: #f7f7f7; border-radius: 16px;
+      padding: 14px; margin-bottom: 16px;
+    }
+    .driver-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #e0e0e0; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
+    }
+    .driver-name { font-size: 16px; font-weight: 800; }
+    .driver-sub  { font-size: 13px; color: #777; margin-top: 2px; }
+    .plate { background: #000; color: #fff; border-radius: 8px; padding: 4px 10px; font-size: 13px; font-weight: 700; }
+
+    .route { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .route-box { background: #f7f7f7; border-radius: 12px; padding: 12px; }
+    .route-label { font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .route-addr  { font-size: 12px; font-weight: 600; color: #111; }
+
+    .footer { text-align: center; padding: 20px 0 10px; }
+    .footer a { text-decoration: none; }
+    .dl-btn {
+      display: inline-block; background: #000; color: #fff;
+      padding: 14px 32px; border-radius: 14px;
+      font-size: 15px; font-weight: 700;
+      text-decoration: none;
+    }
+    .footer-note { font-size: 12px; color: #aaa; margin-top: 10px; }
+
+    .loading { text-align: center; padding: 40px 20px; }
+    .loading-icon { font-size: 40px; margin-bottom: 12px; }
+    .loading h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .loading p { font-size: 14px; color: #777; }
+
+    .error-box { text-align: center; padding: 40px 20px; }
+    .error-box .icon { font-size: 48px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="card">
+  <div class="handle"></div>
+
+  <div class="logo">
+    <img src="https://quickrideghana.com/logo.png" alt="QuickRide"/>
+    <span class="logo-text">QuickRide Ghana</span>
+  </div>
+
+  <div id="content">
+    <div class="loading">
+      <div class="loading-icon">🚗</div>
+      <h2>Loading trip…</h2>
+      <p>Fetching live details</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a class="dl-btn" href="https://expo.dev/accounts/dzienyo20/projects/quickride-ghana/builds/457d2dd2-972b-42c3-91cb-afc25ce6b507">
+      📱 Download QuickRide
+    </a>
+    <p class="footer-note">Book safe, affordable rides anywhere in Ghana</p>
+  </div>
+</div>
+
+<script>
+  const GMAPS_KEY = 'AIzaSyABv0kELyDMWQjso0WL0C6SgVyAezCrJes';
+  const API_BASE  = 'https://quickride-api-production.up.railway.app/api';
+
+  // Get trip ID from URL: /track/TRIP_ID  or  ?id=TRIP_ID
+  function getTripId() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const trackIdx = parts.indexOf('track');
+    if (trackIdx >= 0 && parts[trackIdx + 1]) return parts[trackIdx + 1];
+    return new URLSearchParams(window.location.search).get('id');
+  }
+
+  const tripId = getTripId();
+  let map, driverMarker, pickupMarker, dropoffMarker, directionsRenderer;
+  let lastData = null;
+
+  // ── Status label ───────────────────────────────────────────────
+  const STATUS_INFO = {
+    payment_pending: { label: 'Waiting for payment', cls: 'matching' },
+    requested:       { label: 'Finding a driver',    cls: 'matching' },
+    accepted:        { label: 'Driver on the way',   cls: 'accepted' },
+    driver_arriving: { label: 'Driver arriving',      cls: 'arriving' },
+    picked_up:       { label: 'Ride in progress',     cls: 'riding'   },
+    in_progress:     { label: 'On the way',           cls: 'riding'   },
+    completed:       { label: 'Trip completed',       cls: 'completed'},
+  };
+
+  function renderContent(data) {
+    const si = STATUS_INFO[data.status] || { label: data.status, cls: 'matching' };
+    const hasDriver = data.driver && data.driver.name;
+    const content = document.getElementById('content');
+
+    content.innerHTML = `
+      <div class="status-badge ${si.cls}">
+        <div class="dot"></div>
+        ${si.label}
+      </div>
+
+      ${hasDriver ? `
+      <div class="driver-row">
+        <div class="driver-avatar">👤</div>
+        <div style="flex:1">
+          <div class="driver-name">${data.driver.name}</div>
+          <div class="driver-sub">⭐ ${data.driver.rating || '4.8'} · ${data.driver.vehicle || 'Vehicle'}</div>
+        </div>
+        <div class="plate">${data.driver.plate || ''}</div>
+      </div>
+      ` : `
+      <div style="text-align:center;padding:16px 0;color:#777;font-size:14px">
+        🔍 Matching with a nearby driver…
+      </div>
+      `}
+
+      <div class="route">
+        <div class="route-box">
+          <div class="route-label">📍 Pickup</div>
+          <div class="route-addr">${data.pickup_address || 'Loading…'}</div>
+        </div>
+        <div class="route-box">
+          <div class="route-label">🏁 Dropoff</div>
+          <div class="route-addr">${data.dropoff_address || 'Loading…'}</div>
+        </div>
+      </div>
+      ${data.status === 'completed' ? `
+      <div style="background:#E8F5E9;border-radius:12px;padding:14px;text-align:center;font-weight:700;color:#2E7D32;margin-bottom:12px">
+        ✅ Trip completed safely
+      </div>` : ''}
+    `;
+  }
+
+  function updateMap(data) {
+    if (!map) return;
+
+    const pickup  = { lat: parseFloat(data.pickup_lat),  lng: parseFloat(data.pickup_lng)  };
+    const dropoff = { lat: parseFloat(data.dropoff_lat), lng: parseFloat(data.dropoff_lng) };
+
+    if (!pickupMarker) {
+      pickupMarker = new google.maps.Marker({
+        position: pickup, map,
+        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: '#000', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2 },
+        title: 'Pickup',
+      });
+    }
+    if (!dropoffMarker) {
+      dropoffMarker = new google.maps.Marker({
+        position: dropoff, map,
+        icon: { path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW, scale: 5, fillColor: '#000', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2 },
+        title: 'Dropoff',
+      });
+    }
+
+    if (data.driver?.current_lat && data.driver?.current_lng) {
+      const dPos = { lat: parseFloat(data.driver.current_lat), lng: parseFloat(data.driver.current_lng) };
+      if (!driverMarker) {
+        driverMarker = new google.maps.Marker({
+          position: dPos, map,
+          label: { text: '🚗', fontSize: '22px' },
+          title: data.driver.name,
+        });
+      } else {
+        driverMarker.setPosition(dPos);
+      }
+      map.panTo(dPos);
+    } else {
+      // No driver yet — center between pickup and dropoff
+      map.fitBounds(new google.maps.LatLngBounds(
+        { lat: Math.min(pickup.lat, dropoff.lat) - 0.005, lng: Math.min(pickup.lng, dropoff.lng) - 0.005 },
+        { lat: Math.max(pickup.lat, dropoff.lat) + 0.005, lng: Math.max(pickup.lng, dropoff.lng) + 0.005 }
+      ));
+    }
+  }
+
+  async function fetchTrip() {
+    if (!tripId) {
+      document.getElementById('content').innerHTML = `
+        <div class="error-box">
+          <div class="icon">🔗</div>
+          <h2 style="font-size:18px;font-weight:800">Invalid link</h2>
+          <p style="color:#777;font-size:14px;margin-top:6px">This tracking link is not valid.</p>
+        </div>`;
+      return;
+    }
+    try {
+      const res  = await fetch(`${API_BASE}/trips/${tripId}/live`);
+      const data = await res.json();
+      if (!res.ok) {
+        document.getElementById('content').innerHTML = `
+          <div class="error-box">
+            <div class="icon">🚫</div>
+            <h2 style="font-size:18px;font-weight:800">${data.error || 'Trip not found'}</h2>
+            <p style="color:#777;font-size:14px;margin-top:6px">The trip may have ended or the link expired.</p>
+          </div>`;
+        return;
+      }
+      lastData = data;
+      renderContent(data);
+      updateMap(data);
+
+      // Stop polling when trip is done
+      if (['completed', 'cancelled'].includes(data.status)) return;
+    } catch {
+      // Silently retry
+    }
+  }
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center:    { lat: 5.6037, lng: -0.1870 },
+      zoom:      13,
+      mapTypeControl:    false,
+      streetViewControl: false,
+      fullscreenControl: false,
+    });
+    fetchTrip();
+    // Poll every 5 seconds for live updates
+    setInterval(fetchTrip, 5000);
+  }
+
+  // Load Google Maps
+  const script = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_KEY}&callback=initMap`;
+  script.async = true;
+  document.head.appendChild(script);
+</script>
+</body>
+</html>
