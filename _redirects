@@ -1,0 +1,2 @@
+# Rewrite /track/:id → track.html (JS reads window.location.pathname for the trip ID)
+/track/*  /track.html  200
