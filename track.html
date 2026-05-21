@@ -6,11 +6,12 @@
   <title>Live Trip — QuickRide Ghana</title>
 
   <!-- Social sharing -->
-  <meta property="og:title"       content="Track My QuickRide"/>
-  <meta property="og:description" content="Follow my live trip on QuickRide Ghana"/>
+  <meta property="og:title"       content="Track My QuickRide Trip"/>
+  <meta property="og:description" content="Follow my live trip on QuickRide Ghana. This private link expires when the trip ends."/>
   <meta property="og:image"       content="https://quickrideghana.com/logo.png"/>
   <meta property="og:type"        content="website"/>
   <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="robots"             content="noindex, nofollow"/>
 
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
 
@@ -66,6 +67,15 @@
       cursor: pointer; font-family: inherit; transition: background .15s;
     }
     .share-btn:hover { background: #e2e8f0; }
+
+    /* ── Privacy badge ───────────────────────────────────────── */
+    .privacy-bar {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      background: #F0FDF4; border: 1px solid #BBF7D0;
+      border-radius: 10px; padding: 8px 14px;
+      margin-bottom: 14px; font-size: 12px; font-weight: 600; color: #166534;
+    }
+    .privacy-bar svg { flex-shrink: 0; }
 
     /* ── Status badge ────────────────────────────────────────── */
     .status-badge {
@@ -199,6 +209,14 @@
 <div class="card">
   <div class="handle"></div>
 
+  <!-- Privacy notice -->
+  <div class="privacy-bar" id="privacy-bar" style="display:none">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    Private link — only people with this URL can view this trip
+  </div>
+
   <div class="logo-row">
     <div class="logo">
       <img src="https://quickrideghana.com/logo.png" alt="QuickRide" onerror="this.style.display='none'"/>
@@ -218,7 +236,7 @@
   </div>
 
   <div class="cta-section">
-    <a class="dl-btn" href="https://expo.dev/accounts/dzienyo20/projects/quickride-ghana/builds/457d2dd2-972b-42c3-91cb-afc25ce6b507" target="_blank">
+    <a class="dl-btn" href="https://play.google.com/store/apps/details?id=com.quickride.ghana.rider" target="_blank">
       📱 Download QuickRide
     </a>
     <p class="cta-note">Book safe, affordable rides anywhere in Ghana</p>
@@ -339,7 +357,7 @@
         🔍 Matching with a nearby driver…
       </div>`}
 
-      ${isDone ? `<div class="done-banner" style="display:block">✅ Trip completed safely. Thanks for using QuickRide!</div>` : ''}
+      ${isDone ? `<div class="done-banner" style="display:block">✅ Trip completed safely. This tracking link has now expired.</div>` : ''}
 
       <div class="route">
         <div class="route-stop">
@@ -365,6 +383,7 @@
     `;
 
     document.getElementById('share-btn').style.display = 'flex';
+    document.getElementById('privacy-bar').style.display = 'flex';
     lastTripData = data;
 
     // Stop polling/socket on completion
