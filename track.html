@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Trip — QuickRide Ghana</title>
+  <title>Live Trip — Rydon</title>
 
   <!-- Social sharing -->
-  <meta property="og:title"       content="Track My QuickRide Trip"/>
-  <meta property="og:description" content="Follow my live trip on QuickRide Ghana. This private link expires when the trip ends."/>
+  <meta property="og:title"       content="Track My Rydon Trip"/>
+  <meta property="og:description" content="Follow my live trip on Rydon. This private link expires when the trip ends."/>
   <meta property="og:image"       content="https://quickrideghana.com/logo.png"/>
   <meta property="og:type"        content="website"/>
   <meta name="twitter:card"       content="summary_large_image"/>
@@ -231,8 +231,8 @@
 
   <div class="logo-row">
     <div class="logo">
-      <img src="https://quickrideghana.com/logo.png" alt="QuickRide" onerror="this.style.display='none'"/>
-      <span class="logo-text">QuickRide Ghana</span>
+      <img src="https://quickrideghana.com/logo.png" alt="Rydon" onerror="this.style.display='none'"/>
+      <span class="logo-text">Rydon</span>
     </div>
     <button class="share-btn" onclick="shareTrip()" id="share-btn" style="display:none">
       ↗ Share
@@ -248,8 +248,8 @@
   </div>
 
   <div class="cta-section">
-    <a class="dl-btn" href="https://play.google.com/store/apps/details?id=com.quickride.ghana.rider" target="_blank">
-      📱 Download QuickRide
+    <a class="dl-btn" href="https://play.google.com/store/apps/details?id=com.rydon.ghana.rider" target="_blank">
+      📱 Download Rydon
     </a>
     <p class="cta-note">Book safe, affordable rides anywhere in Ghana</p>
   </div>
@@ -532,9 +532,9 @@
   // ── Share ─────────────────────────────────────────────────────
   function shareTrip() {
     const url = window.location.href;
-    const text = 'Track my live QuickRide trip 🚗';
+    const text = 'Track my live Rydon trip 🚗';
     if (navigator.share) {
-      navigator.share({ title: 'Track My QuickRide', text, url }).catch(()=>{});
+      navigator.share({ title: 'Track My Rydon', text, url }).catch(()=>{});
     } else {
       navigator.clipboard?.writeText(url)
         .then(() => alert('Link copied to clipboard!'))

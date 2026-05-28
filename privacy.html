@@ -3,116 +3,380 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Privacy Policy — QuickRide Ghana</title>
+<title>Privacy Policy — Rydon Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F3EC;color:#111;line-height:1.7;font-size:16px}
-a{color:#0057FF;text-decoration:none}
-nav{background:#111;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+a{color:#06a2b4;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── Nav ── */
+nav{background:#0A0F2E;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 nav .logo{display:flex;align-items:center;gap:10px}
-nav .logo img{width:40px;height:40px;border-radius:10px}
-nav .logo span{color:#fff;font-size:18px;font-weight:800}
-nav a{color:#fff;font-size:14px;opacity:0.7}
-.container{max-width:780px;margin:0 auto;padding:60px 24px 100px}
-h1{font-size:36px;font-weight:900;margin-bottom:8px}
-.subtitle{color:#6B6B6B;margin-bottom:48px;font-size:15px}
-h2{font-size:20px;font-weight:800;margin:40px 0 12px}
-p{color:#333;margin-bottom:14px}
-ul{color:#333;margin:0 0 14px 20px}
-ul li{margin-bottom:8px}
-.badge{display:inline-block;background:#EEF3FF;color:#0057FF;border-radius:100px;padding:4px 14px;font-size:13px;font-weight:700;margin-bottom:24px}
-footer{text-align:center;padding:32px;color:#6B6B6B;font-size:13px;border-top:1px solid #E0DDD4}
+nav .logo img{width:38px;height:38px;border-radius:10px}
+nav .logo span{color:#fff;font-size:18px;font-weight:800;letter-spacing:-0.3px}
+nav .back{color:rgba(255,255,255,0.65);font-size:14px;font-weight:500;transition:color .2s}
+nav .back:hover{color:#fff;text-decoration:none}
+
+/* ── Hero ── */
+.hero{background:#0A0F2E;padding:56px 24px 52px;text-align:center}
+.hero .badge{display:inline-block;background:rgba(6,162,180,0.18);color:#06a2b4;border-radius:100px;padding:5px 16px;font-size:13px;font-weight:700;letter-spacing:0.4px;margin-bottom:20px;text-transform:uppercase}
+.hero h1{font-size:40px;font-weight:900;color:#fff;letter-spacing:-0.8px;margin-bottom:12px;line-height:1.15}
+.hero p{color:rgba(255,255,255,0.55);font-size:15px;max-width:520px;margin:0 auto 6px}
+.hero .date{color:rgba(255,255,255,0.35);font-size:13px;margin-top:8px}
+
+/* ── Table of contents ── */
+.toc-wrap{max-width:780px;margin:0 auto;padding:32px 24px 0}
+.toc{background:#fff;border-radius:16px;padding:24px 28px;border:1px solid #E8E8E8;box-shadow:0 2px 12px rgba(0,0,0,0.05)}
+.toc h3{font-size:13px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:14px}
+.toc ol{margin-left:18px;color:#374151}
+.toc ol li{margin-bottom:6px;font-size:14px}
+.toc ol li a{color:#0A0F2E;font-weight:500}
+.toc ol li a:hover{color:#06a2b4;text-decoration:none}
+
+/* ── Main content ── */
+.container{max-width:780px;margin:0 auto;padding:36px 24px 100px}
+
+.intro-card{background:#fff;border-radius:16px;padding:24px 28px;border-left:4px solid #06a2b4;margin-bottom:36px;box-shadow:0 2px 12px rgba(0,0,0,0.05)}
+.intro-card p{color:#374151;font-size:15px;line-height:1.75;margin:0}
+
+.section{background:#fff;border-radius:16px;padding:28px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #F0F0F0;scroll-margin-top:80px}
+.section h2{font-size:19px;font-weight:800;color:#0A0F2E;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#F0FAFB;border-radius:8px;font-size:13px;font-weight:800;color:#06a2b4;flex-shrink:0}
+.section h3{font-size:15px;font-weight:700;color:#111;margin:20px 0 8px}
+.section p{color:#374151;font-size:15px;line-height:1.75;margin-bottom:12px}
+.section p:last-child{margin-bottom:0}
+.section ul{color:#374151;margin:0 0 14px 0;padding:0;list-style:none}
+.section ul li{font-size:15px;line-height:1.7;padding:6px 0 6px 22px;position:relative;border-bottom:1px solid #F7F7F7}
+.section ul li:last-child{border-bottom:none}
+.section ul li::before{content:"→";position:absolute;left:0;color:#06a2b4;font-weight:700}
+
+.highlight-box{background:#F0FAFB;border-radius:10px;padding:16px 20px;margin:14px 0;border:1px solid #d0eff3}
+.highlight-box p{margin:0;font-size:14px;color:#0A6B78}
+
+.rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.right-card{background:#F7F8FA;border-radius:12px;padding:16px;border:1px solid #EBEBEB}
+.right-card .right-title{font-size:14px;font-weight:700;color:#0A0F2E;margin-bottom:4px}
+.right-card p{font-size:13px;color:#6B7280;line-height:1.6;margin:0}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.contact-card{background:#F7F8FA;border-radius:12px;padding:18px;border:1px solid #EBEBEB}
+.contact-card .contact-label{font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.contact-card .contact-value{font-size:15px;font-weight:600;color:#0A0F2E}
+.contact-card .contact-value a{color:#06a2b4}
+
+.law-badge{display:inline-block;background:#FFF8E7;color:#92400E;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;margin-left:8px;vertical-align:middle}
+
+/* ── Footer ── */
+footer{text-align:center;padding:32px 24px;color:#6B6B6B;font-size:13px;border-top:1px solid #E0DDD4;background:#F5F3EC}
+footer a{color:#6B6B6B}
+
+@media(max-width:600px){
+  .hero h1{font-size:28px}
+  .rights-grid,.contact-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
+
+<!-- Nav -->
 <nav>
-  <div class="logo"><img src="/logo.png" alt="QuickRide"/><span>QuickRide</span></div>
-  <a href="/">← Back to Home</a>
+  <div class="logo">
+    <img src="/logo.png" alt="Rydon"/>
+    <span>Rydon</span>
+  </div>
+  <a href="/" class="back">← Back to Home</a>
 </nav>
 
-<div class="container">
+<!-- Hero -->
+<div class="hero">
   <span class="badge">Legal</span>
   <h1>Privacy Policy</h1>
-  <p class="subtitle">Last updated: May 8, 2026</p>
-
-  <p>QuickRide Ghana ("QuickRide", "we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and services.</p>
-
-  <h2>1. Information We Collect</h2>
-  <p>We collect the following types of information:</p>
-  <ul>
-    <li><strong>Account Information:</strong> Name, phone number, email address, and profile photo when you register.</li>
-    <li><strong>Location Data:</strong> Real-time GPS location to match you with nearby drivers, calculate routes, and track trips. Location is collected while the app is in use.</li>
-    <li><strong>Payment Information:</strong> Mobile money number and transaction details processed through Paystack. We do not store full payment credentials.</li>
-    <li><strong>Trip Data:</strong> Pickup and dropoff locations, trip duration, fare, and ratings.</li>
-    <li><strong>Device Information:</strong> Device type, operating system, app version, and push notification token.</li>
-    <li><strong>Identity Documents (Drivers only):</strong> Ghana Card, driver's license, vehicle registration, roadworthy certificate, and selfie photos for verification.</li>
-    <li><strong>Communications:</strong> Messages between passengers and drivers through the in-app chat.</li>
-  </ul>
-
-  <h2>2. How We Use Your Information</h2>
-  <ul>
-    <li>To provide and improve our ride-hailing services</li>
-    <li>To match passengers with available drivers</li>
-    <li>To process payments and maintain transaction records</li>
-    <li>To verify driver identity and vehicle documents</li>
-    <li>To send trip updates, receipts, and promotional notifications</li>
-    <li>To ensure safety and prevent fraud</li>
-    <li>To comply with legal obligations in Ghana</li>
-    <li>To resolve disputes between passengers and drivers</li>
-  </ul>
-
-  <h2>3. Location Information</h2>
-  <p>QuickRide requires access to your device's location to function. For passengers, location is used to show your position on the map and find nearby drivers. For drivers, location is continuously shared with passengers during active trips for safety and navigation purposes. You may disable location access in your device settings, but this will prevent you from using the app.</p>
-
-  <h2>4. Sharing Your Information</h2>
-  <p>We share your information only in the following circumstances:</p>
-  <ul>
-    <li><strong>With Drivers/Passengers:</strong> Your name, photo, rating, and real-time location are shared with your matched driver or passenger during a trip.</li>
-    <li><strong>With Paystack:</strong> Payment information is shared with Paystack, our payment processor, to complete transactions.</li>
-    <li><strong>With Cloudinary:</strong> Document photos are stored securely via Cloudinary.</li>
-    <li><strong>With Law Enforcement:</strong> We may disclose information when required by Ghanaian law or legal process.</li>
-    <li><strong>For Safety:</strong> In emergencies involving risk to life, we may share information with authorities.</li>
-  </ul>
-  <p>We do not sell your personal information to third parties.</p>
-
-  <h2>5. Data Retention</h2>
-  <p>We retain your account information for as long as your account is active. Trip records are retained for 7 years for legal and tax purposes. Driver verification documents are retained for 5 years after account closure. You may request deletion of your account by contacting support@quickrideghana.com.</p>
-
-  <h2>6. Security</h2>
-  <p>We implement industry-standard security measures including encrypted data transmission (HTTPS/TLS), hashed passwords, and secure cloud storage. However, no method of transmission over the internet is 100% secure.</p>
-
-  <h2>7. Children's Privacy</h2>
-  <p>QuickRide is not intended for use by anyone under the age of 18. We do not knowingly collect personal information from minors. If you believe a minor has provided us with personal information, please contact us immediately.</p>
-
-  <h2>8. Your Rights</h2>
-  <p>You have the right to:</p>
-  <ul>
-    <li>Access the personal information we hold about you</li>
-    <li>Request correction of inaccurate data</li>
-    <li>Request deletion of your account and data</li>
-    <li>Opt out of marketing communications</li>
-    <li>Withdraw consent for location tracking (may limit app functionality)</li>
-  </ul>
-  <p>To exercise these rights, contact us at <a href="mailto:privacy@quickrideghana.com">privacy@quickrideghana.com</a>.</p>
-
-  <h2>9. Cookies and Analytics</h2>
-  <p>Our mobile app does not use browser cookies. We may use analytics tools to understand app usage patterns and improve our service. Analytics data is anonymized and aggregated.</p>
-
-  <h2>10. Changes to This Policy</h2>
-  <p>We may update this Privacy Policy from time to time. We will notify you of significant changes through the app or by email. Your continued use of QuickRide after changes constitutes acceptance of the updated policy.</p>
-
-  <h2>11. Contact Us</h2>
-  <p>If you have questions about this Privacy Policy, please contact us:</p>
-  <ul>
-    <li><strong>Email:</strong> <a href="mailto:privacy@quickrideghana.com">privacy@quickrideghana.com</a></li>
-    <li><strong>Support:</strong> <a href="mailto:support@quickrideghana.com">support@quickrideghana.com</a></li>
-    <li><strong>Website:</strong> <a href="https://quickrideghana.com">quickrideghana.com</a></li>
-  </ul>
+  <p>How we collect, use, and protect your personal information across the Rydon platform.</p>
+  <p class="date">Effective date: 1 June 2025 &nbsp;·&nbsp; Last updated: 1 June 2025</p>
 </div>
 
+<!-- Table of Contents -->
+<div class="toc-wrap">
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#s1">Who We Are</a></li>
+      <li><a href="#s2">Information We Collect</a></li>
+      <li><a href="#s3">How We Use Your Information</a></li>
+      <li><a href="#s4">How We Share Your Information</a></li>
+      <li><a href="#s5">Location Data</a></li>
+      <li><a href="#s6">Data Retention</a></li>
+      <li><a href="#s7">Your Rights</a></li>
+      <li><a href="#s8">Security</a></li>
+      <li><a href="#s9">Children's Privacy</a></li>
+      <li><a href="#s10">Cookies &amp; Analytics</a></li>
+      <li><a href="#s11">Changes to This Policy</a></li>
+      <li><a href="#s12">Contact Us</a></li>
+    </ol>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="container">
+
+  <div class="intro-card">
+    <p>Rydon Ghana ("Rydon", "we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains exactly what personal data we collect when you use our platform as a passenger or driver-partner, why we collect it, how long we keep it, and the rights you have over it under the <strong>Ghana Data Protection Act, 2012 (Act 843)</strong>. Please read it carefully before using our services.</p>
+  </div>
+
+  <!-- 1. Who We Are -->
+  <div class="section" id="s1">
+    <h2><span class="num">1</span>Who We Are</h2>
+    <p>Rydon Ghana Limited is a technology company registered in Ghana that connects passengers with independent driver-partners through our mobile application. We act as the data controller for personal data collected through the Rydon Rider and Driver apps, and this website.</p>
+    <p>Our designated Data Protection Officer (DPO) can be contacted at <a href="mailto:privacy@Rydonghana.com">privacy@Rydonghana.com</a>.</p>
+  </div>
+
+  <!-- 2. Information We Collect -->
+  <div class="section" id="s2">
+    <h2><span class="num">2</span>Information We Collect</h2>
+
+    <h3>All Users (Passengers &amp; Drivers)</h3>
+    <ul>
+      <li><strong>Account information:</strong> Full name, phone number, email address, and profile photo at registration.</li>
+      <li><strong>Location data:</strong> Precise GPS location while the app is in use. Drivers may enable background location for ride matching when the app is minimised.</li>
+      <li><strong>Trip data:</strong> Pickup and drop-off addresses, route taken, trip duration, distance, fare, timestamps, and ratings given or received.</li>
+      <li><strong>Communications:</strong> In-app chat messages between passengers and drivers, and messages sent to our support team.</li>
+      <li><strong>Device &amp; technical data:</strong> Device model, operating system, app version, crash logs, performance data, and push notification token.</li>
+    </ul>
+
+    <h3>Passengers Only</h3>
+    <ul>
+      <li><strong>Payment information:</strong> Mobile Money (MoMo) number used to pay for trips, processed through our payment partners. We do not store your full MoMo credentials.</li>
+      <li><strong>Trip preferences:</strong> Saved home and work addresses, favourite places.</li>
+    </ul>
+
+    <h3>Driver-Partners Only</h3>
+    <ul>
+      <li><strong>Identity documents:</strong> Ghana Card number and expiry, driver's licence number and expiry — collected for KYC verification as required by Ghanaian law.</li>
+      <li><strong>Vehicle information:</strong> Make, model, year, colour, licence plate, and vehicle registration number.</li>
+      <li><strong>Compliance documents:</strong> Vehicle registration certificate, roadworthy certificate, and insurance certificate uploaded during onboarding.</li>
+      <li><strong>Financial information:</strong> Mobile Money wallet number and network for payout processing. Your 4-digit withdrawal PIN is stored as a cryptographic hash — we never store or can access the plain PIN.</li>
+      <li><strong>Earnings records:</strong> Per-trip earnings, weekly summaries, withdrawal history, and tier/points data.</li>
+      <li><strong>Performance data:</strong> Acceptance rate, completion rate, online hours, and rider ratings.</li>
+    </ul>
+  </div>
+
+  <!-- 3. How We Use -->
+  <div class="section" id="s3">
+    <h2><span class="num">3</span>How We Use Your Information</h2>
+
+    <h3>To Provide the Service</h3>
+    <ul>
+      <li>Match passengers with nearby available drivers based on real-time location.</li>
+      <li>Calculate fares, process passenger payments, and disburse driver earnings to MoMo.</li>
+      <li>Display driver name, photo, vehicle details, and location to passengers during a trip.</li>
+      <li>Verify driver identity and documents before approving access to the platform.</li>
+      <li>Enable in-app communication between passengers and drivers through masked calling and chat.</li>
+    </ul>
+
+    <h3>To Keep the Platform Safe</h3>
+    <ul>
+      <li>Detect and prevent fraud, account abuse, or activity that violates our Terms of Service.</li>
+      <li>Investigate complaints, disputes, and safety incidents.</li>
+      <li>Enforce our community guidelines and applicable Ghanaian law.</li>
+    </ul>
+
+    <h3>To Communicate With You</h3>
+    <ul>
+      <li>Send ride confirmations, receipts, and earnings summaries by push notification and SMS.</li>
+      <li>Alert drivers to document expiry dates requiring renewal.</li>
+      <li>Notify you of policy updates, promotions, or platform changes.</li>
+      <li>Respond to support requests through in-app chat, email, or phone.</li>
+    </ul>
+
+    <h3>To Improve Our Platform</h3>
+    <ul>
+      <li>Analyse anonymised, aggregated trip data to improve matching speed and route accuracy.</li>
+      <li>Monitor app performance and fix crashes using technical logs.</li>
+      <li>Develop new features based on usage patterns.</li>
+    </ul>
+
+    <h3>To Meet Legal Obligations</h3>
+    <ul>
+      <li>Maintain records required under Ghanaian tax, financial, and transport regulations.</li>
+      <li>Respond to lawful requests from regulatory authorities, courts, or law enforcement.</li>
+    </ul>
+  </div>
+
+  <!-- 4. How We Share -->
+  <div class="section" id="s4">
+    <h2><span class="num">4</span>How We Share Your Information</h2>
+
+    <div class="highlight-box">
+      <p>🔒 <strong>We do not sell your personal data.</strong> We share it only as described below.</p>
+    </div>
+
+    <h3>With Other Users</h3>
+    <p>When a trip is matched, passengers see the driver's first name, profile photo, vehicle details, and real-time location. Drivers see the passenger's first name and pickup location. Phone numbers are never shared directly — all calls and messages go through our masked communication system.</p>
+
+    <h3>With Service Providers</h3>
+    <p>We share data with trusted third-party providers who help us operate the platform, including providers of:</p>
+    <ul>
+      <li><strong>Cloud infrastructure</strong> — servers and database hosting.</li>
+      <li><strong>Document &amp; image storage</strong> — secure storage of KYC and profile documents.</li>
+      <li><strong>Payment processing</strong> — Mobile Money disbursements and passenger payment collection.</li>
+      <li><strong>SMS &amp; push notifications</strong> — ride alerts, OTPs, and account communications.</li>
+      <li><strong>Maps &amp; navigation</strong> — route calculation and trip tracking.</li>
+    </ul>
+    <p>All service providers are bound by data processing agreements requiring them to protect your data and use it solely for services provided to Rydon.</p>
+
+    <h3>For Legal &amp; Safety Reasons</h3>
+    <p>We may disclose information if required by Ghanaian law, court order, or government authority, or where necessary to protect the safety of users, third parties, or the public.</p>
+
+    <h3>Business Transfers</h3>
+    <p>If Rydon is involved in a merger, acquisition, or asset sale, your data may be transferred as part of that transaction. We will notify you at least 14 days before your data becomes subject to a different privacy policy.</p>
+  </div>
+
+  <!-- 5. Location -->
+  <div class="section" id="s5">
+    <h2><span class="num">5</span>Location Data</h2>
+    <p>Location is central to how Rydon works. Here is exactly how we handle it:</p>
+    <ul>
+      <li><strong>Passengers:</strong> Location is collected while the app is open and in use to show your position on the map, calculate nearby drivers, and suggest pickup points.</li>
+      <li><strong>Drivers — foreground:</strong> Location is continuously shared while you are online and available for trips, and during active trips, for matching and navigation.</li>
+      <li><strong>Drivers — background:</strong> If you grant background location permission, your location is collected when the app is minimised solely to enable ride matching. You can revoke this in your device settings at any time; doing so will prevent you from receiving trip requests when the app is in the background.</li>
+      <li><strong>Trip routes:</strong> The route taken during each trip is stored as part of your trip history for fare calculation, dispute resolution, and regulatory compliance.</li>
+      <li><strong>Retention:</strong> Live location data is not retained after a trip ends. Trip route data is retained with the trip record (see Section 6).</li>
+    </ul>
+  </div>
+
+  <!-- 6. Retention -->
+  <div class="section" id="s6">
+    <h2><span class="num">6</span>Data Retention</h2>
+    <p>We retain personal data for as long as your account is active and for the periods required by Ghanaian law:</p>
+    <ul>
+      <li><strong>Account data:</strong> Retained for 5 years after account closure.</li>
+      <li><strong>Trip records:</strong> Retained for 7 years for tax and regulatory compliance.</li>
+      <li><strong>KYC documents (drivers):</strong> Retained for the duration of your partnership plus 5 years after closure.</li>
+      <li><strong>Financial records (earnings, payouts):</strong> Retained for 7 years in accordance with Ghanaian financial regulations.</li>
+      <li><strong>Device &amp; technical logs:</strong> Retained for 90 days.</li>
+      <li><strong>Support communications:</strong> Retained for 3 years.</li>
+    </ul>
+    <p>You may request earlier deletion of data that is not subject to a legal retention requirement by contacting <a href="mailto:privacy@Rydonghana.com">privacy@Rydonghana.com</a>.</p>
+  </div>
+
+  <!-- 7. Rights -->
+  <div class="section" id="s7">
+    <h2><span class="num">7</span>Your Rights <span class="law-badge">Act 843</span></h2>
+    <p>Under the <strong>Ghana Data Protection Act, 2012 (Act 843)</strong>, you have the following rights in relation to your personal data:</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <div class="right-title">Access</div>
+        <p>Request a copy of the personal data we hold about you.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Correction</div>
+        <p>Ask us to correct inaccurate or incomplete information.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Deletion</div>
+        <p>Request deletion of data we no longer have a legal basis to retain.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Objection</div>
+        <p>Object to processing of your data for direct marketing at any time.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Portability</div>
+        <p>Receive your data in a structured, machine-readable format where feasible.</p>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Withdraw Consent</div>
+        <p>Withdraw consent for optional processing (e.g. background location) at any time.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:20px">To exercise any of these rights, contact us at <a href="mailto:privacy@Rydonghana.com">privacy@Rydonghana.com</a>. We will respond within <strong>30 days</strong>. We may need to verify your identity before processing your request.</p>
+    <p>If you believe we have not handled your data appropriately, you have the right to lodge a complaint with the <strong>Data Protection Commission of Ghana</strong> at <a href="https://www.dpcom.gov.gh" target="_blank">www.dpcom.gov.gh</a>.</p>
+  </div>
+
+  <!-- 8. Security -->
+  <div class="section" id="s8">
+    <h2><span class="num">8</span>Security</h2>
+    <p>We implement industry-standard technical and organisational measures to protect your data:</p>
+    <ul>
+      <li><strong>Encryption in transit:</strong> All data between your device and our servers is encrypted using TLS 1.2 or higher.</li>
+      <li><strong>Encryption at rest:</strong> Sensitive data is encrypted in our databases and cloud storage.</li>
+      <li><strong>PIN security:</strong> Driver withdrawal PINs are stored as one-way cryptographic hashes — we cannot retrieve or read your PIN.</li>
+      <li><strong>Access controls:</strong> Role-based permissions limit which Rydon staff can access sensitive data. All access is logged and audited.</li>
+      <li><strong>Document security:</strong> KYC documents are stored in a private, access-controlled cloud environment and are not publicly accessible.</li>
+      <li><strong>Regular reviews:</strong> We conduct periodic security reviews and vulnerability assessments.</li>
+    </ul>
+    <p>No method of transmission over the internet is 100% secure. If a data breach occurs that materially affects your rights or freedoms, we will notify you and the Data Protection Commission of Ghana as required by law.</p>
+  </div>
+
+  <!-- 9. Children -->
+  <div class="section" id="s9">
+    <h2><span class="num">9</span>Children's Privacy</h2>
+    <p>The Rydon platform is intended solely for users aged <strong>18 and above</strong>. We do not knowingly collect personal data from anyone under 18. If we become aware that a minor has created an account, we will immediately suspend the account and delete the associated data.</p>
+    <p>If you believe a minor has registered on our platform, please contact us immediately at <a href="mailto:privacy@Rydonghana.com">privacy@Rydonghana.com</a>.</p>
+  </div>
+
+  <!-- 10. Cookies -->
+  <div class="section" id="s10">
+    <h2><span class="num">10</span>Cookies &amp; Analytics</h2>
+    <p><strong>Mobile app:</strong> The Rydon app does not use browser cookies. We use Firebase Analytics and crash reporting to understand app usage and fix issues. All analytics data is anonymised and aggregated before analysis.</p>
+    <p><strong>This website:</strong> We use essential cookies necessary for the site to function. We do not use tracking or advertising cookies. If we introduce optional analytics cookies in the future, we will request your consent first.</p>
+  </div>
+
+  <!-- 11. Changes -->
+  <div class="section" id="s11">
+    <h2><span class="num">11</span>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or applicable law. When we make material changes, we will:</p>
+    <ul>
+      <li>Notify you through the app or by email at least <strong>14 days</strong> before the changes take effect.</li>
+      <li>Update the "Last updated" date at the top of this page.</li>
+      <li>For significant changes affecting your rights, seek fresh consent where required by law.</li>
+    </ul>
+    <p>Your continued use of Rydon after the effective date of an updated policy constitutes your acceptance of the changes.</p>
+  </div>
+
+  <!-- 12. Contact -->
+  <div class="section" id="s12">
+    <h2><span class="num">12</span>Contact Us</h2>
+    <p>If you have any questions, concerns, or requests relating to this Privacy Policy or how we handle your personal data, please reach out to our Data Protection Officer:</p>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-label">Data Protection Officer</div>
+        <div class="contact-value"><a href="mailto:privacy@Rydonghana.com">privacy@Rydonghana.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-label">General Support</div>
+        <div class="contact-value"><a href="mailto:support@Rydonghana.com">support@Rydonghana.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-label">Website</div>
+        <div class="contact-value"><a href="https://Rydonghana.com">Rydonghana.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-label">Address</div>
+        <div class="contact-value">Rydon Ghana Limited, Accra, Ghana</div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px">You also have the right to file a complaint with the <strong>Data Protection Commission of Ghana</strong>:<br>
+    <a href="https://www.dpcom.gov.gh" target="_blank">www.dpcom.gov.gh</a></p>
+  </div>
+
+</div>
+
+<!-- Footer -->
 <footer>
-  © 2026 QuickRide Ghana. All rights reserved. · <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a> · <a href="/delete-account.html">Delete Account</a>
+  <p>© 2025 Rydon Ghana Limited. All rights reserved.</p>
+  <p style="margin-top:6px">
+    <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="/terms.html">Terms of Service</a> &nbsp;·&nbsp;
+    <a href="/delete-account.html">Delete Account</a>
+  </p>
 </footer>
+
 </body>
 </html>

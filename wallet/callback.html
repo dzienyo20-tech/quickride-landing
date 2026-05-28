@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuickRide — Payment Successful</title>
+  <title>Rydon — Payment Successful</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -118,14 +118,14 @@
       </svg>
     </div>
 
-    <div class="logo">QuickRide</div>
+    <div class="logo">Rydon</div>
     <h1>Payment Received!</h1>
     <p>
       <span class="dots"></span>Your wallet is being updated.<br />
-      Return to the QuickRide app — your new balance will reflect within a few seconds.
+      Return to the Rydon app — your new balance will reflect within a few seconds.
     </p>
 
-    <a id="openApp" class="btn" href="quickride://wallet/callback">
+    <a id="openApp" class="btn" href="rydon://wallet/callback">
       Return to QuickRide App
     </a>
     <a href="https://quickrideghana.com" class="btn-secondary">Back to website</a>
@@ -139,7 +139,7 @@
     function tryDeepLink() {
       if (redirected) return;
       redirected = true;
-      window.location.href = 'quickride://wallet/callback';
+      window.location.href = 'rydon://wallet/callback';
     }
 
     // Small delay so the success UI is visible before the redirect fires.
