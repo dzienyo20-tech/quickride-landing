@@ -114,6 +114,8 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .center{text-align:center}.center .s-p{margin:0 auto}
 
 /* STATS */
+.video-section{padding:80px 0;background:var(--cream)}
+.video-wrapper{margin-top:32px}
 .stats-section{padding:64px 0;background:var(--white)}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
 .stat-card{padding:28px 20px;border-radius:20px;background:var(--cream);border:1.5px solid var(--light);transition:border-color .2s,transform .2s}
@@ -424,6 +426,26 @@ footer{background:var(--dark);padding:56px 32px 28px}
     <div class="tick-item">�� Better than Bolt · Shaxi · Yango</div>
   </div>
 </div>
+
+<!-- VIDEO SECTION -->
+<section class="video-section" id="video">
+  <div class="wrap">
+    <div class="section-label reveal">Rydon in Action</div>
+    <h2 class="section-title reveal">Experience the Ride 🎬</h2>
+    <p class="section-sub reveal">Safe, comfortable, and affordable rides across Ghana — see it for yourself.</p>
+    <div class="video-wrapper reveal">
+      <video
+        src="hero-video.mp4"
+        poster=""
+        playsinline
+        controls
+        preload="none"
+        style="width:100%;border-radius:20px;max-height:540px;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
 
 <!-- ANIMATED STATS -->
 <section class="stats-section" id="stats">
