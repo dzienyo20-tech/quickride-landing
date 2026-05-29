@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>QuickRide Admin</title>
+<title>RYDON Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -199,8 +199,8 @@ tr:hover td{background:rgba(0,87,255,.03)}
 <!-- LOGIN -->
 <div class="auth-page" id="loginPage">
   <div class="auth-box">
-    <div class="auth-logo"><img src="/logo.png" alt="QuickRide" style="height:72px;width:72px;border-radius:18px;margin:0 auto 12px;display:block;"/><div class="auth-title">Admin Dashboard</div>
-      <div class="auth-sub">QuickRide Ghana — Secure Access</div>
+    <div class="auth-logo"><img src="/logo.png" alt="RYDON" style="height:72px;width:72px;border-radius:18px;margin:0 auto 12px;display:block;"/><div class="auth-title">Admin Dashboard</div>
+      <div class="auth-sub">RYDON Ghana — Secure Access</div>
     </div>
     <div class="card">
       <label class="form-label">Phone Number or Email</label>
@@ -211,7 +211,7 @@ tr:hover td{background:rgba(0,87,255,.03)}
       <button class="btn btn-primary btn-full" id="lBtn" onclick="login()">Sign In &#8594;</button>
       <div class="demo-box">
         <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">Demo Access</div>
-        Phone: <b>0200000000</b> or Email: <b>admin@quickride.com.gh</b> &middot; Password: <b>admin123</b>
+        Phone: <b>0200000000</b> or Email: <b>admin@RYDON.com.gh</b> &middot; Password: <b>admin123</b>
         <button onclick="document.getElementById('lPhone').value='0200000000';document.getElementById('lPass').value='admin123';login();" style="display:block;margin-top:8px;padding:5px 12px;background:var(--blue);border:none;border-radius:7px;color:#fff;font-size:11px;font-weight:700;cursor:pointer">Auto-fill &amp; Sign In</button>
       </div>
     </div>
@@ -250,7 +250,7 @@ tr:hover td{background:rgba(0,87,255,.03)}
 <div class="app" id="appWrap">
   <div class="sidebar">
     <div class="sb-head">
-      <img src="/logo.png" alt="QuickRide" style="height:48px;width:48px;border-radius:12px;">
+      <img src="/logo.png" alt="RYDON" style="height:48px;width:48px;border-radius:12px;">
       <span class="sb-badge">Admin</span>
     </div>
     <div class="sb-nav">
@@ -503,7 +503,7 @@ tr:hover td{background:rgba(0,87,255,.03)}
 <div class="toast" id="toast"><span id="toastMsg">Done!</span></div>
 
 <script>
-let API = localStorage.getItem('qr_api') || 'https://quickride-api-production.up.railway.app';
+let API = localStorage.getItem('qr_api') || 'https://RYDON-api-production.up.railway.app';
 let TOKEN = '', pendingUser = null, resendCooldown = false;
 let dF='all', pF='all', tF='all', selReason='';
 const CLR = ['#0057FF','#00B86B','#FFB800','#8B5CF6','#EF4444','#00D4FF'];
@@ -552,13 +552,13 @@ const FREEZE_REASONS = [
   {title:'Inappropriate behavior',desc:'Reported harassment, unsafe driving or misconduct'},
   {title:'Document issues',desc:'Expired license, insurance or vehicle documents'},
   {title:'Payment problems',desc:'Chargebacks, unpaid balance or suspicious transactions'},
-  {title:'Policy violation',desc:'Repeated breach of QuickRide terms of service'},
+  {title:'Policy violation',desc:'Repeated breach of RYDON terms of service'},
 ];
 const NOTIF_TPLS = [
   {title:'New Promo Available',body:'Use code ACCRA20 for 20% off your next ride. Valid this week only!'},
   {title:'Safety Reminder',body:'Always verify your driver name and plate before entering the vehicle.'},
-  {title:'Driver Approved',body:'Welcome to QuickRide! Your account is approved. Go online and start earning.'},
-  {title:'App Update',body:'A new version of the QuickRide app is available. Update now for the best experience.'},
+  {title:'Driver Approved',body:'Welcome to RYDON! Your account is approved. Go online and start earning.'},
+  {title:'App Update',body:'A new version of the RYDON app is available. Update now for the best experience.'},
   {title:'Weekend Bonus',body:'Complete 10 trips this weekend and earn a GH&#8373;50 bonus!'},
 ];
 
@@ -582,9 +582,9 @@ async function login(){
   err.style.display='none';
   if(!id||!pw){err.innerHTML='&#9888; Enter your phone/email and password';err.style.display='block';return;}
   btn.innerHTML='Signing in&#8230;';btn.disabled=true;
-  const isDemo=(id==='0200000000'||id==='admin@quickride.com.gh'||id==='admin')&&pw==='admin123';
+  const isDemo=(id==='0200000000'||id==='admin@RYDON.com.gh'||id==='admin')&&pw==='admin123';
   if(isDemo){
-    pendingUser={name:'QuickRide Admin',phone:'0200000000',email:'admin@quickride.com.gh'};
+    pendingUser={name:'RYDON Admin',phone:'0200000000',email:'admin@RYDON.com.gh'};
     showMFA('0200000000');btn.innerHTML='Sign In &#8594;';btn.disabled=false;return;
   }
   try{
@@ -794,10 +794,10 @@ function mapZ(d){const m=document.getElementById('liveMap');const c=parseFloat(m
 
 // SETTINGS
 function saveSettings(){const u=document.getElementById('sApi').value.trim();if(u){API=u;localStorage.setItem('qr_api',u);}toast('Settings saved!');}
-function renderQLinks(){document.getElementById('qLinks').innerHTML='<a href="https://quickride-api-production.up.railway.app/health" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px">&#128279; API Health Check</a><a href="https://quickride-ghana.netlify.app" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px">&#127758; Landing Page</a><a href="https://railway.app" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500">&#128674; Railway Dashboard</a>';}
+function renderQLinks(){document.getElementById('qLinks').innerHTML='<a href="https://RYDON-api-production.up.railway.app/health" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px">&#128279; API Health Check</a><a href="https://RYDON-ghana.netlify.app" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px">&#127758; Landing Page</a><a href="https://railway.app" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);font-weight:500">&#128674; Railway Dashboard</a>';}
 
 // AUTO LOGIN
-window.onload=function(){const t=localStorage.getItem('qr_token');if(t){TOKEN=t;initApp({name:'QuickRide Admin'});}};
+window.onload=function(){const t=localStorage.getItem('qr_token');if(t){TOKEN=t;initApp({name:'RYDON Admin'});}};
 </script>
 </body>
 </html>
