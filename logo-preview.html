@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Rydon Logo Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0f172a;color:#fff;padding:40px 24px;min-height:100vh}
+h1{text-align:center;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#64748b;margin-bottom:48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:1100px;margin:0 auto}
+.card{background:#1e293b;border-radius:20px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:20px;border:1px solid #334155}
+.card h2{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#94a3b8}
+.card p{font-size:12px;color:#64748b;text-align:center}
+.logo-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+
+/* V1 — Circle (current) */
+.v1 svg circle{fill:url(#g1)}
+
+/* V2 — Rounded square */
+.v2-bg{width:120px;height:120px;border-radius:28px;background:linear-gradient(135deg,#0b5e70,#06a2b4);display:flex;align-items:center;justify-content:center}
+
+/* V3 — Dark bg + teal R */
+.v3-bg{width:120px;height:120px;border-radius:50%;background:#0f172a;border:3px solid #06a2b4;display:flex;align-items:center;justify-content:center}
+
+/* V4 — Wordmark only */
+.wordmark{font-size:52px;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,#06a2b4,#0bc5d9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wordmark span{-webkit-text-fill-color:#fff;color:#fff}
+
+/* V5 — Dark square + road stripe */
+.v5-bg{width:120px;height:120px;border-radius:24px;background:linear-gradient(135deg,#0b5e70,#06a2b4);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.v5-road{position:absolute;bottom:0;left:0;right:0;height:28px;background:rgba(0,0,0,0.25)}
+.v5-road::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60%;height:3px;background:repeating-linear-gradient(90deg,#fff 0,#fff 12px,transparent 12px,transparent 20px)}
+
+.on-dark{background:#111;width:100%;padding:16px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.on-light{background:#f0fdfe;width:100%;padding:16px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<h1>Rydon — Logo Concepts</h1>
+<div class="grid">
+
+  <!-- V1: Circle -->
+  <div class="card">
+    <h2>Option A — Circle Mark</h2>
+    <div class="logo-wrap">
+      <img src="rydon-logo.svg" width="120" height="120"/>
+      <div class="on-dark"><img src="rydon-logo.svg" width="48" height="48"/></div>
+      <div class="on-light"><img src="rydon-logo.svg" width="48" height="48"/></div>
+    </div>
+    <p>App icon · Nav logo · Favicon</p>
+  </div>
+
+  <!-- V2: Rounded square (iOS style) -->
+  <div class="card">
+    <h2>Option B — iOS App Icon Style</h2>
+    <div class="logo-wrap">
+      <div class="v2-bg">
+        <svg viewBox="0 0 200 200" width="80" height="80">
+          <path fill="white" fill-rule="evenodd" d="
+            M 46 162 L 46 38 L 114 38
+            C 150 38 162 57 162 74
+            C 162 91 151 106 132 110
+            L 160 162 L 130 162 L 105 114
+            L 72 114 L 72 162 Z
+            M 72 61 L 72 91 L 110 91
+            C 126 91 136 83 136 76
+            C 136 69 128 61 110 61 Z
+          "/>
+        </svg>
+      </div>
+      <div class="on-dark">
+        <div class="v2-bg" style="width:44px;height:44px;border-radius:10px">
+          <svg viewBox="0 0 200 200" width="28" height="28">
+            <path fill="white" fill-rule="evenodd" d="M 46 162 L 46 38 L 114 38 C 150 38 162 57 162 74 C 162 91 151 106 132 110 L 160 162 L 130 162 L 105 114 L 72 114 L 72 162 Z M 72 61 L 72 91 L 110 91 C 126 91 136 83 136 76 C 136 69 128 61 110 61 Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p>Play Store · App Store icon</p>
+  </div>
+
+  <!-- V3: Outline circle -->
+  <div class="card">
+    <h2>Option C — Outline Ring</h2>
+    <div class="logo-wrap">
+      <div class="v3-bg">
+        <svg viewBox="0 0 200 200" width="72" height="72">
+          <path fill="#06a2b4" fill-rule="evenodd" d="
+            M 46 162 L 46 38 L 114 38
+            C 150 38 162 57 162 74
+            C 162 91 151 106 132 110
+            L 160 162 L 130 162 L 105 114
+            L 72 114 L 72 162 Z
+            M 72 61 L 72 91 L 110 91
+            C 126 91 136 83 136 76
+            C 136 69 128 61 110 61 Z
+          "/>
+        </svg>
+      </div>
+      <div class="on-light">
+        <div class="v3-bg" style="width:44px;height:44px">
+          <svg viewBox="0 0 200 200" width="26" height="26">
+            <path fill="#06a2b4" fill-rule="evenodd" d="M 46 162 L 46 38 L 114 38 C 150 38 162 57 162 74 C 162 91 151 106 132 110 L 160 162 L 130 162 L 105 114 L 72 114 L 72 162 Z M 72 61 L 72 91 L 110 91 C 126 91 136 83 136 76 C 136 69 128 61 110 61 Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p>Minimal · Light mode friendly</p>
+  </div>
+
+  <!-- V4: Wordmark -->
+  <div class="card">
+    <h2>Option D — Wordmark</h2>
+    <div class="logo-wrap">
+      <div class="wordmark">RY<span>DON</span></div>
+      <div class="on-dark" style="gap:10px">
+        <img src="rydon-logo.svg" width="32" height="32"/>
+        <span style="font-size:22px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#06a2b4,#0bc5d9);-webkit-background-clip:text;-webkit-text-fill-color:transparent">RYDON</span>
+      </div>
+      <div class="on-light" style="gap:10px">
+        <img src="rydon-logo.svg" width="32" height="32"/>
+        <span style="font-size:22px;font-weight:900;letter-spacing:-1px;color:#0b5e70">RYDON</span>
+      </div>
+    </div>
+    <p>Nav bar · Landing page header</p>
+  </div>
+
+  <!-- V5: Road stripe -->
+  <div class="card">
+    <h2>Option E — Road Edition</h2>
+    <div class="logo-wrap">
+      <div class="v5-bg" style="width:120px;height:120px">
+        <div class="v5-road"></div>
+        <svg viewBox="0 0 200 200" width="80" height="80" style="position:relative;z-index:1">
+          <path fill="white" fill-rule="evenodd" d="
+            M 46 162 L 46 38 L 114 38
+            C 150 38 162 57 162 74
+            C 162 91 151 106 132 110
+            L 160 162 L 130 162 L 105 114
+            L 72 114 L 72 162 Z
+            M 72 61 L 72 91 L 110 91
+            C 126 91 136 83 136 76
+            C 136 69 128 61 110 61 Z
+          "/>
+        </svg>
+      </div>
+    </div>
+    <p>Road stripe at bottom — ride identity</p>
+  </div>
+
+</div>
+</body>
+</html>
