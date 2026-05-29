@@ -1,0 +1,17 @@
+[[redirects]]
+  from = "https://quickrideghana.com/*"
+  to = "https://rydonghana.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.quickrideghana.com/*"
+  to = "https://rydonghana.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.rydonghana.com/*"
+  to = "https://rydonghana.com/:splat"
+  status = 301
+  force = true
