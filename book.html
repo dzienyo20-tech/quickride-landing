@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>Request a ride — Rydon Ghana</title>
+<meta name="description" content="Book a Rydon ride from your browser. Enter your destination, see the price, and get matched with a nearby driver."/>
+<link rel="icon" href="logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+  :root{
+    --teal:#06a2b4; --teal-d:#048293; --ink:#0e1416; --muted:#5b6b70;
+    --line:#e6ecee; --bg:#f6f9fa; --white:#fff; --ok:#16a34a; --warn:#dc2626;
+    --radius:16px; --shadow:0 8px 30px rgba(8,40,48,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);overflow:hidden}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:700;letter-spacing:-.01em}
+  button{font-family:inherit;cursor:pointer;border:none}
+  input{font-family:inherit;font-size:16px}
+  .app{position:fixed;inset:0;display:flex;flex-direction:column}
+
+  /* top bar */
+  .topbar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--white);border-bottom:1px solid var(--line);z-index:30}
+  .topbar img{height:28px}
+  .topbar .sp{flex:1}
+  .topbar a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:600}
+
+  /* generic */
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:14px;background:var(--teal);color:#fff;font-weight:700;font-size:16px;transition:background .15s,opacity .15s}
+  .btn:hover{background:var(--teal-d)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.ghost{background:var(--white);color:var(--ink);border:1.5px solid var(--line)}
+  .btn.danger{background:#fff;color:var(--warn);border:1.5px solid #f3c9c9}
+  .field{width:100%;padding:14px 14px;border:1.5px solid var(--line);border-radius:13px;background:var(--white);outline:none;transition:border-color .15s}
+  .field:focus{border-color:var(--teal)}
+  .err{color:var(--warn);font-size:13px;margin-top:8px;min-height:18px}
+  .hint{color:var(--muted);font-size:13px;line-height:1.5}
+
+  /* screens */
+  .screen{flex:1;min-height:0;display:none;flex-direction:column}
+  .screen.on{display:flex}
+
+  /* centered card screens (login) */
+  .center{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:380px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+  .card h2{font-size:24px;margin-bottom:6px}
+  .card .sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+  .card label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 6px}
+  .phonewrap{display:flex;gap:8px}
+  .phonewrap .cc{display:flex;align-items:center;padding:0 14px;border:1.5px solid var(--line);border-radius:13px;font-weight:700;color:var(--ink);background:var(--bg)}
+  .otpwrap{display:flex;gap:8px;justify-content:space-between;margin-bottom:4px}
+  .otpwrap input{width:100%;text-align:center;font-size:22px;font-weight:700;padding:12px 0}
+
+  /* booking layout: map on top, sheet below */
+  #map{flex:1;min-height:0;width:100%;background:#dfe7ea;z-index:1}
+  .sheet{background:var(--white);border-top-left-radius:22px;border-top-right-radius:22px;box-shadow:0 -8px 30px rgba(8,40,48,.12);padding:16px 16px 22px;z-index:20;max-height:62%;overflow-y:auto}
+  .grip{width:40px;height:4px;border-radius:99px;background:#d7dee0;margin:2px auto 12px}
+
+  /* address inputs with route dots */
+  .addr{position:relative}
+  .addr .dot{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%}
+  .addr .dot.a{background:var(--teal)}
+  .addr .dot.b{background:#111;border-radius:3px}
+  .addr input{padding-left:36px}
+  .addr+.addr{margin-top:10px}
+  .sugg{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;z-index:40;max-height:230px;overflow-y:auto}
+  .sugg div{padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}
+  .sugg div:last-child{border-bottom:none}
+  .sugg div:hover{background:var(--bg)}
+  .sugg .m{font-weight:600}
+  .sugg .s{color:var(--muted);font-size:12px}
+
+  /* ride type cards */
+  .rides{margin:6px 0 12px;display:flex;flex-direction:column;gap:8px}
+  .ride{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--line);border-radius:14px;transition:border-color .15s,background .15s}
+  .ride.sel{border-color:var(--teal);background:#f0fbfc}
+  .ride .ic{width:44px;height:44px;border-radius:11px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .ride .n{flex:1}
+  .ride .n b{display:block;font-size:15px}
+  .ride .n span{font-size:12px;color:var(--muted)}
+  .ride .p{font-weight:800;font-size:16px}
+
+  /* payment chips */
+  .pays{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .pay{padding:9px 14px;border:1.5px solid var(--line);border-radius:99px;font-size:13px;font-weight:600;background:#fff;color:var(--muted)}
+  .pay.sel{border-color:var(--teal);color:var(--teal);background:#f0fbfc}
+
+  /* matching / tracking */
+  .track{padding:18px 16px 24px}
+  .spin{width:40px;height:40px;border:3px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:sp 1s linear infinite;margin:8px auto 14px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .status-t{text-align:center;font-size:18px;font-weight:700;margin-bottom:4px}
+  .status-s{text-align:center;color:var(--muted);font-size:14px;margin-bottom:14px}
+  .driver{display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid var(--line);border-radius:16px;margin-bottom:14px}
+  .driver .av{width:54px;height:54px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800}
+  .driver .d b{font-size:16px}
+  .driver .d span{display:block;font-size:13px;color:var(--muted)}
+  .driver .veh{margin-left:auto;text-align:right}
+  .driver .veh .plate{display:inline-block;border:1.5px solid var(--ink);border-radius:6px;padding:2px 8px;font-weight:800;font-size:13px;letter-spacing:.05em}
+  .driver .veh small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+  .badge{display:inline-block;background:#f0fbfc;color:var(--teal);font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;z-index:100;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90%;text-align:center}
+  .toast.on{opacity:1}
+  .leaflet-control-attribution{font-size:9px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <img src="logo.png?v=2" alt="Rydon"/>
+    <div class="sp"></div>
+    <a href="/" id="homeLink">Close</a>
+  </div>
+
+  <!-- ───────── LOGIN ───────── -->
+  <section class="screen on" id="s-login">
+    <div class="center">
+      <div class="card">
+        <div id="loginStep1">
+          <h2>Request a ride</h2>
+          <p class="sub">Sign in with your phone to book. Same account as the Rydon app.</p>
+          <label>Phone number</label>
+          <div class="phonewrap">
+            <div class="cc">🇬🇭 +233</div>
+            <input class="field" id="phone" type="tel" inputmode="numeric" placeholder="24 123 4567" autocomplete="tel"/>
+          </div>
+          <div class="err" id="loginErr1"></div>
+          <button class="btn" id="sendOtpBtn">Send code</button>
+          <p class="hint" style="margin-top:14px;text-align:center">New to Rydon? <a href="/" style="color:var(--teal);font-weight:700;text-decoration:none">Get the app</a> to create an account.</p>
+        </div>
+
+        <div id="loginStep2" style="display:none">
+          <h2>Enter code</h2>
+          <p class="sub">We sent a 6-digit code to <b id="otpTo"></b>. <a href="#" id="editPhone" style="color:var(--teal);text-decoration:none">Change</a></p>
+          <div class="otpwrap" id="otpBoxes">
+            <input class="field" maxlength="1" inputmode="numeric"/>
+            <input class="field" maxlength="1" inputmode="numeric"/>
+            <input class="field" maxlength="1" inputmode="numeric"/>
+            <input class="field" maxlength="1" inputmode="numeric"/>
+            <input class="field" maxlength="1" inputmode="numeric"/>
+            <input class="field" maxlength="1" inputmode="numeric"/>
+          </div>
+          <div class="err" id="loginErr2"></div>
+          <button class="btn" id="verifyBtn">Verify &amp; continue</button>
+          <button class="btn ghost" id="resendBtn" style="margin-top:10px">Resend code</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── BOOK ───────── -->
+  <section class="screen" id="s-book">
+    <div id="map"></div>
+    <div class="sheet">
+      <div class="grip"></div>
+      <div class="addr">
+        <span class="dot a"></span>
+        <input class="field" id="pickup" placeholder="Pickup location" autocomplete="off"/>
+        <div class="sugg" id="pickupSugg" style="display:none"></div>
+      </div>
+      <div class="addr">
+        <span class="dot b"></span>
+        <input class="field" id="dest" placeholder="Where to?" autocomplete="off"/>
+        <div class="sugg" id="destSugg" style="display:none"></div>
+      </div>
+
+      <div id="rides" class="rides"></div>
+      <div id="estLoading" class="hint" style="text-align:center;margin:10px 0;display:none">Calculating fares…</div>
+
+      <div id="payRow" style="display:none">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--muted);margin:6px 0">Payment</label>
+        <div class="pays" id="pays"></div>
+      </div>
+
+      <div class="err" id="bookErr"></div>
+      <button class="btn" id="requestBtn" disabled>Enter pickup &amp; destination</button>
+    </div>
+  </section>
+
+  <!-- ───────── MATCHING / TRACKING ───────── -->
+  <section class="screen" id="s-track">
+    <div id="map2" style="display:none"></div>
+    <div class="track">
+      <div id="matching">
+        <div class="spin"></div>
+        <div class="status-t">Finding your driver…</div>
+        <div class="status-s">Connecting you with a nearby Rydon driver</div>
+      </div>
+
+      <div id="matched" style="display:none">
+        <div style="text-align:center;margin-bottom:12px"><span class="badge" id="trackStatus">Driver assigned</span></div>
+        <div class="driver">
+          <div class="av" id="dvAv">D</div>
+          <div class="d">
+            <b id="dvName">Driver</b>
+            <span id="dvRating">★ 5.0</span>
+          </div>
+          <div class="veh">
+            <span class="plate" id="dvPlate">—</span>
+            <small id="dvCar">Vehicle</small>
+          </div>
+        </div>
+        <div class="status-s" id="etaLine" style="margin-bottom:12px"></div>
+      </div>
+
+      <button class="btn danger" id="cancelBtn">Cancel ride</button>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+<script>
+(function(){
+  "use strict";
+  var API = "https://api.rydonghana.com";
+  var ACCRA = [5.6037, -0.1870];
+
+  // ── state ──
+  var token = localStorage.getItem("rydon_token") || null;
+  var user  = null;
+  try { user = JSON.parse(localStorage.getItem("rydon_user") || "null"); } catch(e){}
+  var pickup = null;   // {lat,lng,address}
+  var dest   = null;   // {lat,lng,address}
+  var estimates = [];  // [{ride_type, estimated_fare, ...}]
+  var rideMeta = {};   // ride_type -> {display_name, model_desc, seats}
+  var chosenRide = null;
+  var payMethod = "momo";
+  var trip = null;
+  var socket = null;
+  var map, map2, pinPickup, pinDest, pinDriver, routeLine;
+
+  var RIDE_ICONS = {RydonGo:"🚗",taxi_plus:"🚕",comfort:"🚙",priority:"⭐",xl:"🚐",xxl:"🚌",black:"🏎️",blacksuv:"🚙",green:"🌿",okada:"🏍️"};
+  var PAYS = [{k:"momo",l:"MTN MoMo"},{k:"vodafone",l:"Telecel Cash"},{k:"airteltigo",l:"AT Money"},{k:"card",l:"Card"},{k:"wallet",l:"Wallet"}];
+
+  // ── helpers ──
+  function $(id){ return document.getElementById(id); }
+  function show(id){
+    ["s-login","s-book","s-track"].forEach(function(s){ $(s).classList.toggle("on", s===id); });
+  }
+  var toastT;
+  function toast(msg){
+    var t=$("toast"); t.textContent=msg; t.classList.add("on");
+    clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove("on"); },2600);
+  }
+  function api(path, opts){
+    opts = opts || {};
+    var h = opts.headers || {};
+    h["Content-Type"]="application/json";
+    if(token) h["Authorization"]="Bearer "+token;
+    return fetch(API+path, {method:opts.method||"GET", headers:h, body:opts.body?JSON.stringify(opts.body):undefined})
+      .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, status:r.status, data:j}; }); });
+  }
+  function fmtGHS(n){ return "GHS "+Number(n).toFixed(2); }
+  function debounce(fn,ms){ var t; return function(){ var a=arguments,c=this; clearTimeout(t); t=setTimeout(function(){fn.apply(c,a);},ms); }; }
+
+  // ─────────────────────────────────────────────────────────
+  //  LOGIN
+  // ─────────────────────────────────────────────────────────
+  function normPhone(){
+    var raw = $("phone").value.replace(/\D/g,"");
+    if(raw.indexOf("233")===0) raw = raw.slice(3);
+    if(raw.indexOf("0")===0) raw = raw.slice(1);
+    return raw ? "+233"+raw : "";
+  }
+  $("sendOtpBtn").onclick = function(){
+    var phone = normPhone();
+    $("loginErr1").textContent="";
+    if(phone.length!==13){ $("loginErr1").textContent="Enter a valid Ghana phone number."; return; }
+    this.disabled=true; this.textContent="Sending…";
+    var btn=this;
+    api("/api/auth/send-otp",{method:"POST",body:{phone:phone,purpose:"login"}}).then(function(r){
+      btn.disabled=false; btn.textContent="Send code";
+      if(!r.ok){ $("loginErr1").textContent=r.data.error||"Could not send code."; return; }
+      window._otpPhone=phone;
+      $("otpTo").textContent=phone;
+      $("loginStep1").style.display="none";
+      $("loginStep2").style.display="block";
+      var boxes=$("otpBoxes").querySelectorAll("input"); boxes[0].focus();
+      if(r.data.devMode) toast("Dev mode: check server logs for the code");
+    }).catch(function(){ btn.disabled=false; btn.textContent="Send code"; $("loginErr1").textContent="Network error."; });
+  };
+  $("editPhone").onclick = function(e){ e.preventDefault(); $("loginStep2").style.display="none"; $("loginStep1").style.display="block"; };
+  $("resendBtn").onclick = function(){ $("loginStep2").style.display="none"; $("loginStep1").style.display="block"; $("sendOtpBtn").click(); };
+
+  // OTP box auto-advance
+  (function(){
+    var boxes=$("otpBoxes").querySelectorAll("input");
+    boxes.forEach(function(b,i){
+      b.addEventListener("input",function(){
+        this.value=this.value.replace(/\D/g,"");
+        if(this.value && i<5) boxes[i+1].focus();
+        if(i===5 && this.value) doVerify();
+      });
+      b.addEventListener("keydown",function(e){ if(e.key==="Backspace" && !this.value && i>0) boxes[i-1].focus(); });
+      b.addEventListener("paste",function(e){
+        var d=(e.clipboardData||window.clipboardData).getData("text").replace(/\D/g,"").slice(0,6);
+        if(d){ e.preventDefault(); d.split("").forEach(function(c,j){ if(boxes[j]) boxes[j].value=c; }); if(d.length===6) doVerify(); }
+      });
+    });
+  })();
+  function otpCode(){ return Array.prototype.map.call($("otpBoxes").querySelectorAll("input"),function(b){return b.value;}).join(""); }
+  $("verifyBtn").onclick = doVerify;
+  function doVerify(){
+    var code=otpCode();
+    $("loginErr2").textContent="";
+    if(code.length!==6){ $("loginErr2").textContent="Enter the 6-digit code."; return; }
+    $("verifyBtn").disabled=true; $("verifyBtn").textContent="Verifying…";
+    api("/api/auth/verify-otp",{method:"POST",body:{phone:window._otpPhone,code:code,purpose:"login"}}).then(function(r){
+      $("verifyBtn").disabled=false; $("verifyBtn").textContent="Verify & continue";
+      if(!r.ok){ $("loginErr2").textContent=r.data.error||"Invalid or expired code."; return; }
+      if(r.data.needsRegistration){ $("loginErr2").textContent="No Rydon account for this number. Please sign up in the app first."; return; }
+      token=r.data.accessToken; user=r.data.user;
+      localStorage.setItem("rydon_token",token);
+      localStorage.setItem("rydon_user",JSON.stringify(user||{}));
+      startBooking();
+    }).catch(function(){ $("verifyBtn").disabled=false; $("verifyBtn").textContent="Verify & continue"; $("loginErr2").textContent="Network error."; });
+  }
+
+  // ─────────────────────────────────────────────────────────
+  //  BOOKING
+  // ─────────────────────────────────────────────────────────
+  function startBooking(){
+    show("s-book");
+    if(!map){
+      map = L.map("map",{zoomControl:true,attributionControl:true}).setView(ACCRA,13);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
+      setTimeout(function(){ map.invalidateSize(); },200);
+    }
+    loadRideMeta();
+    // try geolocation for pickup
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(pos){
+        var la=pos.coords.latitude, ln=pos.coords.longitude;
+        pickup={lat:la,lng:ln,address:"Current location"};
+        $("pickup").value="Current location";
+        map.setView([la,ln],15);
+        setPin("pickup",la,ln);
+        maybeEstimate();
+      },function(){},{enableHighAccuracy:true,timeout:8000});
+    }
+  }
+  function loadRideMeta(){
+    api("/api/trips/ride-types").then(function(r){
+      (r.data.ride_types||[]).forEach(function(rt){ rideMeta[rt.ride_type]=rt; });
+    });
+  }
+  function setPin(which,la,ln){
+    if(!map) return;
+    if(which==="pickup"){
+      if(pinPickup) map.removeLayer(pinPickup);
+      pinPickup=L.circleMarker([la,ln],{radius:8,color:"#06a2b4",fillColor:"#06a2b4",fillOpacity:1,weight:3}).addTo(map);
+    } else {
+      if(pinDest) map.removeLayer(pinDest);
+      pinDest=L.circleMarker([la,ln],{radius:8,color:"#111",fillColor:"#111",fillOpacity:1,weight:3}).addTo(map);
+    }
+    if(pickup && dest){
+      if(routeLine) map.removeLayer(routeLine);
+      routeLine=L.polyline([[pickup.lat,pickup.lng],[dest.lat,dest.lng]],{color:"#06a2b4",weight:4,opacity:.7,dashArray:"6 8"}).addTo(map);
+      map.fitBounds(routeLine.getBounds(),{padding:[60,60]});
+    }
+  }
+
+  // address autocomplete (proxied through backend /api/places)
+  function wireAutocomplete(inputId, suggId, kind){
+    var inp=$(inputId), box=$(suggId);
+    var run = debounce(function(){
+      var q=inp.value.trim();
+      if(q.length<2 || q==="Current location"){ box.style.display="none"; return; }
+      api("/api/places/search?q="+encodeURIComponent(q)).then(function(r){
+        var preds=(r.data&&r.data.predictions)||[];
+        if(!preds.length){ box.style.display="none"; return; }
+        box.innerHTML="";
+        preds.slice(0,5).forEach(function(p){
+          var sf=p.structured_formatting||{};
+          var d=document.createElement("div");
+          d.innerHTML='<div class="m">'+(sf.main_text||p.description)+'</div>'+(sf.secondary_text?'<div class="s">'+sf.secondary_text+'</div>':'');
+          d.onclick=function(){
+            inp.value=p.description; box.style.display="none";
+            api("/api/places/details?placeId="+encodeURIComponent(p.place_id)).then(function(dr){
+              var loc=dr.data&&dr.data.result&&dr.data.result.geometry&&dr.data.result.geometry.location;
+              if(!loc) return;
+              var obj={lat:loc.lat,lng:loc.lng,address:p.description};
+              if(kind==="pickup"){ pickup=obj; setPin("pickup",loc.lat,loc.lng); }
+              else { dest=obj; setPin("dest",loc.lat,loc.lng); }
+              maybeEstimate();
+            });
+          };
+          box.appendChild(d);
+        });
+        box.style.display="block";
+      });
+    },280);
+    inp.addEventListener("input",run);
+    inp.addEventListener("blur",function(){ setTimeout(function(){ box.style.display="none"; },180); });
+  }
+  wireAutocomplete("pickup","pickupSugg","pickup");
+  wireAutocomplete("dest","destSugg","dest");
+
+  function maybeEstimate(){
+    if(!pickup || !dest){ updateRequestBtn(); return; }
+    $("estLoading").style.display="block";
+    $("rides").innerHTML="";
+    api("/api/trips/estimate",{method:"POST",body:{
+      pickup_lat:pickup.lat,pickup_lng:pickup.lng,dropoff_lat:dest.lat,dropoff_lng:dest.lng
+    }}).then(function(r){
+      $("estLoading").style.display="none";
+      if(!r.ok){ $("bookErr").textContent=r.data.error||"Could not get a price."; return; }
+      estimates=r.data.all_types||[];
+      renderRides();
+      renderPays();
+    }).catch(function(){ $("estLoading").style.display="none"; $("bookErr").textContent="Network error getting price."; });
+  }
+  function renderRides(){
+    var box=$("rides"); box.innerHTML="";
+    estimates.forEach(function(e){
+      var meta=rideMeta[e.ride_type]||{};
+      var el=document.createElement("div");
+      el.className="ride"+(chosenRide===e.ride_type?" sel":"");
+      el.innerHTML='<div class="ic">'+(RIDE_ICONS[e.ride_type]||"🚗")+'</div>'+
+        '<div class="n"><b>'+(meta.display_name||e.ride_type)+'</b><span>'+(meta.seats?meta.seats+" seats · ":"")+e.duration_min+' min · '+e.distance_km+' km</span></div>'+
+        '<div class="p">'+fmtGHS(e.estimated_fare)+'</div>';
+      el.onclick=function(){ chosenRide=e.ride_type; renderRides(); updateRequestBtn(); };
+      box.appendChild(el);
+    });
+    if(!chosenRide && estimates.length){ chosenRide=estimates[0].ride_type; renderRides(); }
+    updateRequestBtn();
+  }
+  function renderPays(){
+    $("payRow").style.display="block";
+    var box=$("pays"); box.innerHTML="";
+    PAYS.forEach(function(p){
+      var el=document.createElement("div");
+      el.className="pay"+(payMethod===p.k?" sel":"");
+      el.textContent=p.l;
+      el.onclick=function(){ payMethod=p.k; renderPays(); };
+      box.appendChild(el);
+    });
+  }
+  function updateRequestBtn(){
+    var b=$("requestBtn");
+    if(!pickup||!dest){ b.disabled=true; b.textContent="Enter pickup & destination"; return; }
+    if(!chosenRide){ b.disabled=true; b.textContent="Choose a ride"; return; }
+    var e=estimates.filter(function(x){return x.ride_type===chosenRide;})[0];
+    b.disabled=false; b.textContent="Request "+(rideMeta[chosenRide]&&rideMeta[chosenRide].display_name||chosenRide)+(e?" · "+fmtGHS(e.estimated_fare):"");
+  }
+
+  $("requestBtn").onclick = function(){
+    if(!pickup||!dest||!chosenRide) return;
+    var e=estimates.filter(function(x){return x.ride_type===chosenRide;})[0];
+    $("bookErr").textContent="";
+    this.disabled=true; this.textContent="Requesting…";
+    var btn=this;
+    api("/api/trips/request",{method:"POST",body:{
+      pickup_address:pickup.address,pickup_lat:pickup.lat,pickup_lng:pickup.lng,
+      dropoff_address:dest.address,dropoff_lat:dest.lat,dropoff_lng:dest.lng,
+      ride_type:chosenRide,payment_method:payMethod,
+      confirmed_fare:e?e.estimated_fare:undefined
+    }}).then(function(r){
+      btn.disabled=false; updateRequestBtn();
+      if(!r.ok){
+        if(r.status===401){ logout(); return; }
+        $("bookErr").textContent=r.data.error||"Could not request ride."; return;
+      }
+      trip = r.data.trip || r.data;
+      goTrack();
+    }).catch(function(){ btn.disabled=false; updateRequestBtn(); $("bookErr").textContent="Network error."; });
+  };
+
+  // ─────────────────────────────────────────────────────────
+  //  MATCHING / TRACKING
+  // ─────────────────────────────────────────────────────────
+  function goTrack(){
+    show("s-track");
+    $("matching").style.display="block";
+    $("matched").style.display="none";
+    connectSocket();
+  }
+  function connectSocket(){
+    if(socket) socket.disconnect();
+    socket = io(API,{auth:{token:token},transports:["websocket","polling"]});
+    socket.on("connect",function(){
+      socket.emit("passenger:join_trip",{tripId:trip.id});
+      socket.emit("trip:requested",{tripId:trip.id,rideType:chosenRide,pickup:pickup,fare:trip.estimated_fare});
+    });
+    socket.on("trip:accepted",function(p){ onAccepted(p); });
+    socket.on("trip:status_updated",function(p){ onStatus(p); });
+    socket.on("driver:location",function(p){ onDriverLoc(p); });
+    socket.on("trip:no_driver_found",function(){ onNoDriver(); });
+    socket.on("trip:cancelled",function(){ toast("Trip was cancelled."); setTimeout(reset,1500); });
+  }
+  function onAccepted(p){
+    var d=(p&&p.driver)||{};
+    var t=(p&&p.trip)||{};
+    $("matching").style.display="none";
+    $("matched").style.display="block";
+    $("map2").style.display="block";
+    var nm=d.name||d.driver_name||"Your driver";
+    $("dvName").textContent=nm;
+    $("dvAv").textContent=(nm[0]||"D").toUpperCase();
+    $("dvRating").textContent="★ "+Number(d.rating||d.driver_rating||5).toFixed(1);
+    $("dvPlate").textContent=d.plate_number||d.plate||"—";
+    $("dvCar").textContent=[d.vehicle_color,d.vehicle_model].filter(Boolean).join(" ")||"Vehicle";
+    $("trackStatus").textContent="Driver on the way";
+    $("etaLine").textContent="Your driver is heading to your pickup.";
+    initTrackMap();
+  }
+  var STATUS_LABELS={driver_arriving:"Driver arriving",picked_up:"On your way",in_progress:"On your way",completed:"Trip complete",cancelled:"Cancelled"};
+  var STATUS_SUB={driver_arriving:"Your driver is almost at the pickup point.",picked_up:"Enjoy your Rydon ride.",in_progress:"Enjoy your Rydon ride.",completed:"Thanks for riding with Rydon!"};
+  function onStatus(p){
+    var st=p&&p.status; if(!st) return;
+    if(STATUS_LABELS[st]) $("trackStatus").textContent=STATUS_LABELS[st];
+    if(STATUS_SUB[st]) $("etaLine").textContent=STATUS_SUB[st];
+    if(st==="completed"){
+      $("cancelBtn").style.display="none";
+      $("matching").style.display="none";
+      var e=estimates.filter(function(x){return x.ride_type===chosenRide;})[0];
+      $("etaLine").innerHTML="Fare: <b>"+(e?fmtGHS(e.estimated_fare):"—")+"</b> · paid via "+payMethod;
+      setTimeout(function(){ toast("Trip complete — thank you!"); },300);
+    }
+    if(st==="cancelled"){ toast("Trip cancelled."); setTimeout(reset,1500); }
+  }
+  function initTrackMap(){
+    if(!map2){
+      map2=L.map("map2",{zoomControl:true}).setView([pickup.lat,pickup.lng],14);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map2);
+      L.circleMarker([pickup.lat,pickup.lng],{radius:8,color:"#06a2b4",fillColor:"#06a2b4",fillOpacity:1,weight:3}).addTo(map2);
+      if(dest) L.circleMarker([dest.lat,dest.lng],{radius:8,color:"#111",fillColor:"#111",fillOpacity:1,weight:3}).addTo(map2);
+    }
+    // give the track screen a map; stack it above the card
+    var holder=$("map2");
+    holder.style.height="38vh";
+    $("s-track").insertBefore(holder,$("s-track").firstChild);
+    setTimeout(function(){ map2.invalidateSize(); },200);
+  }
+  function onDriverLoc(p){
+    if(!p||p.lat==null) return;
+    if(!map2) return;
+    if(!pinDriver){
+      pinDriver=L.marker([p.lat,p.lng]).addTo(map2);
+    } else {
+      pinDriver.setLatLng([p.lat,p.lng]);
+    }
+  }
+  function onNoDriver(){
+    $("matching").innerHTML='<div class="status-t">No drivers available</div><div class="status-s">No Rydon drivers are free near you right now. Please try again in a few minutes.</div>';
+    $("cancelBtn").textContent="Back";
+  }
+
+  $("cancelBtn").onclick = function(){
+    if(!trip){ reset(); return; }
+    if(!confirm("Cancel this ride?")) return;
+    api("/api/trips/"+trip.id+"/status",{method:"PATCH",body:{status:"cancelled"}}).then(function(){
+      toast("Ride cancelled."); reset();
+    }).catch(function(){ reset(); });
+  };
+
+  function reset(){
+    if(socket){ socket.disconnect(); socket=null; }
+    trip=null; chosenRide=null; estimates=[]; dest=null; pinDriver=null;
+    $("dest").value=""; $("rides").innerHTML=""; $("payRow").style.display="none";
+    $("cancelBtn").style.display="block"; $("cancelBtn").textContent="Cancel ride";
+    show("s-book");
+    updateRequestBtn();
+  }
+  function logout(){
+    localStorage.removeItem("rydon_token"); localStorage.removeItem("rydon_user");
+    token=null; user=null; show("s-login"); toast("Please sign in again.");
+  }
+
+  // ── boot: skip login if we already have a token ──
+  if(token){ startBooking(); }
+})();
+</script>
+</body>
+</html>

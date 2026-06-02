@@ -15,3 +15,8 @@
   to = "https://rydonghana.com/:splat"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/book"
+  to = "/book.html"
+  status = 200

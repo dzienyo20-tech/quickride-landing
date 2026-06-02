@@ -362,7 +362,7 @@ footer{background:var(--dark);padding:56px 32px 28px}
   <div class="nav-in">
     <a href="#"><img src="logo.png" alt="Rydon" class="logo-img"/></a>
     <ul class="nav-links">
-      <li><a href="#book">Book a Ride</a></li>
+      <li><a href="/book">Book a Ride</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#how">How it Works</a></li>
       <li><a href="#compare">Why Rydon</a></li>
@@ -377,7 +377,7 @@ footer{background:var(--dark);padding:56px 32px 28px}
 
 <!-- MOBILE MENU -->
 <div class="mob-menu" id="mobMenu">
-  <a href="#book" onclick="closeMenu()">Book a Ride</a>
+  <a href="/book" onclick="closeMenu()">Book a Ride</a>
   <a href="#services" onclick="closeMenu()">Services</a>
   <a href="#how" onclick="closeMenu()">How it Works</a>
   <a href="#compare" onclick="closeMenu()">Why Rydon</a>
@@ -396,7 +396,10 @@ footer{background:var(--dark);padding:56px 32px 28px}
         <h1 class="hero-h1">Together,<br/>We Move<br/><span class="hl-blue">Ghana Forward.</span></h1>
         <div class=”hero-tagline”>Ride Together. Go Further. <span class=”twi”>— Your ride is ready</span></div>
         <p class="hero-p">From East Legon to Osu, Cantonments to Accra Mall, Kotoka Airport to Madina — Rydon gets you there fast, safe and affordable. No wahala.</p>
-        <button class="dl-btn" onclick="scrollToWaitlist()">📱 Download the app</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <a class="dl-btn" href="/book" style="background:#06a2b4;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px">🚗 Request a ride</a>
+          <button class="dl-btn" onclick="scrollToWaitlist()" style="background:transparent;border:1.5px solid rgba(255,255,255,.35)">📱 Download the app</button>
+        </div>
         <div class="stats">
           <div><div class="stat-lbl">Cities</div><div class="stat-val">6+</div></div>
           <div><div class="stat-lbl">Drivers</div><div class="stat-val">2,000+</div></div>
