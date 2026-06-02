@@ -264,15 +264,18 @@
   //  LOGIN
   // ─────────────────────────────────────────────────────────
   function normPhone(){
+    // Backend expects local Ghana format: 0XXXXXXXXX (10 digits, leading 0)
     var raw = $("phone").value.replace(/\D/g,"");
-    if(raw.indexOf("233")===0) raw = raw.slice(3);
-    if(raw.indexOf("0")===0) raw = raw.slice(1);
-    return raw ? "+233"+raw : "";
+    if(!raw) return "";
+    if(raw.indexOf("00233")===0) raw = raw.slice(5);
+    if(raw.indexOf("233")===0)   raw = raw.slice(3);
+    if(raw.charAt(0)==="0")       raw = raw.slice(1);   // strip any leading 0 → 9-digit national
+    return raw.length===9 ? "0"+raw : "";               // → 0XXXXXXXXX
   }
   $("sendOtpBtn").onclick = function(){
     var phone = normPhone();
     $("loginErr1").textContent="";
-    if(phone.length!==13){ $("loginErr1").textContent="Enter a valid Ghana phone number."; return; }
+    if(!/^0[0-9]{9}$/.test(phone)){ $("loginErr1").textContent="Enter a valid Ghana phone number (e.g. 024 123 4567)."; return; }
     this.disabled=true; this.textContent="Sending…";
     var btn=this;
     api("/api/auth/send-otp",{method:"POST",body:{phone:phone,purpose:"login"}}).then(function(r){
