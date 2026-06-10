@@ -122,7 +122,35 @@ img{display:block;max-width:100%}
 /* Slow cinematic push-in on section photos when in view / on hover */
 .miss-photo .parallax-src,.drv-photo img,.ph-card .parallax-src{transition:transform 1.8s cubic-bezier(.2,.7,.2,1)}
 .miss-photo:hover .parallax-src,.drv-photo:hover img,.ph-card:hover .parallax-src{transform:scale(1.06)}
-@media (prefers-reduced-motion:reduce){.hero-video-wrap video,.hero-photo .hero-media{animation:none}}
+
+/* ── FULL-BLEED CINEMATIC HERO ─────────────────────────────────────── */
+.hero.hero-cinema{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#03161c;padding:140px 32px 90px}
+.hero-cin-bg{position:absolute;inset:0;z-index:0}
+.hero-cin-bg video{width:100%;height:100%;object-fit:cover;animation:kenburns 30s ease-in-out infinite alternate;transform-origin:50% 40%}
+/* Cinematic colour grade: dark teal wash, readable left, vignette edges */
+.hero-cin-grade{position:absolute;inset:0;z-index:1;background:
+  linear-gradient(100deg,rgba(2,16,22,.93) 0%,rgba(2,16,22,.78) 34%,rgba(2,16,22,.30) 66%,rgba(2,16,22,.55) 100%);
+  box-shadow:inset 0 0 220px 40px rgba(0,0,0,.55)}
+.hero-cin-grade::after{content:'';position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(to top,rgba(2,14,19,.85),transparent)}
+.hero-cin-in{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%}
+.hero-cinema .hero-h1{color:#fff;font-size:clamp(46px,6vw,82px);text-shadow:0 4px 40px rgba(0,0,0,.45)}
+.hero-h1-accent{color:#2bd5e8}
+.hero-cinema .hero-tagline{color:#2bd5e8}
+.hero-cinema .twi{color:rgba(255,255,255,.55)}
+.hero-cinema .hero-p{color:rgba(255,255,255,.85);max-width:460px;text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.hero-cinema .hero-chip{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.9);backdrop-filter:blur(12px)}
+.hero-cinema .stat-lbl{color:rgba(255,255,255,.5)}
+.hero-cinema .stat-val{color:#fff}
+.dl-btn-ghost{background:rgba(255,255,255,.10);color:#fff;border:1.5px solid rgba(255,255,255,.45);backdrop-filter:blur(12px);display:inline-flex;align-items:center;gap:8px}
+.dl-btn-ghost:hover{background:rgba(255,255,255,.2)}
+/* Floating live-ride badge over the footage */
+.act-badge.hero-cin-badge{position:absolute;top:auto;right:6vw;bottom:14vh;z-index:2;animation:float 5s ease-in-out infinite}
+/* Scroll cue — slim line that breathes */
+.hero-scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2}
+.hero-scroll-cue span{display:block;width:2px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,.0),rgba(255,255,255,.8));animation:cueDrop 2.2s ease-in-out infinite;border-radius:2px}
+@keyframes cueDrop{0%{transform:scaleY(.2);transform-origin:top;opacity:0}45%{transform:scaleY(1);opacity:1}100%{transform:scaleY(.2);transform-origin:bottom;opacity:0}}
+@media (max-width:768px){.hero.hero-cinema{padding:120px 22px 80px;min-height:92vh}.hero-cin-badge{display:none}}
+@media (prefers-reduced-motion:reduce){.hero-video-wrap video,.hero-photo .hero-media,.hero-cin-bg video{animation:none}}
 .hl-blue{background:var(--blue-bg);color:var(--blue);border-radius:7px;padding:0 5px}
 .hl-yellow{background:#FFE566;color:var(--black);border-radius:7px;padding:0 5px}
 
@@ -452,42 +480,39 @@ footer{background:var(--dark);padding:56px 32px 28px}
 
 <!-- HERO -->
 <section style="background:var(--cream)" id="book">
-  <div class="hero">
-    <div class="hero-in">
-      <div>
-        <div class="hero-chip"><span class="chip-dot"></span> Rydon · Now live in 6 cities across Ghana 🇬🇭</div>
-        <h1 class="hero-h1">Ride with <span style="color:var(--blue)">Rydon</span>.<br/>Together, We Move<br/>Ghana Forward.</h1>
-        <div class="hero-tagline">Rydon — Ride Together. Go Further. <span class="twi">Your ride is ready</span></div>
-        <p class="hero-p">From East Legon to Osu, Cantonments to Accra Mall, Kotoka Airport to Madina — Rydon gets you there fast, safe and affordable. No wahala.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-          <a class="dl-btn" href="/book" style="background:linear-gradient(135deg,#06a2b4,#047a88);color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 26px rgba(6,162,180,.32);border:none">🚗 Request a ride</a>
-          <button class="dl-btn" onclick="scrollToWaitlist()" style="background:#fff;color:#06a2b4;border:1.6px solid #06a2b4;display:inline-flex;align-items:center;gap:8px">📱 Download the app</button>
-        </div>
-        <div class="stats">
-          <div><div class="stat-lbl">Cities</div><div class="stat-val">6+</div></div>
-          <div><div class="stat-lbl">Drivers</div><div class="stat-val">2,000+</div></div>
-          <div><div class="stat-lbl">Riders</div><div class="stat-val" id="heroRiders">20,247</div></div>
-        </div>
-      </div>
+  <div class="hero hero-cinema">
+    <!-- Full-bleed cinematic footage -->
+    <div class="hero-cin-bg" id="heroMedia">
+      <video autoplay muted loop playsinline poster="photo-driver-1.png?v=2">
+        <source src="hero-video.mp4" type="video/mp4"/>
+      </video>
+    </div>
+    <div class="hero-cin-grade"></div>
 
-      <!-- HERO MEDIA: Video placeholder with upload prompt -->
-      <div class="hero-photo">
-        <div class="hero-video-wrap" id="heroMedia">
-          <video autoplay muted loop playsinline poster="photo-driver-1.png?v=2"
-            style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
-            <source src="hero-video.mp4" type="video/mp4"/>
-          </video>
-        </div>
-        <div class="hp-overlay">
-          <div class="hp-pill">⚡ Driver arriving in <strong>3 min</strong></div>
-        </div>
-        <div class="act-badge">
-          <div class="ab-live"><span class="ab-dot"></span> Live ride</div>
-          <div class="ab-name">Selasie E.</div>
-          <div class="ab-dest">→ Kotoka Airport ✈️</div>
-        </div>
+    <div class="hero-cin-in">
+      <div class="hero-chip"><span class="chip-dot"></span> Rydon &middot; Now live in 6 cities across Ghana &#127468;&#127469;</div>
+      <h1 class="hero-h1">Ride with <span class="hero-h1-accent">Rydon</span>.<br/>Together, We Move<br/>Ghana Forward.</h1>
+      <div class="hero-tagline">Rydon &mdash; Ride Together. Go Further. <span class="twi">Your ride is ready</span></div>
+      <p class="hero-p">From East Legon to Osu, Cantonments to Accra Mall, Kotoka Airport to Madina &mdash; Rydon gets you there fast, safe and affordable. No wahala.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a class="dl-btn" href="/book" style="background:linear-gradient(135deg,#06a2b4,#047a88);color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(6,162,180,.45);border:none">&#128663; Request a ride</a>
+        <button class="dl-btn dl-btn-ghost" onclick="scrollToWaitlist()">&#128241; Download the app</button>
+      </div>
+      <div class="stats">
+        <div><div class="stat-lbl">Cities</div><div class="stat-val">6+</div></div>
+        <div><div class="stat-lbl">Drivers</div><div class="stat-val">2,000+</div></div>
+        <div><div class="stat-lbl">Riders</div><div class="stat-val" id="heroRiders">20,247</div></div>
       </div>
     </div>
+
+    <!-- Floating live-ride badge -->
+    <div class="act-badge hero-cin-badge">
+      <div class="ab-live"><span class="ab-dot"></span> Live ride</div>
+      <div class="ab-name">Selasie E.</div>
+      <div class="ab-dest">&rarr; Kotoka Airport &#9992;&#65039;</div>
+    </div>
+
+    <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
   </div>
 </section>
 
