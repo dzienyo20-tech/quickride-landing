@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Private live-tracking links — never index
+Disallow: /track/
+Disallow: /track.html
+Disallow: /live
+
+Sitemap: https://rydonghana.com/sitemap.xml
