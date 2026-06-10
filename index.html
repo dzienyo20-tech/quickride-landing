@@ -76,9 +76,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+/* Dark cinematic palette — deep black-navy canvas, glowing teal accent */
 :root{
-  --cream:#FFFFFF;--white:#FFFFFF;--black:#111111;--dark:#1A1A1A;
-  --gray:#6B6B6B;--light:#E0DDD4;--blue:#06a2b4;--blue-bg:#e6f7f9;--blue-bd:#9dd8df;
+  --cream:#070e14;--white:#0d1820;--black:#f1f6f8;--dark:#e4edf0;
+  --gray:#9fb1b8;--light:#1c2b35;--blue:#15c5d8;--blue-bg:rgba(21,197,216,.12);--blue-bd:rgba(21,197,216,.4);
 }
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -163,7 +164,7 @@ img{display:block;max-width:100%}
 @media (max-width:768px){.hero.hero-cinema{padding:120px 22px 80px;min-height:92vh}.hero-cin-badge{display:none}}
 @media (prefers-reduced-motion:reduce){.hero-video-wrap video,.hero-photo .hero-media,.hero-cin-bg video{animation:none}}
 .hl-blue{background:var(--blue-bg);color:var(--blue);border-radius:7px;padding:0 5px}
-.hl-yellow{background:#FFE566;color:var(--black);border-radius:7px;padding:0 5px}
+.hl-yellow{background:#FFE566;color:#111111;border-radius:7px;padding:0 5px}
 
 /* TICKER TOP */
 .dl-ticker{background:var(--blue);padding:10px 0;overflow:hidden;text-align:center;position:relative;z-index:201}
@@ -171,7 +172,7 @@ img{display:block;max-width:100%}
 .dl-ticker-text span{color:#FFE566}
 
 /* NAV */
-nav{position:fixed;top:34px;left:0;right:0;z-index:200;background:rgba(245,243,236,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--light);height:66px;padding:0 32px;display:flex;align-items:center;transition:top .3s ease,box-shadow .3s ease}
+nav{position:fixed;top:34px;left:0;right:0;z-index:200;background:rgba(7,14,20,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--light);height:66px;padding:0 32px;display:flex;align-items:center;transition:top .3s ease,box-shadow .3s ease}
 nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .nav-in{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;gap:32px}
 .logo-img{height:44px;width:auto}
@@ -203,7 +204,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .stat-val{font-size:30px;font-weight:900;letter-spacing:-1px}
 
 /* HERO MEDIA — video or photo */
-.hero-photo{position:relative;border-radius:28px;overflow:hidden;height:520px;border:1.5px solid var(--light);background:var(--black)}
+.hero-photo{position:relative;border-radius:28px;overflow:hidden;height:520px;border:1.5px solid var(--light);background:#0a141b}
 .hero-media{width:100%;height:100%;object-fit:cover;object-position:center top}
 .hero-video-wrap{position:relative;width:100%;height:100%}
 .hero-video-wrap video{width:100%;height:100%;object-fit:cover}
@@ -222,7 +223,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .ab-dest{font-size:12px;color:var(--gray)}
 
 /* TICKER */
-.ticker{background:var(--black);padding:13px 0;overflow:hidden}
+.ticker{background:#0a141b;padding:13px 0;overflow:hidden}
 .tick-row{display:flex;width:max-content;animation:marquee 22s linear infinite}
 .tick-item{display:flex;align-items:center;gap:8px;padding:0 32px;font-size:13px;font-weight:600;color:rgba(255,255,255,.55);white-space:nowrap;border-right:1px solid rgba(255,255,255,.1)}
 .tick-item b{color:#fff}
@@ -335,7 +336,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .payments{padding:80px 0;background:var(--white)}
 .pay-in{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
 .pay-vis{position:relative;height:320px}
-.pay-main{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:260px;background:var(--black);color:#fff;border-radius:20px;padding:22px;z-index:3;box-shadow:0 16px 56px rgba(0,0,0,.15)}
+.pay-main{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:260px;background:#101c26;color:#fff;border-radius:20px;padding:22px;z-index:3;box-shadow:0 16px 56px rgba(0,0,0,.15)}
 .pay-s{position:absolute;width:196px;border-radius:16px;padding:15px 17px;border:1.5px solid var(--light);box-shadow:0 8px 28px rgba(0,0,0,.07)}
 .pay-s1{top:8%;left:2%;background:var(--white);transform:rotate(-7deg);animation:float 7s ease-in-out infinite;z-index:1}
 .pay-s2{bottom:8%;right:2%;background:var(--cream);transform:rotate(5deg);animation:float 8s ease-in-out 1s infinite;z-index:2}
@@ -373,7 +374,7 @@ details+details{margin-top:6px}
 .pk p{font-size:13px;color:var(--gray);line-height:1.5}
 
 /* DOWNLOAD */
-.download{padding:80px 32px;background:var(--black)}
+.download{padding:80px 32px;background:#0a141b}
 .dl-in{max-width:1200px;margin:0 auto}
 .dl-top{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:48px}
 .dl-h2{font-size:clamp(34px,4.5vw,58px);font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.05;margin-bottom:14px}
@@ -404,7 +405,7 @@ details+details{margin-top:6px}
 .wl-btn:hover{opacity:.9}
 
 /* FOOTER */
-footer{background:var(--dark);padding:56px 32px 28px}
+footer{background:#050b10;padding:56px 32px 28px}
 .ft-in{max-width:1200px;margin:0 auto}
 .ft-top{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px}
 .ft-logo{margin-bottom:14px}
@@ -424,7 +425,7 @@ footer{background:var(--dark);padding:56px 32px 28px}
 .ft-links a:hover{color:rgba(255,255,255,.6)}
 
 /* TOAST */
-.toast{position:fixed;bottom:20px;right:20px;z-index:9997;background:var(--black);color:#fff;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,.15);transform:translateY(60px);opacity:0;transition:all .35s cubic-bezier(.175,.885,.32,1.275);max-width:280px;border:1px solid rgba(255,255,255,.08)}
+.toast{position:fixed;bottom:20px;right:20px;z-index:9997;background:#101c26;color:#fff;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,.15);transform:translateY(60px);opacity:0;transition:all .35s cubic-bezier(.175,.885,.32,1.275);max-width:280px;border:1px solid rgba(255,255,255,.08)}
 .toast.show{transform:translateY(0);opacity:1}
 
 @media(max-width:1024px){
@@ -669,7 +670,7 @@ footer{background:var(--dark);padding:56px 32px 28px}
         <tr><td>MTN MoMo payment</td><td class="qr-col"><span class="check">✓ Yes</span></td><td><span class="check">✓ Yes</span></td><td><span class="check">✓ Yes</span></td><td><span class="check">✓ Yes</span></td><td><span class="partial">Limited</span></td></tr>
         <tr><td>Driver earns 80%+</td><td class="qr-col"><span class="check">✓ 80%</span></td><td><span class="partial">~75%</span></td><td><span class="partial">~75%</span></td><td><span class="partial">~72%</span></td><td><span class="partial">~72%</span></td></tr>
         <tr><td>Live trip sharing</td><td class="qr-col"><span class="check">✓ Yes</span></td><td><span class="check">✓ Yes</span></td><td><span class="cross">✗</span></td><td><span class="partial">Basic</span></td><td><span class="check">✓ Yes</span></td></tr>
-        <tr><td>Courier / package delivery</td><td class="qr-col"><span class="check">✓ Yes</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Food delivery in the same app</td><td class="qr-col"><span class="check">✓ Yes</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
         <tr><td>24/7 customer support</td><td class="qr-col"><span class="check">✓ Yes</span></td><td><span class="partial">Limited</span></td><td><span class="partial">Limited</span></td><td><span class="partial">Limited</span></td><td><span class="partial">Limited</span></td></tr>
         <tr><td>Average pickup time</td><td class="qr-col"><span class="check">3 min</span></td><td>5 min</td><td>7 min</td><td>6 min</td><td>5 min</td></tr>
         <tr><td>Starting fare (Accra)</td><td class="qr-col"><span class="check">GH₵ 12</span></td><td>GH₵ 14</td><td>GH₵ 13</td><td>GH₵ 13</td><td>GH₵ 16</td></tr>
@@ -718,7 +719,7 @@ footer{background:var(--dark);padding:56px 32px 28px}
       <div class="tiktok-card reveal"><div class="tc-tag">Verified Rider</div><div class="tc-quote">"</div><p class="tc-text">Finally a ride app that understands Ghana! MoMo payment is seamless, driver arrived in 3 minutes at East Legon. E dey work! Way better than Bolt.</p><div class="tc-author"><div class="tc-av" style="background:#06a2b4">OS</div><div><div class="tc-name">Oswald K.</div><div class="tc-role">Marketing Manager · Accra</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
       <div class="tiktok-card reveal d1"><div class="tc-tag">Verified Driver</div><div class="tc-quote">"</div><p class="tc-text">I've been driving 3 months and earn more than on other apps. Money hits my MoMo same day. I tell all my driver friends — switch to Rydon!</p><div class="tc-author"><div class="tc-av" style="background:#FFCC00;color:#000">KW</div><div><div class="tc-name">Kwaku M.</div><div class="tc-role">Rydon Driver · Kumasi</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
       <div class="tiktok-card reveal d2"><div class="tc-tag">Verified Rider</div><div class="tc-quote">"</div><p class="tc-text">As a girl living alone in Accra, safety is everything. The SOS button and live trip sharing with my mum? No other app does this. Rydon is different.</p><div class="tc-author"><div class="tc-av" style="background:#FF2D55">BA</div><div><div class="tc-name">Batya A.</div><div class="tc-role">Student · University of Ghana, Legon</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
-      <div class="tiktok-card reveal"><div class="tc-tag">Verified Rider</div><div class="tc-quote">"</div><p class="tc-text">Sent a package from Osu to Tema in 45 minutes via Courier. Driver confirmed, delivered perfectly. No app in Ghana does this. Period.</p><div class="tc-author"><div class="tc-av" style="background:#8B5CF6">NA</div><div><div class="tc-name">Nana Yaw A.</div><div class="tc-role">Business Owner · Accra</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
+      <div class="tiktok-card reveal"><div class="tc-tag">Verified Rider</div><div class="tc-quote">"</div><p class="tc-text">Ordered jollof on Rydon Foods and it came hot in 30 minutes. Rides and food in one app — no app in Ghana does this. Period.</p><div class="tc-author"><div class="tc-av" style="background:#8B5CF6">NA</div><div><div class="tc-name">Nana Yaw A.</div><div class="tc-role">Business Owner · Accra</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
       <div class="tiktok-card reveal d1"><div class="tc-tag">Verified Rider</div><div class="tc-quote">"</div><p class="tc-text">Booked a ride from Cantonments to Kotoka at 4am. Driver was there in 4 minutes, car was clean, I made my flight. Reliable when it matters most!</p><div class="tc-author"><div class="tc-av" style="background:#00B86B">CH</div><div><div class="tc-name">Chriselda B.</div><div class="tc-role">Nurse · Accra</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
       <div class="tiktok-card reveal d2"><div class="tc-tag">Verified Driver</div><div class="tc-quote">"</div><p class="tc-text">The app never crashes. Other apps freeze on pickups. Rydon is smooth. The support team replies fast too. This is the one!</p><div class="tc-author"><div class="tc-av" style="background:#FF6B35">ST</div><div><div class="tc-name">Stephen A.</div><div class="tc-role">Rydon Driver · Tema</div><div class="tc-stars">⭐⭐⭐⭐⭐</div></div></div></div>
     </div>
@@ -738,8 +739,8 @@ footer{background:var(--dark);padding:56px 32px 28px}
       <div class="af-item"><div class="af-av" style="background:#00B86B">KO</div><div><div class="af-name">Kofi A.</div><div class="af-action">East Legon → Osu · RydonGo</div></div><span class="af-badge" style="background:#E6F9F1;color:#00B86B;border:1px solid rgba(0,184,107,.2)">Done ✓</span></div>
       <div class="af-item"><div class="af-av" style="background:#FF2D55">FE</div><div><div class="af-name">Felicia B.</div><div class="af-action">Paid GH₵ 24 via MTN MoMo 💛</div></div><div class="af-time">2m ago</div></div>
       <div class="af-item"><div class="af-av" style="background:#FFCC00;color:#000">RI</div><div><div class="af-name">Richard O.</div><div class="af-action">Cantonments → Accra Mall · Comfort</div></div><div class="af-time">4m ago</div></div>
-      <div class="af-item"><div class="af-av" style="background:#8B5CF6">BE</div><div><div class="af-name">Beatrice M.</div><div class="af-action">Package sent Osu → Tema 📦</div></div><div class="af-time">5m ago</div></div>
-      <div class="af-item"><div class="af-av" style="background:#FF6B35">OS</div><div><div class="af-name">Oswald K.</div><div class="af-action">Labone → Airport · Premium 🏆✨</div></div><div class="af-time">7m ago</div></div>
+      <div class="af-item"><div class="af-av" style="background:#8B5CF6">BE</div><div><div class="af-name">Beatrice M.</div><div class="af-action">Rydon Foods delivered in Osu 🍛</div></div><div class="af-time">5m ago</div></div>
+      <div class="af-item"><div class="af-av" style="background:#FF6B35">OS</div><div><div class="af-name">Oswald K.</div><div class="af-action">Labone → Airport · Comfort ✨</div></div><div class="af-time">7m ago</div></div>
     </div>
   </div>
 </section>
@@ -1169,7 +1170,7 @@ function showToast(text){
 }
 
 // LIVE TOASTS
-const liveActs=["Selasie just booked a ride to Kotoka Airport ✈️","Kofi completed East Legon → Osu ✅","Felicia paid with Vodafone Cash at Accra Mall 💚","Richard heading to Cantonments 🚗","Beatrice sent a package Osu → Tema 📦","Samuel just went online in Labone 🟢","Kwabena paid GH₵ 28 via MTN MoMo 💛","Nana Yaw gave his driver 5 stars ⭐","Oswald booked Premium to Airport 🏆✨","Chriselda heading to Legon 🎓","Stephen booked Comfort from Madina 🚙","Batya shared her trip with family 🛡️","Kwaku just earned GH₵ 42 this hour 💰"];
+const liveActs=["Selasie just booked a ride to Kotoka Airport ✈️","Kofi completed East Legon → Osu ✅","Felicia paid with Vodafone Cash at Accra Mall 💚","Richard heading to Cantonments 🚗","Beatrice ordered Rydon Foods in Osu 🍛","Samuel just went online in Labone 🟢","Kwabena paid GH₵ 28 via MTN MoMo 💛","Nana Yaw gave his driver 5 stars ⭐","Oswald booked Comfort to the Airport ✨","Chriselda heading to Legon 🎓","Stephen booked Comfort from Madina 🚙","Batya shared her trip with family 🛡️","Kwaku just earned GH₵ 42 this hour 💰"];
 let lIdx=0;
 setTimeout(()=>setInterval(()=>showToast(liveActs[lIdx++%liveActs.length]),7000),5000);
 
