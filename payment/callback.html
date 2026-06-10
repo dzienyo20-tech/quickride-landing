@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rydon — Payment Successful</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #035668 0%, #06a2b4 60%, #08bfd1 100%);
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 32px 36px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+
+    .icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #D1FAE5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .icon svg { width: 40px; height: 40px; }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #06a2b4;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 22px;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      background: #06a2b4;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .btn:hover { background: #035668; }
+
+    .btn-secondary {
+      background: transparent;
+      color: #6B7280;
+      font-size: 13px;
+      font-weight: 400;
+      text-decoration: none;
+      display: block;
+      padding: 8px;
+    }
+
+    .dots {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+
+    <div class="logo">Rydon</div>
+    <h1>Payment Received!</h1>
+    <p>
+      <span class="dots"></span>Your ride is being confirmed.<br />
+      Return to the Rydon app — we’re finding your driver now.
+    </p>
+
+    <a id="openApp" class="btn" href="rydon://payment/callback">
+      Return to RYDON App
+    </a>
+    <a href="https://RYDONghana.com" class="btn-secondary">Back to website</a>
+  </div>
+
+  <script>
+    // Attempt auto-redirect into the app after a brief pause.
+    // If the deep link fails (desktop browser), the user can tap the button manually.
+    var redirected = false;
+
+    function tryDeepLink() {
+      if (redirected) return;
+      redirected = true;
+      window.location.href = 'rydon://payment/callback';
+    }
+
+    // Small delay so the success UI is visible before the redirect fires.
+    setTimeout(tryDeepLink, 1200);
+
+    // Fallback: if deep link silently fails (user is on desktop or link not handled),
+    // re-show the button after 3 s so they can tap manually.
+    document.getElementById('openApp').addEventListener('click', function(e) {
+      // Let href handle the actual link; just prevent double-fire.
+      redirected = true;
+    });
+  </script>
+</body>
+</html>
