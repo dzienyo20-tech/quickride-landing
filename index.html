@@ -257,7 +257,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 /* SERVICES — unique images per card */
 .services{padding:80px 0;background:var(--white)}
 .svc-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:14px}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .svc-card{background:var(--cream);border-radius:24px;overflow:hidden;border:1.5px solid var(--light);transition:border-color .2s,transform .2s;cursor:pointer}
 .svc-card:hover{border-color:var(--blue-bd);transform:translateY(-4px)}
 .svc-img{height:190px;overflow:hidden}
@@ -610,42 +610,34 @@ footer{background:var(--dark);padding:56px 32px 28px}
     </div>
     <div class="svc-grid">
       <div class="svc-card reveal">
-        <div class="svc-img"><img src="photo-driver-3.png?v=2" alt="Taxi+"/></div>
+        <div class="svc-img"><img src="photo-driver-1.png?v=2" alt="Book a Ride"/></div>
         <div class="svc-body">
-          <div class="svc-name">Taxi+</div>
-          <div class="svc-desc">Comfortable everyday taxi rides across the city. Reliable cars, vetted drivers.</div>
-          <div class="svc-price">From GH&#8373; 15</div>
-        </div>
-      </div>
-      <div class="svc-card reveal d1">
-        <div class="svc-img"><img src="photo-driver-1.png?v=2" alt="QuickGo"/></div>
-        <div class="svc-body">
-          <div class="svc-name">QuickGo</div>
-          <div class="svc-desc">Our most affordable rides. East Legon, Osu, Labone, Madina &mdash; wherever you dey go.</div>
-          <div class="svc-price">From GH&#8373; 12</div>
-        </div>
-      </div>
-      <div class="svc-card reveal d2">
-        <div class="svc-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0b3a44,#06a2b4);font-size:64px">&#127949;&#65039;</div>
-        <div class="svc-body">
-          <div class="svc-name">Okada</div>
-          <div class="svc-desc">Motorbike rides that beat the traffic. The fastest way through rush hour.</div>
+          <div class="svc-name">Book a Ride</div>
+          <div class="svc-desc">Taxi+, QuickGo, Okada or Comfort &mdash; request in seconds and track your driver live.</div>
           <div class="svc-price">From GH&#8373; 5</div>
         </div>
       </div>
-      <div class="svc-card reveal d3">
-        <div class="svc-img"><img src="photo-driver-2.png?v=2" alt="Comfort"/></div>
+      <div class="svc-card reveal d1">
+        <div class="svc-img"><img src="photo-driver-3.png?v=2" alt="Schedule a Ride"/></div>
         <div class="svc-body">
-          <div class="svc-name">Comfort</div>
-          <div class="svc-desc">Business trips, airport runs to Kotoka, and special occasions done right.</div>
-          <div class="svc-price">From GH&#8373; 20</div>
+          <div class="svc-name">Schedule a Ride</div>
+          <div class="svc-desc">Book ahead for airport runs and early mornings. Your driver arrives right on time.</div>
+          <div class="svc-price">Plan ahead</div>
         </div>
       </div>
-      <div class="svc-card reveal d4">
+      <div class="svc-card reveal d2">
+        <div class="svc-img"><img src="photo-driver-2.png?v=2" alt="Corporate Booking"/></div>
+        <div class="svc-body">
+          <div class="svc-name">Corporate Booking</div>
+          <div class="svc-desc">Business travel for your team &mdash; central billing, reporting and priority support.</div>
+          <div class="svc-price">For companies</div>
+        </div>
+      </div>
+      <div class="svc-card reveal d3">
         <div class="svc-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3d1f0e,#c2410c);font-size:64px">&#127858;</div>
         <div class="svc-body">
           <div class="svc-name">Rydon Foods</div>
-          <div class="svc-desc">Your favourite local meals delivered hot to your door. Order in the Rydon app.</div>
+          <div class="svc-desc">Your favourite local meals delivered hot to your door. Order right in the app.</div>
           <div class="svc-price">Delivery from GH&#8373; 5</div>
         </div>
       </div>
