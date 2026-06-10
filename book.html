@@ -557,7 +557,7 @@
     }
   }
   function onNoDriver(){
-    $("matching").innerHTML='<div class="status-t">No drivers available</div><div class="status-s">No Rydon drivers are free near you right now. Please try again in a few minutes.</div>';
+    $("matching").innerHTML='<div class="status-t">No drivers available</div><div class="status-s">No Rydon drivers are free near you right now. Please try again in a few minutes. If you already paid, your payment is refunded automatically.</div>';
     $("cancelBtn").textContent="Back";
   }
 
@@ -584,6 +584,33 @@
 
   // ── boot: skip login if we already have a token ──
   if(token){ startBooking(); }
+
+  // ── resume: if the rider has an in-flight trip (e.g. the page reloaded after
+  // they switched away to approve the MoMo prompt), jump straight back to it
+  // instead of dumping them on a fresh booking form.
+  if(token){
+    api("/api/trips/active").then(function(r){
+      if(!r.ok || !r.data || !r.data.trip) return;
+      var t=r.data.trip;
+      trip=t;
+      pickup={address:t.pickup_address,lat:Number(t.pickup_lat),lng:Number(t.pickup_lng)};
+      dest={address:t.dropoff_address,lat:Number(t.dropoff_lat),lng:Number(t.dropoff_lng)};
+      chosenRide=t.ride_type;
+      if(t.status==="requested"){
+        toast("Resuming your ride request…");
+        goTrack();
+      }else{
+        // Driver already assigned — restore the tracking view with driver info
+        toast("Resuming your trip…");
+        goTrack();
+        onAccepted({trip:t,driver:{
+          id:t.driver_id,name:t.driver_name,phone:t.driver_phone,avatar_url:t.driver_avatar,
+          vehicle_make:t.vehicle_make,vehicle_model:t.vehicle_model,vehicle_color:t.vehicle_color,
+          plate_number:t.plate_number,current_lat:Number(t.driver_lat),current_lng:Number(t.driver_lng)
+        }});
+      }
+    }).catch(function(){});
+  }
 })();
 </script>
 </body>
