@@ -490,7 +490,12 @@
     socket = io(API,{auth:{token:token},transports:["websocket","polling"]});
     socket.on("connect",function(){
       socket.emit("passenger:join_trip",{tripId:trip.id});
-      socket.emit("trip:requested",{tripId:trip.id,rideType:chosenRide,pickup:pickup,fare:trip.estimated_fare});
+      // Only dispatch ONCE per trip — re-emitting on every reconnect re-runs
+      // matching and sends drivers duplicate notifications.
+      if(!trip._dispatched){
+        trip._dispatched=true;
+        socket.emit("trip:requested",{tripId:trip.id,rideType:chosenRide,pickup:pickup,fare:trip.estimated_fare});
+      }
     });
     socket.on("trip:accepted",function(p){ onAccepted(p); });
     socket.on("trip:status_updated",function(p){ onStatus(p); });
