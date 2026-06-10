@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <title>Rydon</title>
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b5e70"/>
+      <stop offset="1" stop-color="#06a2b4"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#grad)"/>
+  <path fill="#ffffff" fill-rule="evenodd" d="M 46 162 L 46 38 L 114 38 C 150 38 162 57 162 74 C 162 91 151 106 132 110 L 160 162 L 130 162 L 105 114 L 72 114 L 72 162 Z M 72 61 L 72 91 L 110 91 C 126 91 136 83 136 76 C 136 69 128 61 110 61 Z"/>
+</svg>
