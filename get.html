@@ -29,12 +29,12 @@
   <h1>Get the <span>Rydon</span> app</h1>
   <p>Rides and food delivery across Ghana.<br/>Pay with MTN MoMo. Drivers earn 80%.</p>
 
-  <!-- ACTIVE: early access via waitlist (update this page when the stores go live —
-       the printed QR never changes, it always points here) -->
-  <a class="btn btn-primary" href="https://rydonghana.com/#waitlist">⚡ Get early access</a>
-  <a class="btn btn-ghost" href="https://rydonghana.com/book">🚗 Book a ride on the web</a>
+  <!-- The printed QR always points here. Each button opens the right store for
+       this phone the moment the listings are live (set STORES below). -->
+  <a class="btn btn-primary" id="riderBtn" href="#">🧍 Rider app — book rides &amp; food</a>
+  <a class="btn btn-ghost" id="driverBtn" href="#">🚗 Driver app — drive &amp; earn 80%</a>
 
-  <div class="note">
+  <div class="note" id="soonNote">
     Coming soon to <b>App Store</b> &amp; <b>Google Play</b> <span class="soon">soon</span>
     <div class="badges">
       <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"/>
@@ -43,12 +43,40 @@
   </div>
 </div>
 <script>
-  // When the apps go live, set these and the page auto-redirects by platform.
-  var PLAY_URL  = '';  // e.g. 'https://play.google.com/store/apps/details?id=com.rydon.ghana.rider'
-  var APPLE_URL = '';  // e.g. 'https://apps.apple.com/app/id...'
+  // ── Store listings — fill these in at launch and every printed QR instantly
+  //    sends people straight to the stores. ──
+  var STORES = {
+    rider:  { play: '', apple: '' },  // e.g. play: 'https://play.google.com/store/apps/details?id=com.rydon.ghana.rider'
+    driver: { play: '', apple: '' },
+  };
   var ua = navigator.userAgent || '';
-  if (PLAY_URL && /android/i.test(ua)) location.replace(PLAY_URL);
-  else if (APPLE_URL && /iphone|ipad|ipod/i.test(ua)) location.replace(APPLE_URL);
+  var isAndroid = /android/i.test(ua);
+  var isIOS     = /iphone|ipad|ipod/i.test(ua);
+
+  function storeUrl(app){
+    var s = STORES[app];
+    if (isAndroid && s.play)  return s.play;
+    if (isIOS && s.apple)     return s.apple;
+    // Desktop or unknown: prefer Play, then Apple
+    return s.play || s.apple || '';
+  }
+  function wire(btnId, app){
+    var btn = document.getElementById(btnId);
+    btn.addEventListener('click', function(e){
+      var url = storeUrl(app);
+      if (url) { btn.href = url; return; }   // go straight to the store
+      e.preventDefault();
+      alert('The Rydon app launches on the App Store and Google Play very soon!\n\nJoin the waitlist at rydonghana.com to be first in line.');
+      window.location.href = 'https://rydonghana.com/#waitlist';
+    });
+  }
+  wire('riderBtn', 'rider');
+  wire('driverBtn', 'driver');
+
+  // Bonus: once the RIDER listing is live, scanning on a phone auto-redirects
+  // to the store without even tapping (most scanners are riders).
+  var auto = storeUrl('rider');
+  if (auto && (isAndroid || isIOS)) location.replace(auto);
 </script>
 </body>
 </html>
