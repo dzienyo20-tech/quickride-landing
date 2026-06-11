@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Get the Rydon App — Rydon Ghana</title>
+<meta name="description" content="Download Rydon — rides and food delivery across Ghana. Pay with MoMo."/>
+<link rel="icon" href="rider-logo.png"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#070e14;color:#f1f6f8;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{max-width:400px;width:100%;text-align:center}
+  .logo{width:88px;height:88px;border-radius:22px;margin:0 auto 22px;display:block;box-shadow:0 14px 40px rgba(21,197,216,.25)}
+  h1{font-size:26px;letter-spacing:-.5px;margin-bottom:10px}
+  h1 span{color:#15c5d8}
+  p{font-size:14.5px;color:#9fb1b8;line-height:1.7;margin-bottom:26px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:14px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:12px;border:none;cursor:pointer}
+  .btn-primary{background:linear-gradient(135deg,#15c5d8,#0a8fa0);color:#fff;box-shadow:0 10px 30px rgba(21,197,216,.3)}
+  .btn-ghost{background:rgba(255,255,255,.06);color:#f1f6f8;border:1px solid rgba(255,255,255,.16)}
+  .soon{font-size:11px;font-weight:800;letter-spacing:.6px;background:rgba(21,197,216,.15);color:#15c5d8;padding:3px 9px;border-radius:99px;text-transform:uppercase}
+  .note{font-size:12px;color:#5d717a;margin-top:18px;line-height:1.6}
+  .badges{display:flex;gap:10px;justify-content:center;margin-top:8px;opacity:.55}
+  .badges img{height:40px}
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="logo" src="rider-logo.png" alt="Rydon"/>
+  <h1>Get the <span>Rydon</span> app</h1>
+  <p>Rides and food delivery across Ghana.<br/>Pay with MTN MoMo. Drivers earn 80%.</p>
+
+  <!-- ACTIVE: early access via waitlist (update this page when the stores go live —
+       the printed QR never changes, it always points here) -->
+  <a class="btn btn-primary" href="https://rydonghana.com/#waitlist">⚡ Get early access</a>
+  <a class="btn btn-ghost" href="https://rydonghana.com/book">🚗 Book a ride on the web</a>
+
+  <div class="note">
+    Coming soon to <b>App Store</b> &amp; <b>Google Play</b> <span class="soon">soon</span>
+    <div class="badges">
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"/>
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"/>
+    </div>
+  </div>
+</div>
+<script>
+  // When the apps go live, set these and the page auto-redirects by platform.
+  var PLAY_URL  = '';  // e.g. 'https://play.google.com/store/apps/details?id=com.rydon.ghana.rider'
+  var APPLE_URL = '';  // e.g. 'https://apps.apple.com/app/id...'
+  var ua = navigator.userAgent || '';
+  if (PLAY_URL && /android/i.test(ua)) location.replace(PLAY_URL);
+  else if (APPLE_URL && /iphone|ipad|ipod/i.test(ua)) location.replace(APPLE_URL);
+</script>
+</body>
+</html>

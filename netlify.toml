@@ -20,3 +20,8 @@
   from = "/book"
   to = "/book.html"
   status = 200
+
+[[redirects]]
+  from = "/get"
+  to = "/get.html"
+  status = 200
