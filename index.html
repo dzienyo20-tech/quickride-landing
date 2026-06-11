@@ -107,8 +107,8 @@ img{display:block;max-width:100%}
 .stats{animation:heroFadeUp .6s .65s ease both}
 .hero-photo{animation:heroSlideRight .8s .3s ease both}
 
-.reveal{opacity:0;transform:translateY(48px) scale(.985);transition:opacity 1.1s cubic-bezier(.16,.84,.44,1),transform 1.1s cubic-bezier(.16,.84,.44,1);will-change:opacity,transform}
-.reveal.on{opacity:1;transform:none}
+.reveal{opacity:0;transform:translateY(54px) scale(.97);filter:blur(10px);transition:opacity 1.2s cubic-bezier(.16,.84,.44,1),transform 1.2s cubic-bezier(.16,.84,.44,1),filter 1.2s cubic-bezier(.16,.84,.44,1);will-change:opacity,transform,filter}
+.reveal.on{opacity:1;transform:none;filter:none}
 /* Exiting at the top of the screen → vanish upward (scene-change feel) */
 .reveal.out-up{transform:translateY(-48px) scale(.985)}
 /* Hero text dissolve is driven by JS on scroll */
@@ -167,8 +167,8 @@ img{display:block;max-width:100%}
 @keyframes cueDrop{0%{transform:scaleY(.2);transform-origin:top;opacity:0}45%{transform:scaleY(1);opacity:1}100%{transform:scaleY(.2);transform-origin:bottom;opacity:0}}
 @media (max-width:768px){.hero.hero-cinema{padding:120px 22px 80px;min-height:92vh}.hero-cin-badge{display:none}}
 @media (prefers-reduced-motion:reduce){.hero-video-wrap video,.hero-photo .hero-media,.hero-cin-bg video{animation:none}}
-.hl-blue{background:var(--blue-bg);color:var(--blue);border-radius:7px;padding:0 5px}
-.hl-yellow{background:#FFE566;color:#111111;border-radius:7px;padding:0 5px}
+.hl-blue{background:linear-gradient(95deg,#15c5d8,#5b8cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hl-yellow{background:linear-gradient(95deg,#ffd34d,#ff9a3d);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* TICKER TOP */
 .dl-ticker{background:var(--blue);padding:10px 0;overflow:hidden;text-align:center;position:relative;z-index:201}
@@ -234,13 +234,13 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 
 /* COMMON */
 .wrap{max-width:1200px;margin:0 auto;padding:0 32px}
-.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray);background:var(--white);border:1px solid var(--light);padding:5px 12px;border-radius:100px;margin-bottom:12px}
-.s-h2{font-size:clamp(30px,3.8vw,50px);font-weight:700;letter-spacing:-1.5px;line-height:1.08;margin-bottom:14px;font-family:"Playfair Display",Georgia,serif}
-.s-p{font-size:16px;color:var(--gray);line-height:1.75;max-width:500px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2.5px;color:var(--blue);background:none;border:none;padding:0;margin-bottom:18px}
+.s-h2{font-size:clamp(42px,6.5vw,86px);font-weight:700;letter-spacing:-2.5px;line-height:1.04;margin-bottom:22px;font-family:"Playfair Display",Georgia,serif}
+.s-p{font-size:18px;color:var(--gray);line-height:1.8;max-width:620px}
 .center{text-align:center}.center .s-p{margin:0 auto}
 
 /* STATS */
-.video-section{padding:80px 0;background:var(--cream)}
+.video-section{padding:140px 0;background:var(--cream)}
 .video-wrapper{margin-top:32px}
 .stats-section{padding:64px 0;background:var(--white)}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
@@ -251,7 +251,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .sc-label{font-size:13px;color:var(--gray);font-weight:600}
 
 /* MISSION */
-.mission{padding:80px 0;background:var(--cream)}
+.mission{padding:140px 0;background:var(--cream)}
 .miss-in{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
 .miss-photo{border-radius:24px;overflow:hidden;height:440px;border:1.5px solid var(--light);position:relative}
 .miss-photo img{width:100%;height:120%;object-fit:cover;will-change:transform}
@@ -260,8 +260,8 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .mc-sub{font-size:11px;color:var(--gray)}
 
 /* SERVICES — dark cinematic tiles with glowing teal line-icons */
-.services{padding:80px 0;background:var(--cream)}
-.svc-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:14px}
+.services{padding:140px 0;background:var(--cream)}
+.svc-hd{display:block;text-align:center;margin-bottom:56px}
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .svc-card{position:relative;background:linear-gradient(165deg,#0f1c26,#0a141b 70%);border-radius:18px;overflow:hidden;border:1px solid #1c2b35;padding:30px 24px 26px;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s}
 .svc-card::before{content:'';position:absolute;top:-60px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(21,197,216,.13),transparent 65%);pointer-events:none;transition:opacity .3s;opacity:.7}
@@ -274,7 +274,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .svc-price{font-size:13px;font-weight:800;color:var(--blue);letter-spacing:.3px;text-transform:uppercase}
 
 /* COMPARE */
-.compare{padding:80px 0;background:var(--cream)}
+.compare{padding:140px 0;background:var(--cream)}
 .compare-table{width:100%;border-collapse:collapse;margin-top:40px;border-radius:20px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.06)}
 .compare-table th{padding:16px 20px;font-size:13px;font-weight:800;text-align:center;background:var(--white)}
 .compare-table th.qr{background:var(--blue);color:#fff;font-size:15px}
@@ -288,7 +288,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .compare-table th:first-child{text-align:left;background:var(--cream)}
 
 /* PHOTOS */
-.photos-sec{padding:80px 0;background:var(--white)}
+.photos-sec{padding:140px 0;background:var(--white)}
 .photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:40px}
 .ph-card{border-radius:20px;overflow:hidden;position:relative;border:1.5px solid var(--light);height:280px}
 .ph-card img{width:100%;height:120%;object-fit:cover;will-change:transform;transition:transform .4s ease}
@@ -297,7 +297,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .ph-caption span{font-size:11px;opacity:.75;display:block;margin-top:2px}
 
 /* TESTIMONIALS */
-.testimonials{padding:80px 0;background:var(--cream)}
+.testimonials{padding:140px 0;background:var(--cream)}
 .tiktok-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
 .tiktok-card{background:var(--white);border-radius:20px;padding:24px;border:1.5px solid var(--light);transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
 .tiktok-card:hover{border-color:var(--blue-bd);transform:translateY(-4px)}
@@ -311,7 +311,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .tc-tag{position:absolute;top:16px;right:16px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
 
 /* ACTIVITY */
-.activity{padding:80px 0;background:var(--white)}
+.activity{padding:140px 0;background:var(--white)}
 .act-in{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .act-feed{display:flex;flex-direction:column;gap:10px}
 .af-item{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--cream);border-radius:13px;border:1.5px solid var(--light)}
@@ -322,7 +322,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .af-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;margin-left:auto}
 
 /* SOCIAL */
-.social-sec{padding:80px 0;background:var(--cream)}
+.social-sec{padding:140px 0;background:var(--cream)}
 .social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:36px}
 .soc-card{border-radius:16px;overflow:hidden;position:relative;aspect-ratio:1;border:1.5px solid var(--light);transition:transform .2s}
 .soc-card:hover{transform:scale(1.03)}
@@ -337,7 +337,7 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .follow-btn:hover{border-color:var(--blue);transform:translateY(-2px)}
 
 /* PAYMENTS */
-.payments{padding:80px 0;background:var(--white)}
+.payments{padding:140px 0;background:var(--white)}
 .pay-in{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
 .pay-vis{position:relative;height:320px}
 .pay-main{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:260px;background:#101c26;color:#fff;border-radius:20px;padding:22px;z-index:3;box-shadow:0 16px 56px rgba(0,0,0,.15)}
@@ -367,7 +367,7 @@ details+details{margin-top:6px}
 .hiw-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0}
 
 /* DRIVER */
-.driver{padding:80px 0;background:var(--cream)}
+.driver{padding:140px 0;background:var(--cream)}
 .drv-in{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
 .drv-photo{border-radius:24px;overflow:hidden;height:460px;border:1.5px solid var(--light)}
 .drv-photo img{width:100%;height:120%;object-fit:cover;will-change:transform}
@@ -611,7 +611,6 @@ footer{background:#050b10;padding:56px 32px 28px}
         <div class="eyebrow">✦ Our services</div>
         <h2 class="s-h2">A ride for <span class="hl-yellow">every moment</span></h2>
       </div>
-      <div style="font-size:14px;font-weight:700;color:var(--blue)">See all →</div>
     </div>
     <div class="svc-grid">
       <div class="svc-card reveal">
@@ -813,7 +812,7 @@ footer{background:#050b10;padding:56px 32px 28px}
 </section>
 
 <!-- HOW IT WORKS -->
-<section style="padding:80px 0;background:var(--white)" id="how">
+<section style="padding:140px 0;background:var(--white)" id="how">
   <div style="max-width:1200px;margin:0 auto;padding:0 32px">
     <div style="text-align:center;margin-bottom:56px">
       <div class="eyebrow reveal">✦ How it works</div>
@@ -883,7 +882,7 @@ footer{background:#050b10;padding:56px 32px 28px}
 </section>
 
 <!-- FAQ -->
-<section style="padding:80px 0;background:var(--cream)" id="faq">
+<section style="padding:140px 0;background:var(--cream)" id="faq">
   <div style="max-width:760px;margin:0 auto;padding:0 32px">
     <div style="text-align:center;margin-bottom:48px">
       <div class="eyebrow reveal">✦ FAQ</div>
