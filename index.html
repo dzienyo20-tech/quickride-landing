@@ -387,10 +387,8 @@ details+details{margin-top:6px}
 .dl-apps{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .dl-app{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;transition:background .2s,border-color .2s;cursor:pointer}
 .dl-app:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
-.da-logo{width:62px;height:62px;border-radius:17px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 10px 22px rgba(2,40,46,.20), inset 0 1.5px 0 rgba(255,255,255,.28);overflow:hidden}
-.da-logo svg{width:34px;height:34px;display:block}
-.da-logo.p{background:linear-gradient(145deg,#1ec5d6,#06a2b4 55%,#047a88)}
-.da-logo.d{background:linear-gradient(145deg,#33456a,#1b2840 68%,#0f1830)}
+.da-logo{width:64px;height:64px;border-radius:15px;display:block;margin-bottom:14px;box-shadow:0 10px 24px rgba(0,0,0,.45);overflow:hidden}
+.da-logo img{width:100%;height:100%;object-fit:cover;display:block}
 .da-for{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:2px}
 .da-name{font-size:16px;font-weight:800;color:#fff;margin-bottom:6px}
 .da-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:13px}
@@ -984,7 +982,7 @@ footer{background:#050b10;padding:56px 32px 28px}
       </div>
       <div class="dl-apps reveal d1">
         <div class="dl-app">
-          <div class="da-logo p"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Rydon"><path d="M19 17h2c.55 0 1-.45 1-1v-3c0-.9-.66-1.66-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.44-2.2-2.3c-.5-.46-1.12-.7-1.8-.7H5c-.6 0-1.1.36-1.4.9L2.2 10.8A3.7 3.7 0 0 0 2 12v4c0 .55.45 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>
+          <div class="da-logo"><img src="rider-app-icon.webp" alt="Rydon rider app"/></div>
           <div class="da-for">For Passengers</div>
           <div class="da-name">Rydon</div>
           <div class="da-desc">Book rides, track drivers live, pay with MoMo.</div>
@@ -994,7 +992,7 @@ footer{background:#050b10;padding:56px 32px 28px}
           </div>
         </div>
         <div class="dl-app">
-          <div class="da-logo d"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Rydon Driver"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.3"/><path d="M12 14.3V21"/><path d="M14 10.85l5.8-3.35"/><path d="M10 10.85L4.2 7.5"/></svg></div>
+          <div class="da-logo"><img src="driver-app-icon.webp" alt="Rydon Driver app"/></div>
           <div class="da-for">For Drivers</div>
           <div class="da-name">Rydon Driver</div>
           <div class="da-desc">Go online, accept trips, earn daily to MoMo.</div>
@@ -1047,8 +1045,8 @@ footer{background:#050b10;padding:56px 32px 28px}
       <div class="ft-col"><h4>Drivers</h4><ul><li><a href="#">Start Driving</a></li><li><a href="#">Earnings</a></li><li><a href="#">Driver App</a></li><li><a href="#">Support</a></li></ul></div>
       <div class="ft-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Blog</a></li></ul></div>
       <div class="ft-col"><h4>Download</h4><ul>
-        <li><a href="#waitlist" onclick="scrollToWaitlist()">🤖 Google Play</a></li>
-        <li><a href="#waitlist" onclick="scrollToWaitlist()">🍎 App Store</a></li>
+        <li><a href="#waitlist" onclick="scrollToWaitlist()"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="height:40px;display:block"/></a></li>
+        <li><a href="#waitlist" onclick="scrollToWaitlist()"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" style="height:40px;display:block;margin-top:8px"/></a></li>
         <li><a href="#waitlist" onclick="scrollToWaitlist()">🚗 Driver App</a></li>
       </ul></div>
     </div>
