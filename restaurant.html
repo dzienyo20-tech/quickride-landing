@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rydon Restaurant Portal</title>
+<link rel="icon" href="rider-logo.png"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+  body{background:#070e14;color:#f1f6f8;min-height:100dvh}
+  .wrap{max-width:760px;margin:0 auto;padding:16px}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1c2b35;margin-bottom:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+  .brand img{width:34px;height:34px;border-radius:8px}
+  .pill{font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px}
+  .open{background:rgba(22,163,74,.18);color:#22c55e}
+  .closed{background:rgba(225,29,72,.18);color:#fb7185}
+  .tabs{display:flex;gap:8px;margin-bottom:16px}
+  .tab{flex:1;padding:11px;border-radius:12px;background:#0d1820;border:1px solid #1c2b35;color:#9fb1b8;font-weight:700;font-size:14px;cursor:pointer;text-align:center}
+  .tab.on{background:#15c5d8;color:#04222a;border-color:#15c5d8}
+  .card{background:#0d1820;border:1px solid #1c2b35;border-radius:16px;padding:16px;margin-bottom:12px}
+  .ord-h{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
+  .ord-id{font-size:12px;color:#5d717a}
+  .status{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:7px;background:rgba(21,197,216,.15);color:#15c5d8}
+  .cust{font-size:14px;font-weight:700;margin-bottom:2px}
+  .addr{font-size:12.5px;color:#9fb1b8;line-height:1.5;margin-bottom:10px}
+  .item{display:flex;justify-content:space-between;font-size:13.5px;padding:3px 0}
+  .item b{color:#15c5d8;font-weight:700}
+  .note{font-size:12px;color:#ffd34d;background:rgba(255,211,77,.1);padding:7px 10px;border-radius:8px;margin-top:8px}
+  .tot{display:flex;justify-content:space-between;font-weight:800;font-size:15px;border-top:1px solid #1c2b35;margin-top:10px;padding-top:10px}
+  .acts{display:flex;gap:8px;margin-top:12px}
+  .btn{flex:1;padding:12px;border-radius:12px;border:none;font-weight:800;font-size:14px;cursor:pointer}
+  .btn-go{background:linear-gradient(135deg,#15c5d8,#0a8fa0);color:#fff}
+  .btn-no{background:rgba(225,29,72,.14);color:#fb7185;border:1px solid rgba(225,29,72,.3);flex:0 0 auto;padding:12px 16px}
+  .stat{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .stat .card{margin:0;text-align:center}
+  .stat .v{font-size:26px;font-weight:900;color:#15c5d8}
+  .stat .l{font-size:12px;color:#9fb1b8;margin-top:4px}
+  .big{font-size:34px;font-weight:900;color:#22c55e}
+  .muted{color:#5d717a;font-size:13px}
+  input{width:100%;padding:14px;border-radius:12px;border:1px solid #1c2b35;background:#0d1820;color:#fff;font-size:15px;margin-bottom:12px}
+  .empty{text-align:center;color:#5d717a;padding:40px 0;font-size:14px}
+  .pay-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid #1c2b35}
+  .toggle{font-size:13px;font-weight:700;padding:8px 14px;border-radius:99px;border:1px solid #1c2b35;background:#0d1820;color:#f1f6f8;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="login" style="display:none;padding-top:60px">
+    <div style="text-align:center;margin-bottom:24px">
+      <img src="rider-logo.png" style="width:64px;height:64px;border-radius:16px;margin-bottom:14px"/>
+      <h1 style="font-size:22px">Rydon <span style="color:#15c5d8">Restaurant</span></h1>
+      <p class="muted" style="margin-top:6px">Enter your restaurant access code to manage orders.</p>
+    </div>
+    <input id="tokenInput" placeholder="Paste your restaurant access code" autocapitalize="off" autocorrect="off"/>
+    <button class="btn btn-go" style="width:100%" onclick="login()">Open my kitchen</button>
+    <p class="muted" style="text-align:center;margin-top:14px">Don't have a code? Ask Rydon support.</p>
+  </div>
+
+  <!-- APP -->
+  <div id="app" style="display:none">
+    <div class="top">
+      <div class="brand"><img src="rider-logo.png"/><span id="rName">Restaurant</span></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="openPill" class="pill closed">Closed</span>
+        <button class="toggle" onclick="toggleOpen()">Toggle</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab on" id="tabOrders" onclick="showTab('orders')">📋 Orders</div>
+      <div class="tab" id="tabMoney" onclick="showTab('money')">💰 Earnings</div>
+    </div>
+
+    <div id="ordersView">
+      <div id="ordersList"></div>
+    </div>
+
+    <div id="moneyView" style="display:none">
+      <div class="card" style="text-align:center">
+        <div class="l muted">Balance owed to you</div>
+        <div class="big" id="balance">GHS 0.00</div>
+        <div class="muted" id="paidNote" style="margin-top:4px"></div>
+      </div>
+      <div class="stat">
+        <div class="card"><div class="v" id="todayE">GHS 0</div><div class="l">Earned today</div></div>
+        <div class="card"><div class="v" id="totE">GHS 0</div><div class="l">Earned all-time</div></div>
+      </div>
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:8px">Recent payouts</div>
+        <div id="payouts"><div class="muted">No payouts yet.</div></div>
+      </div>
+      <p class="muted" style="text-align:center;margin-top:8px">You keep your food subtotal minus Rydon's commission. Payouts are sent to your MoMo/bank.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var API = "https://api.rydonghana.com";
+var token = localStorage.getItem('rydon_rest_token') || null;
+var pollTimer = null;
+
+function $(id){ return document.getElementById(id); }
+function fmt(n){ return 'GHS ' + (Number(n)||0).toFixed(2); }
+
+async function api(path, opts){
+  opts = opts || {};
+  opts.headers = Object.assign({ 'Content-Type':'application/json', 'x-restaurant-token': token }, opts.headers||{});
+  if(opts.body) opts.body = JSON.stringify(opts.body);
+  var r = await fetch(API + path, opts);
+  var data = null; try { data = await r.json(); } catch(e){}
+  return { ok: r.ok, status: r.status, data: data };
+}
+
+async function login(){
+  var t = $('tokenInput').value.trim();
+  if(!t){ return; }
+  token = t;
+  var r = await api('/api/restaurant/me');
+  if(!r.ok){ alert('Invalid or inactive access code. Check with Rydon support.'); token=null; return; }
+  localStorage.setItem('rydon_rest_token', token);
+  boot();
+}
+
+function showTab(t){
+  $('tabOrders').classList.toggle('on', t==='orders');
+  $('tabMoney').classList.toggle('on', t==='money');
+  $('ordersView').style.display = t==='orders' ? 'block' : 'none';
+  $('moneyView').style.display = t==='money' ? 'block' : 'none';
+  if(t==='money') loadMoney();
+}
+
+function renderOpen(isOpen){
+  var p = $('openPill');
+  p.textContent = isOpen ? 'Open' : 'Closed';
+  p.className = 'pill ' + (isOpen ? 'open' : 'closed');
+}
+
+async function toggleOpen(){
+  var r = await api('/api/restaurant/toggle-open', { method:'PATCH' });
+  if(r.ok) renderOpen(r.data.restaurant.is_open);
+}
+
+async function loadOrders(){
+  var r = await api('/api/restaurant/orders');
+  if(!r.ok){ if(r.status===401){ logout(); } return; }
+  var orders = r.data.orders || [];
+  var box = $('ordersList');
+  if(!orders.length){ box.innerHTML = '<div class="empty">No active orders right now.<br>New orders appear here automatically.</div>'; return; }
+  box.innerHTML = orders.map(function(o){
+    var items = (o.items||[]).map(function(it){
+      return '<div class="item"><span><b>'+it.quantity+'×</b> '+esc(it.name)+'</span><span>'+fmt(it.subtotal)+'</span></div>';
+    }).join('');
+    var note = o.special_instructions ? '<div class="note">📝 '+esc(o.special_instructions)+'</div>' : '';
+    var acts = '';
+    if(o.next_status){
+      acts += '<button class="btn btn-go" onclick="advance(\''+o.id+'\')">'+esc(o.action_label||'Advance')+'</button>';
+    }
+    if(o.status==='pending' || o.status==='confirmed' || o.status==='preparing'){
+      acts += '<button class="btn btn-no" onclick="cancelOrder(\''+o.id+'\')">Reject</button>';
+    }
+    return '<div class="card">'+
+      '<div class="ord-h"><div><div class="cust">'+esc(o.customer_name||'Customer')+'</div>'+
+      '<div class="ord-id">#'+String(o.id).slice(0,8)+' · '+esc(o.customer_phone||'')+'</div></div>'+
+      '<span class="status">'+esc(o.status)+'</span></div>'+
+      '<div class="addr">📍 '+esc(o.delivery_address||'')+'</div>'+
+      items + note +
+      '<div class="tot"><span>Order total</span><span>'+fmt(o.total)+'</span></div>'+
+      (acts ? '<div class="acts">'+acts+'</div>' : '')+
+    '</div>';
+  }).join('');
+}
+
+async function advance(id){
+  var r = await api('/api/restaurant/orders/'+id+'/advance', { method:'PATCH' });
+  if(r.ok) loadOrders(); else alert((r.data&&r.data.error)||'Could not update order');
+}
+
+async function cancelOrder(id){
+  if(!confirm('Reject this order? The customer will be refunded.')) return;
+  var reason = prompt('Reason (optional):') || '';
+  var r = await api('/api/restaurant/orders/'+id+'/cancel', { method:'PATCH', body:{ reason: reason } });
+  if(r.ok) loadOrders(); else alert((r.data&&r.data.error)||'Could not cancel');
+}
+
+async function loadMoney(){
+  var r = await api('/api/restaurant/earnings');
+  if(!r.ok) return;
+  var d = r.data;
+  $('balance').textContent = fmt(d.balance_owed);
+  $('paidNote').textContent = 'Paid out so far: ' + fmt(d.total_paid_out);
+  $('todayE').textContent = 'GHS ' + Math.round(d.today_earned);
+  $('totE').textContent = 'GHS ' + Math.round(d.total_earned);
+  var pv = $('payouts');
+  if(!d.payouts || !d.payouts.length){ pv.innerHTML = '<div class="muted">No payouts yet.</div>'; }
+  else { pv.innerHTML = d.payouts.map(function(p){
+    var dt = new Date(p.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    return '<div class="pay-row"><span>'+dt+' · '+esc(p.method||'')+'</span><span>'+fmt(p.amount)+'</span></div>';
+  }).join(''); }
+}
+
+function esc(s){ return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];}); }
+
+function logout(){
+  localStorage.removeItem('rydon_rest_token'); token=null;
+  if(pollTimer) clearInterval(pollTimer);
+  $('app').style.display='none'; $('login').style.display='block';
+}
+
+async function boot(){
+  var r = await api('/api/restaurant/me');
+  if(!r.ok){ logout(); return; }
+  $('login').style.display='none'; $('app').style.display='block';
+  $('rName').textContent = r.data.restaurant.name || 'Restaurant';
+  renderOpen(r.data.restaurant.is_open);
+  loadOrders();
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(loadOrders, 15000); // refresh orders every 15s
+}
+
+if(token){ boot(); } else { $('login').style.display='block'; }
+</script>
+</body>
+</html>

@@ -25,3 +25,13 @@
   from = "/get"
   to = "/get.html"
   status = 200
+
+[[redirects]]
+  from = "/drive"
+  to = "/drive.html"
+  status = 200
+
+[[redirects]]
+  from = "/restaurant"
+  to = "/restaurant.html"
+  status = 200
