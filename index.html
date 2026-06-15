@@ -451,6 +451,24 @@ footer{background:var(--dark);padding:56px 32px 28px}
   .compare-table{font-size:11px}
   .compare-table td,.compare-table th{padding:10px 8px}
 }
+
+/* ── Ghanaian identity: kente accent + Adinkra symbols ── */
+.kente-strip{height:6px;width:100%;background:repeating-linear-gradient(90deg,
+  #E4B23A 0 18px,#0E7C8B 18px 30px,#C8442E 30px 46px,#1a1a1a 46px 52px,#1F9E5A 52px 70px)}
+.ghana{padding:120px 0;background:var(--white);position:relative;overflow:hidden}
+.ghana .center{text-align:center;margin-bottom:48px}
+.adinkra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;max-width:1000px;margin:0 auto}
+.adk-card{background:var(--cream);border:1px solid var(--light);border-radius:18px;padding:28px 20px;text-align:center;transition:transform .25s,border-color .25s,box-shadow .25s}
+.adk-card:hover{transform:translateY(-5px);border-color:var(--blue-bd);box-shadow:0 16px 36px rgba(6,162,180,.12)}
+.adk-sym{width:56px;height:56px;color:var(--blue);margin:0 auto 14px;display:block;transition:color .25s}
+.adk-card:hover .adk-sym{color:#C8442E}
+.adk-name{font-size:15px;font-weight:800;color:var(--black);letter-spacing:.2px}
+.adk-val{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--blue);margin:3px 0 8px}
+.adk-desc{font-size:12.5px;color:var(--gray);line-height:1.6}
+/* Reusable Adinkra divider — a faint centered symbol between sections */
+.adk-divider{display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 0;opacity:.5}
+.adk-divider .ln{height:1px;width:60px;background:var(--light)}
+.adk-divider svg{width:26px;height:26px;color:var(--blue)}
 </style>
 </head>
 <body>
@@ -672,6 +690,51 @@ footer{background:var(--dark);padding:56px 32px 28px}
     </table>
   </div>
 </section>
+
+<!-- ROOTED IN GHANA — Adinkra values -->
+<div class="kente-strip"></div>
+<section class="ghana">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="eyebrow">✦ Rooted in Ghana 🇬🇭</div>
+      <h2 class="s-h2">More than a ride —<br/><span class="hl-yellow">a piece of home.</span></h2>
+      <p class="s-p" style="margin:14px auto 0">Rydon is proudly Ghanaian-owned. Our values are guided by Adinkra — the timeless symbols of Ghanaian wisdom.</p>
+    </div>
+    <div class="adinkra-grid">
+      <div class="adk-card reveal">
+        <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><path d="M50 84 C 8 56, 22 18, 50 40 C 78 18, 92 56, 50 84 Z" stroke-linejoin="round"/><circle cx="50" cy="52" r="6" fill="currentColor" stroke="none"/></svg>
+        <div class="adk-name">Sankofa</div>
+        <div class="adk-val">Wisdom</div>
+        <div class="adk-desc">Learning from the past to move Ghana forward.</div>
+      </div>
+      <div class="adk-card reveal d1">
+        <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="27"/><circle cx="50" cy="50" r="9" fill="currentColor" stroke="none"/></svg>
+        <div class="adk-name">Adinkrahene</div>
+        <div class="adk-val">Leadership</div>
+        <div class="adk-desc">Leading the way for ride-hailing made in Ghana.</div>
+      </div>
+      <div class="adk-card reveal d2">
+        <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><path d="M30 30 a16 16 0 1 0 0.1 0 M70 30 a16 16 0 1 1 -0.1 0"/><path d="M30 46 V70 M70 46 V70" stroke-linecap="round"/></svg>
+        <div class="adk-name">Dwennimmen</div>
+        <div class="adk-val">Strength &amp; Humility</div>
+        <div class="adk-desc">Strong service, with a humble heart.</div>
+      </div>
+      <div class="adk-card reveal d3">
+        <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="9"><polyline points="12,78 30,30 48,78 66,30 88,78" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        <div class="adk-name">Nkyinkyim</div>
+        <div class="adk-val">Resilience</div>
+        <div class="adk-desc">Built for every twist of the Ghanaian road.</div>
+      </div>
+      <div class="adk-card reveal d4">
+        <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><circle cx="50" cy="50" r="12" fill="currentColor" stroke="none"/><path d="M50 32 V18 M50 68 V82 M32 50 H18 M68 50 H82 M37 37 L27 27 M63 37 L73 27 M37 63 L27 73 M63 63 L73 73" stroke-linecap="round"/></svg>
+        <div class="adk-name">Fawↄhodie</div>
+        <div class="adk-val">Independence</div>
+        <div class="adk-desc">Proudly Ghanaian-owned and independent.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="kente-strip"></div>
 
 <!-- PHOTOS — all unique images -->
 <section class="photos-sec">
