@@ -456,9 +456,26 @@ footer{background:var(--dark);padding:56px 32px 28px}
 .kente-strip{height:6px;width:100%;background:repeating-linear-gradient(90deg,
   #E4B23A 0 18px,#0E7C8B 18px 30px,#C8442E 30px 46px,#1a1a1a 46px 52px,#1F9E5A 52px 70px)}
 .ghana{padding:120px 0;background:var(--white);position:relative;overflow:hidden}
+/* Faint Adinkra watermark behind the section */
+.ghana-wm{position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:460px;height:460px;color:var(--blue);opacity:.05;pointer-events:none}
+.ghana .wrap{position:relative;z-index:1}
 .ghana .center{text-align:center;margin-bottom:48px}
 .adinkra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;max-width:1000px;margin:0 auto}
-.adk-card{background:var(--cream);border:1px solid var(--light);border-radius:18px;padding:28px 20px;text-align:center;transition:transform .25s,border-color .25s,box-shadow .25s}
+.adk-card{background:var(--cream);border:1px solid var(--light);border-radius:18px;padding:28px 20px;text-align:center;transition:transform .25s,border-color .25s,box-shadow .25s;cursor:pointer}
+.adk-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.adk-more{font-size:11px;font-weight:700;color:var(--blue);margin-top:12px;opacity:0;transition:opacity .25s}
+.adk-card:hover .adk-more,.adk-card:focus-visible .adk-more{opacity:1}
+/* Adinkra modal */
+.adk-modal{position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(10,15,20,.6);backdrop-filter:blur(4px)}
+.adk-modal.open{display:flex}
+.adk-box{background:var(--white);border-radius:22px;max-width:440px;width:100%;padding:34px 30px;text-align:center;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.3);border-top:6px solid transparent;border-image:linear-gradient(90deg,#E4B23A,#0E7C8B,#C8442E,#1F9E5A) 1}
+.adk-box .x{position:absolute;top:14px;right:18px;font-size:24px;color:var(--gray);cursor:pointer;line-height:1;background:none;border:none}
+.adk-box svg{width:80px;height:80px;color:var(--blue);margin:4px auto 14px;display:block}
+.adk-box h3{font-size:24px;font-weight:800;color:var(--black);margin-bottom:4px}
+.adk-box .mval{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--blue);margin-bottom:16px}
+.adk-box .mean{font-size:14.5px;color:var(--gray);line-height:1.7;margin-bottom:14px}
+.adk-box .tie{font-size:13.5px;color:var(--black);line-height:1.6;background:var(--cream);border-radius:12px;padding:12px 14px;margin-bottom:18px}
+.adk-box .learn{display:inline-block;font-size:13px;font-weight:700;color:var(--blue)}
 .adk-card:hover{transform:translateY(-5px);border-color:var(--blue-bd);box-shadow:0 16px 36px rgba(6,162,180,.12)}
 .adk-sym{width:56px;height:56px;color:var(--blue);margin:0 auto 14px;display:block;transition:color .25s}
 .adk-card:hover .adk-sym{color:#C8442E}
@@ -694,47 +711,66 @@ footer{background:var(--dark);padding:56px 32px 28px}
 <!-- ROOTED IN GHANA — Adinkra values -->
 <div class="kente-strip"></div>
 <section class="ghana">
+  <svg class="ghana-wm" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" aria-hidden="true"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="27"/><circle cx="50" cy="50" r="9" fill="currentColor" stroke="none"/></svg>
   <div class="wrap">
     <div class="center reveal">
       <div class="eyebrow">✦ Rooted in Ghana 🇬🇭</div>
       <h2 class="s-h2">More than a ride —<br/><span class="hl-yellow">a piece of home.</span></h2>
-      <p class="s-p" style="margin:14px auto 0">Rydon is proudly Ghanaian-owned. Our values are guided by Adinkra — the timeless symbols of Ghanaian wisdom.</p>
+      <p class="s-p" style="margin:14px auto 0">Rydon is proudly Ghanaian-owned. Our values are guided by Adinkra — the timeless symbols of Ghanaian wisdom. <b style="color:var(--blue)">Tap a symbol</b> to learn its story.</p>
     </div>
     <div class="adinkra-grid">
-      <div class="adk-card reveal">
+      <div class="adk-card reveal" data-adk="sankofa" role="button" tabindex="0" aria-label="Sankofa — learn more">
         <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><path d="M50 84 C 8 56, 22 18, 50 40 C 78 18, 92 56, 50 84 Z" stroke-linejoin="round"/><circle cx="50" cy="52" r="6" fill="currentColor" stroke="none"/></svg>
         <div class="adk-name">Sankofa</div>
         <div class="adk-val">Wisdom</div>
         <div class="adk-desc">Learning from the past to move Ghana forward.</div>
+        <div class="adk-more">Tap to learn ↗</div>
       </div>
-      <div class="adk-card reveal d1">
+      <div class="adk-card reveal d1" data-adk="adinkrahene" role="button" tabindex="0" aria-label="Adinkrahene — learn more">
         <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="27"/><circle cx="50" cy="50" r="9" fill="currentColor" stroke="none"/></svg>
         <div class="adk-name">Adinkrahene</div>
         <div class="adk-val">Leadership</div>
         <div class="adk-desc">Leading the way for ride-hailing made in Ghana.</div>
+        <div class="adk-more">Tap to learn ↗</div>
       </div>
-      <div class="adk-card reveal d2">
+      <div class="adk-card reveal d2" data-adk="dwennimmen" role="button" tabindex="0" aria-label="Dwennimmen — learn more">
         <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><path d="M30 30 a16 16 0 1 0 0.1 0 M70 30 a16 16 0 1 1 -0.1 0"/><path d="M30 46 V70 M70 46 V70" stroke-linecap="round"/></svg>
         <div class="adk-name">Dwennimmen</div>
         <div class="adk-val">Strength &amp; Humility</div>
         <div class="adk-desc">Strong service, with a humble heart.</div>
+        <div class="adk-more">Tap to learn ↗</div>
       </div>
-      <div class="adk-card reveal d3">
+      <div class="adk-card reveal d3" data-adk="nkyinkyim" role="button" tabindex="0" aria-label="Nkyinkyim — learn more">
         <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="9"><polyline points="12,78 30,30 48,78 66,30 88,78" stroke-linejoin="round" stroke-linecap="round"/></svg>
         <div class="adk-name">Nkyinkyim</div>
         <div class="adk-val">Resilience</div>
         <div class="adk-desc">Built for every twist of the Ghanaian road.</div>
+        <div class="adk-more">Tap to learn ↗</div>
       </div>
-      <div class="adk-card reveal d4">
+      <div class="adk-card reveal d4" data-adk="fawohodie" role="button" tabindex="0" aria-label="Fawohodie — learn more">
         <svg class="adk-sym" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><circle cx="50" cy="50" r="12" fill="currentColor" stroke="none"/><path d="M50 32 V18 M50 68 V82 M32 50 H18 M68 50 H82 M37 37 L27 27 M63 37 L73 27 M37 63 L27 73 M63 63 L73 73" stroke-linecap="round"/></svg>
         <div class="adk-name">Fawↄhodie</div>
         <div class="adk-val">Independence</div>
         <div class="adk-desc">Proudly Ghanaian-owned and independent.</div>
+        <div class="adk-more">Tap to learn ↗</div>
       </div>
     </div>
   </div>
 </section>
 <div class="kente-strip"></div>
+
+<!-- Adinkra meaning modal -->
+<div class="adk-modal" id="adkModal" role="dialog" aria-modal="true">
+  <div class="adk-box">
+    <button class="x" id="adkClose" aria-label="Close">&times;</button>
+    <div id="adkSym"></div>
+    <h3 id="adkTitle"></h3>
+    <div class="mval" id="adkVal"></div>
+    <div class="mean" id="adkMean"></div>
+    <div class="tie" id="adkTie"></div>
+    <a class="learn" href="https://en.wikipedia.org/wiki/Adinkra_symbols" target="_blank" rel="noopener">Learn more about Adinkra ↗</a>
+  </div>
+</div>
 
 <!-- PHOTOS — all unique images -->
 <section class="photos-sec">
@@ -1125,6 +1161,41 @@ footer{background:var(--dark);padding:56px 32px 28px}
   <span id="toastMsg" style="font-size:13px;font-weight:600">You are on the list!</span>
 </div>
 
+<script>
+// ── Adinkra meaning modal ──────────────────────────────────────────────────
+(function(){
+  var ADK = {
+    sankofa:     { mean:'"Se wo were fi na wosankofa a yenkyi" — it is not wrong to go back for what you have forgotten. Sankofa teaches us to learn from the past to build a better future.',
+                   tie:'At Rydon, we learn from how Ghana actually moves — and build for it.' },
+    adinkrahene: { mean:'The "chief" of all Adinkra symbols, representing greatness, charisma, and leadership. Its concentric circles signify the importance of playing a leading role.',
+                   tie:'Rydon leads the way as Ghana’s own ride-hailing platform.' },
+    dwennimmen:  { mean:'The ram’s horns. Though the ram is strong, it submits with humility. A symbol of strength of body and mind paired with humility.',
+                   tie:'Powerful technology, delivered with humble, human service.' },
+    nkyinkyim:   { mean:'"Twisting." A symbol of initiative, dynamism, and resilience — the ability to adapt and play many roles as life twists and turns.',
+                   tie:'Built to handle every road, traffic, and turn across Ghana.' },
+    fawohodie:   { mean:'"Independence." Fawohodie symbolises freedom and self-determination — and the responsibility that comes with it.',
+                   tie:'Proudly Ghanaian-owned and independent — value that stays in Ghana.' },
+  };
+  function open(card){
+    var key = card.getAttribute('data-adk'); var d = ADK[key]; if(!d) return;
+    document.getElementById('adkSym').innerHTML = card.querySelector('.adk-sym').outerHTML;
+    document.getElementById('adkTitle').textContent = card.querySelector('.adk-name').textContent;
+    document.getElementById('adkVal').textContent   = card.querySelector('.adk-val').textContent;
+    document.getElementById('adkMean').textContent  = d.mean;
+    document.getElementById('adkTie').textContent   = d.tie;
+    document.getElementById('adkModal').classList.add('open');
+  }
+  function close(){ document.getElementById('adkModal').classList.remove('open'); }
+  document.querySelectorAll('.adk-card').forEach(function(c){
+    c.addEventListener('click', function(){ open(c); });
+    c.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(c); } });
+  });
+  var m = document.getElementById('adkModal');
+  document.getElementById('adkClose').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if(e.target===m) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
 <script>
 // SCROLL REVEAL — cinematic in/out: elements fade IN when they enter the
 // viewport and VANISH again when they leave (in either direction), so every
