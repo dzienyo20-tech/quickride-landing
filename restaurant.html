@@ -76,6 +76,7 @@
     </div>
 
     <div id="ordersView">
+      <div id="soundBar" onclick="enableSound()" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:12px;margin-bottom:12px;font-size:13px;font-weight:700;cursor:pointer"></div>
       <div id="ordersList"></div>
     </div>
 
@@ -150,7 +151,20 @@ function showTab(t){
 
 // ── New-order sound alert ─────────────────────────────────────────────────────
 var audioCtx = null, knownOrderIds = null;
-function initAudio(){ try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
+function initAudio(){ try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} renderAudioState(); }
+function renderAudioState(){
+  var bar = $('soundBar'); if(!bar) return;
+  var on = audioCtx && audioCtx.state === 'running';
+  bar.innerHTML = on ? '🔔 Order alerts are ON' : '🔕 Tap here to turn on order sound';
+  bar.style.background = on ? 'rgba(22,163,74,.15)' : 'rgba(255,211,77,.14)';
+  bar.style.color = on ? '#22c55e' : '#ffd34d';
+}
+function enableSound(){
+  if(!audioCtx) initAudio();
+  if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  ding(); // test beep so staff hear it works
+  setTimeout(renderAudioState, 100);
+}
 function ding(){
   if(!audioCtx) return;
   try {
@@ -256,6 +270,7 @@ async function boot(){
   $('login').style.display='none'; $('app').style.display='block';
   $('rName').textContent = r.data.restaurant.name || 'Restaurant';
   renderOpen(r.data.restaurant.is_open);
+  renderAudioState();
   loadOrders();
   if(pollTimer) clearInterval(pollTimer);
   pollTimer = setInterval(loadOrders, 10000); // refresh orders every 10s
