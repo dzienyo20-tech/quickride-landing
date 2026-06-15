@@ -71,11 +71,23 @@
 
     <div class="tabs">
       <div class="tab on" id="tabOrders" onclick="showTab('orders')">📋 Orders</div>
+      <div class="tab" id="tabMenu" onclick="showTab('menu')">🍽️ Menu</div>
       <div class="tab" id="tabMoney" onclick="showTab('money')">💰 Earnings</div>
     </div>
 
     <div id="ordersView">
       <div id="ordersList"></div>
+    </div>
+
+    <div id="menuView" style="display:none">
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:10px">Add a dish</div>
+        <input id="miName" placeholder="Dish name (e.g. Jollof with chicken)"/>
+        <input id="miPrice" type="number" inputmode="decimal" placeholder="Price (GHS)"/>
+        <input id="miDesc" placeholder="Short description (optional)"/>
+        <button class="btn btn-go" style="width:100%" onclick="addItem()">+ Add dish</button>
+      </div>
+      <div id="menuList"></div>
     </div>
 
     <div id="moneyView" style="display:none">
@@ -121,15 +133,37 @@ async function login(){
   var r = await api('/api/restaurant/me');
   if(!r.ok){ alert('Invalid or inactive access code. Check with Rydon support.'); token=null; return; }
   localStorage.setItem('rydon_rest_token', token);
+  initAudio(); // login click is the user gesture that unlocks audio
   boot();
 }
 
 function showTab(t){
   $('tabOrders').classList.toggle('on', t==='orders');
+  $('tabMenu').classList.toggle('on', t==='menu');
   $('tabMoney').classList.toggle('on', t==='money');
   $('ordersView').style.display = t==='orders' ? 'block' : 'none';
-  $('moneyView').style.display = t==='money' ? 'block' : 'none';
+  $('menuView').style.display   = t==='menu'  ? 'block' : 'none';
+  $('moneyView').style.display  = t==='money' ? 'block' : 'none';
   if(t==='money') loadMoney();
+  if(t==='menu')  loadMenu();
+}
+
+// ── New-order sound alert ─────────────────────────────────────────────────────
+var audioCtx = null, knownOrderIds = null;
+function initAudio(){ try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
+function ding(){
+  if(!audioCtx) return;
+  try {
+    [0, 0.18, 0.36].forEach(function(t){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type='sine'; o.frequency.value=880;
+      o.connect(g); g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(0.0001, audioCtx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.4, audioCtx.currentTime+t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+t+0.16);
+      o.start(audioCtx.currentTime+t); o.stop(audioCtx.currentTime+t+0.18);
+    });
+  } catch(e){}
 }
 
 function renderOpen(isOpen){
@@ -147,6 +181,13 @@ async function loadOrders(){
   var r = await api('/api/restaurant/orders');
   if(!r.ok){ if(r.status===401){ logout(); } return; }
   var orders = r.data.orders || [];
+  // Ring the bell when a genuinely NEW order arrives (not on first load).
+  var ids = orders.map(function(o){ return o.id; });
+  if(knownOrderIds !== null){
+    var fresh = ids.filter(function(id){ return knownOrderIds.indexOf(id) === -1; });
+    if(fresh.length){ ding(); if(navigator.vibrate) navigator.vibrate([200,100,200]); }
+  }
+  knownOrderIds = ids;
   var box = $('ordersList');
   if(!orders.length){ box.innerHTML = '<div class="empty">No active orders right now.<br>New orders appear here automatically.</div>'; return; }
   box.innerHTML = orders.map(function(o){
@@ -217,8 +258,53 @@ async function boot(){
   renderOpen(r.data.restaurant.is_open);
   loadOrders();
   if(pollTimer) clearInterval(pollTimer);
-  pollTimer = setInterval(loadOrders, 15000); // refresh orders every 15s
+  pollTimer = setInterval(loadOrders, 10000); // refresh orders every 10s
 }
+
+// ── Menu management ───────────────────────────────────────────────────────────
+async function loadMenu(){
+  var r = await api('/api/restaurant/menu');
+  if(!r.ok) return;
+  var items = (r.data.items)||[];
+  var box = $('menuList');
+  if(!items.length){ box.innerHTML = '<div class="empty">No dishes yet. Add your first dish above.</div>'; return; }
+  box.innerHTML = items.map(function(m){
+    return '<div class="card">'+
+      '<div class="ord-h"><div><div class="cust">'+esc(m.name)+'</div>'+
+      (m.description?'<div class="ord-id">'+esc(m.description)+'</div>':'')+'</div>'+
+      '<span class="status">'+fmt(m.price)+'</span></div>'+
+      '<div class="acts">'+
+        '<button class="btn '+(m.is_available?'btn-go':'btn-no')+'" style="flex:1" onclick="toggleItem(\''+m.id+'\','+(!m.is_available)+')">'+(m.is_available?'Available ✓':'Sold out')+'</button>'+
+        '<button class="btn btn-no" onclick="editPrice(\''+m.id+'\','+m.price+')">Price</button>'+
+        '<button class="btn btn-no" onclick="delItem(\''+m.id+'\')">🗑</button>'+
+      '</div></div>';
+  }).join('');
+}
+async function addItem(){
+  var name=$('miName').value.trim(), price=parseFloat($('miPrice').value), desc=$('miDesc').value.trim();
+  if(!name||!(price>0)){ alert('Enter a dish name and a valid price.'); return; }
+  var r = await api('/api/restaurant/items',{method:'POST',body:{name:name,price:price,description:desc||undefined}});
+  if(r.ok){ $('miName').value='';$('miPrice').value='';$('miDesc').value=''; loadMenu(); }
+  else alert((r.data&&r.data.error)||'Could not add dish');
+}
+async function toggleItem(id,avail){
+  var r = await api('/api/restaurant/items/'+id,{method:'PATCH',body:{is_available:avail}});
+  if(r.ok) loadMenu();
+}
+async function editPrice(id,cur){
+  var v = prompt('New price (GHS):', cur); if(v===null) return;
+  var p = parseFloat(v); if(!(p>0)){ alert('Invalid price'); return; }
+  var r = await api('/api/restaurant/items/'+id,{method:'PATCH',body:{price:p}});
+  if(r.ok) loadMenu();
+}
+async function delItem(id){
+  if(!confirm('Remove this dish from your menu?')) return;
+  var r = await api('/api/restaurant/items/'+id,{method:'DELETE'});
+  if(r.ok) loadMenu();
+}
+
+// Returning session: unlock the alert sound on the first tap (browsers require a gesture).
+document.addEventListener('click', function once(){ if(!audioCtx) initAudio(); document.removeEventListener('click', once); });
 
 if(token){ boot(); } else { $('login').style.display='block'; }
 </script>
