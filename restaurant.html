@@ -281,13 +281,18 @@ async function loadMenu(){
   var r = await api('/api/restaurant/menu');
   if(!r.ok) return;
   var items = (r.data.items)||[];
+  var markup = Number(r.data.markup_pct)||0;
   var box = $('menuList');
   if(!items.length){ box.innerHTML = '<div class="empty">No dishes yet. Add your first dish above.</div>'; return; }
   box.innerHTML = items.map(function(m){
+    var custP = markup>0 ? (Number(m.price)*(1+markup/100)) : Number(m.price);
+    var priceLabel = markup>0
+      ? '<div style="text-align:right"><span class="status">You get '+fmt(m.price)+'</span><div class="ord-id" style="margin-top:3px">Customer pays '+fmt(custP)+'</div></div>'
+      : '<span class="status">'+fmt(m.price)+'</span>';
     return '<div class="card">'+
       '<div class="ord-h"><div><div class="cust">'+esc(m.name)+'</div>'+
       (m.description?'<div class="ord-id">'+esc(m.description)+'</div>':'')+'</div>'+
-      '<span class="status">'+fmt(m.price)+'</span></div>'+
+      priceLabel+'</div>'+
       '<div class="acts">'+
         '<button class="btn '+(m.is_available?'btn-go':'btn-no')+'" style="flex:1" onclick="toggleItem(\''+m.id+'\','+(!m.is_available)+')">'+(m.is_available?'Available ✓':'Sold out')+'</button>'+
         '<button class="btn btn-no" onclick="editPrice(\''+m.id+'\','+m.price+')">Price</button>'+
