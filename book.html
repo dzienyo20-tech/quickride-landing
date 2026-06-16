@@ -223,9 +223,9 @@
   var ACCRA = [5.6037, -0.1870];
 
   // ── state ──
-  var token = localStorage.getItem("rydon_token") || null;
+  // Web login is NEVER persisted — every fresh visit must log in again.
+  var token = null;
   var user  = null;
-  try { user = JSON.parse(localStorage.getItem("rydon_user") || "null"); } catch(e){}
   var pickup = null;   // {lat,lng,address}
   var dest   = null;   // {lat,lng,address}
   var estimates = [];  // [{ride_type, estimated_fare, ...}]
@@ -320,8 +320,7 @@
       if(!r.ok){ $("loginErr2").textContent=r.data.error||"Invalid or expired code."; return; }
       if(r.data.needsRegistration){ $("loginErr2").textContent="No Rydon account for this number. Please sign up in the app first."; return; }
       token=r.data.accessToken; user=r.data.user;
-      localStorage.setItem("rydon_token",token);
-      localStorage.setItem("rydon_user",JSON.stringify(user||{}));
+      // Web login is session-only (in memory) — not saved to the browser.
       startBooking();
     }).catch(function(){ $("verifyBtn").disabled=false; $("verifyBtn").textContent="Verify & continue"; $("loginErr2").textContent="Network error."; });
   }
@@ -329,8 +328,31 @@
   // ─────────────────────────────────────────────────────────
   //  BOOKING
   // ─────────────────────────────────────────────────────────
+  // If the signed-in rider has an in-flight trip, jump straight to tracking it.
+  function resumeActiveTrip(){
+    if(!token) return;
+    api("/api/trips/active").then(function(r){
+      if(!r.ok || !r.data || !r.data.trip) return;
+      var t=r.data.trip;
+      trip=t;
+      pickup={address:t.pickup_address,lat:Number(t.pickup_lat),lng:Number(t.pickup_lng)};
+      dest={address:t.dropoff_address,lat:Number(t.dropoff_lat),lng:Number(t.dropoff_lng)};
+      chosenRide=t.ride_type;
+      if(t.status==="requested"){ toast("Resuming your ride request…"); goTrack(); }
+      else{
+        toast("Resuming your trip…"); goTrack();
+        onAccepted({trip:t,driver:{
+          id:t.driver_id,name:t.driver_name,phone:t.driver_phone,avatar_url:t.driver_avatar,
+          vehicle_make:t.vehicle_make,vehicle_model:t.vehicle_model,vehicle_color:t.vehicle_color,
+          plate_number:t.plate_number,current_lat:Number(t.driver_lat),current_lng:Number(t.driver_lng)
+        }});
+      }
+    }).catch(function(){});
+  }
+
   function startBooking(){
     show("s-book");
+    resumeActiveTrip();
     if(!map){
       map = L.map("map",{zoomControl:true,attributionControl:true}).setView(ACCRA,13);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
@@ -578,39 +600,14 @@
     updateRequestBtn();
   }
   function logout(){
-    localStorage.removeItem("rydon_token"); localStorage.removeItem("rydon_user");
     token=null; user=null; show("s-login"); toast("Please sign in again.");
   }
 
-  // ── boot: skip login if we already have a token ──
-  if(token){ startBooking(); }
-
-  // ── resume: if the rider has an in-flight trip (e.g. the page reloaded after
-  // they switched away to approve the MoMo prompt), jump straight back to it
-  // instead of dumping them on a fresh booking form.
-  if(token){
-    api("/api/trips/active").then(function(r){
-      if(!r.ok || !r.data || !r.data.trip) return;
-      var t=r.data.trip;
-      trip=t;
-      pickup={address:t.pickup_address,lat:Number(t.pickup_lat),lng:Number(t.pickup_lng)};
-      dest={address:t.dropoff_address,lat:Number(t.dropoff_lat),lng:Number(t.dropoff_lng)};
-      chosenRide=t.ride_type;
-      if(t.status==="requested"){
-        toast("Resuming your ride request…");
-        goTrack();
-      }else{
-        // Driver already assigned — restore the tracking view with driver info
-        toast("Resuming your trip…");
-        goTrack();
-        onAccepted({trip:t,driver:{
-          id:t.driver_id,name:t.driver_name,phone:t.driver_phone,avatar_url:t.driver_avatar,
-          vehicle_make:t.vehicle_make,vehicle_model:t.vehicle_model,vehicle_color:t.vehicle_color,
-          plate_number:t.plate_number,current_lat:Number(t.driver_lat),current_lng:Number(t.driver_lng)
-        }});
-      }
-    }).catch(function(){});
-  }
+  // Web login is never persisted, so the page always opens on the login screen —
+  // every fresh ride order requires signing in. After login, startBooking() runs
+  // resumeActiveTrip() so a rider with an in-flight trip still picks up where they
+  // left off (e.g. returning from approving the MoMo prompt within the session).
+  show("s-login");
 })();
 </script>
 </body>
