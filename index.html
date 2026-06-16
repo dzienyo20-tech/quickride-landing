@@ -251,7 +251,12 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
 .stat-card{padding:28px 20px;border-radius:20px;background:var(--white);border:1px solid var(--light);box-shadow:var(--sh-md);transition:border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
 .stat-card:hover{border-color:var(--blue-bd);transform:translateY(-6px);box-shadow:var(--sh-lg)}
-.sc-icon{font-size:28px;margin-bottom:10px}
+.sc-icon{margin-bottom:12px;color:var(--blue)}
+.sc-icon .ico{width:30px;height:30px;margin:0 auto}
+.pk-icon{color:var(--blue)}
+.pk-icon .ico{width:24px;height:24px}
+.pm-logo .ico{width:24px;height:24px;margin:0 auto 6px;color:var(--blue)}
+.pr-icon .ico{width:22px;height:22px;color:var(--blue)}
 .sc-num{font-size:40px;font-weight:900;letter-spacing:-2px;color:var(--blue);margin-bottom:4px}
 .sc-label{font-size:13px;color:var(--gray);font-weight:600}
 
@@ -622,10 +627,10 @@ footer{background:var(--dark);padding:56px 32px 28px}
 <section class="stats-section" id="stats">
   <div class="wrap">
     <div class="stats-grid">
-      <div class="stat-card reveal"><div class="sc-icon">🚗</div><div class="sc-num" data-target="50000" data-suffix="+">0</div><div class="sc-label">Trips Completed</div></div>
-      <div class="stat-card reveal d1"><div class="sc-icon">🧑‍✈️</div><div class="sc-num" data-target="2000" data-suffix="+">0</div><div class="sc-label">Verified Drivers</div></div>
-      <div class="stat-card reveal d2"><div class="sc-icon">⭐</div><div class="sc-num" data-target="4.95" data-suffix="" data-decimal="true">0</div><div class="sc-label">Average Rating</div></div>
-      <div class="stat-card reveal d3"><div class="sc-icon">⚡</div><div class="sc-num" data-target="3" data-suffix=" min">0</div><div class="sc-label">Avg. Pickup Time</div></div>
+      <div class="stat-card reveal"><div class="sc-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 7l2 5"/><rect x="2" y="12" width="20" height="5.5" rx="1.6"/><circle cx="7" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/></svg></div><div class="sc-num" data-target="50000" data-suffix="+">0</div><div class="sc-label">Trips Completed</div></div>
+      <div class="stat-card reveal d1"><div class="sc-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></div><div class="sc-num" data-target="2000" data-suffix="+">0</div><div class="sc-label">Verified Drivers</div></div>
+      <div class="stat-card reveal d2"><div class="sc-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.3l2.5 5.2 5.7.8-4.1 4 1 5.7L12 16.3 6.9 19l1-5.7-4.1-4 5.7-.8z"/></svg></div><div class="sc-num" data-target="4.95" data-suffix="" data-decimal="true">0</div><div class="sc-label">Average Rating</div></div>
+      <div class="stat-card reveal d3"><div class="sc-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 5 13h6l-1 9 8-11h-6l1-9z"/></svg></div><div class="sc-num" data-target="3" data-suffix=" min">0</div><div class="sc-label">Avg. Pickup Time</div></div>
     </div>
   </div>
 </section>
@@ -880,19 +885,19 @@ footer{background:var(--dark);padding:56px 32px 28px}
 <section class="payments" id="payments">
   <div class="pay-in">
     <div class="pay-vis reveal">
-      <div class="pay-s pay-s1"><div class="pm-logo">📲</div><div class="pm-name">Vodafone Cash</div><div class="pm-sub">v-Cash Ready</div></div>
-      <div class="pay-main"><div class="pm-logo">📱</div><div class="pm-name">MTN Mobile Money</div><div class="pm-sub" style="color:rgba(255,255,255,.5)">Payment successful</div><div class="pm-amount">GH₵ 28.50</div><div class="pm-status"><span class="pm-dot"></span>Charged to 024 *** 4567</div></div>
-      <div class="pay-s pay-s2"><div class="pm-logo">💳</div><div class="pm-name" style="color:var(--blue)">AirtelTigo Money</div><div class="pm-sub">Instant transfer</div></div>
+      <div class="pay-s pay-s1"><div class="pm-logo"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div><div class="pm-name">Vodafone Cash</div><div class="pm-sub">v-Cash Ready</div></div>
+      <div class="pay-main"><div class="pm-logo"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div><div class="pm-name">MTN Mobile Money</div><div class="pm-sub" style="color:rgba(255,255,255,.5)">Payment successful</div><div class="pm-amount">GH₵ 28.50</div><div class="pm-status"><span class="pm-dot"></span>Charged to 024 *** 4567</div></div>
+      <div class="pay-s pay-s2"><div class="pm-logo"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div><div class="pm-name" style="color:var(--blue)">AirtelTigo Money</div><div class="pm-sub">Instant transfer</div></div>
     </div>
     <div class="reveal d1">
       <div class="eyebrow">✦ Payments</div>
       <h2 class="s-h2">Pay the<br/><span class="hl-yellow">Ghana way.</span></h2>
       <p class="s-p" style="margin-bottom:22px">MoMo, Vodafone Cash, AirtelTigo — all first class. No bank account needed. No wahala.</p>
       <div class="pay-list">
-        <div class="pay-row"><div class="pr-icon">📱</div><div class="pr-name">MTN Mobile Money</div><div class="pr-badge">Most Popular</div></div>
-        <div class="pay-row"><div class="pr-icon">📲</div><div class="pr-name">Vodafone Cash</div><div class="pr-badge">Supported</div></div>
-        <div class="pay-row"><div class="pr-icon">💳</div><div class="pr-name">AirtelTigo Money</div><div class="pr-badge">Supported</div></div>
-        <div class="pay-row"><div class="pr-icon">💵</div><div class="pr-name">Cash</div><div class="pr-badge">Always Available</div></div>
+        <div class="pay-row"><div class="pr-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div><div class="pr-name">MTN Mobile Money</div><div class="pr-badge">Most Popular</div></div>
+        <div class="pay-row"><div class="pr-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div><div class="pr-name">Vodafone Cash</div><div class="pr-badge">Supported</div></div>
+        <div class="pay-row"><div class="pr-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></div><div class="pr-name">AirtelTigo Money</div><div class="pr-badge">Supported</div></div>
+        <div class="pay-row"><div class="pr-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="19" height="11" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg></div><div class="pr-name">Cash</div><div class="pr-badge">Always Available</div></div>
       </div>
     </div>
   </div>
@@ -906,9 +911,9 @@ footer{background:var(--dark);padding:56px 32px 28px}
       <h2 class="s-h2">Turn your car into<br/><span class="hl-blue">steady income.</span></h2>
       <p class="s-p">Join thousands of Rydon drivers earning GH₵ 200–400+ per day. Drive in Accra, Kumasi, Takoradi, Cape Coast, Koforidua or Sunyani — your city, your rules.</p>
       <div class="perks">
-        <div class="pk"><div class="pk-icon">💰</div><div><h4>Keep 90% of every fare</h4><p>Best payout in Ghana. Daily cashout to your MoMo wallet. No wahala.</p></div></div>
-        <div class="pk"><div class="pk-icon">⏰</div><div><h4>Work when you want</h4><p>No minimum hours. Morning, evening, weekend — you decide.</p></div></div>
-        <div class="pk"><div class="pk-icon">🛡️</div><div><h4>Insurance & 24/7 support</h4><p>Every trip covered. Driver support available around the clock.</p></div></div>
+        <div class="pk"><div class="pk-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="19" height="11" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg></div><div><h4>Keep 90% of every fare</h4><p>Best payout in Ghana. Daily cashout to your MoMo wallet. No wahala.</p></div></div>
+        <div class="pk"><div class="pk-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.2 1.9"/></svg></div><div><h4>Work when you want</h4><p>No minimum hours. Morning, evening, weekend — you decide.</p></div></div>
+        <div class="pk"><div class="pk-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 7.4-7 8.8-4-1.4-7-4.4-7-8.8V6z"/><path d="M9 11.8l2 2 4-4"/></svg></div><div><h4>Insurance & 24/7 support</h4><p>Every trip covered. Driver support available around the clock.</p></div></div>
       </div>
       <button class="dl-btn" onclick="scrollToWaitlist()">🚗 Start driving today</button>
     </div>
