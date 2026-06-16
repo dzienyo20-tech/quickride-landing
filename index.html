@@ -146,8 +146,8 @@ img{display:block;max-width:100%}
 .hero-cinema .hero-chip{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.9);backdrop-filter:blur(12px)}
 .hero-cinema .stat-lbl{color:rgba(255,255,255,.5)}
 .hero-cinema .stat-val{color:#fff}
-.dl-btn-ghost{background:rgba(255,255,255,.10);color:#fff;border:1.5px solid rgba(255,255,255,.45);backdrop-filter:blur(12px);display:inline-flex;align-items:center;gap:8px}
-.dl-btn-ghost:hover{background:rgba(255,255,255,.2)}
+.dl-btn-ghost{background:rgba(255,255,255,.10);color:#fff;border:1.5px solid rgba(255,255,255,.45);backdrop-filter:blur(12px);display:inline-flex;align-items:center;gap:8px;box-shadow:none}
+.dl-btn-ghost:hover{background:rgba(255,255,255,.2);box-shadow:0 12px 30px rgba(0,0,0,.18)}
 /* Floating live-ride badge over the footage */
 .act-badge.hero-cin-badge{position:absolute;top:auto;right:6vw;bottom:14vh;z-index:2;animation:float 5s ease-in-out infinite}
 /* Film grain — faint animated noise over the footage */
@@ -201,8 +201,9 @@ nav.scrolled{top:0;box-shadow:0 2px 20px rgba(0,0,0,.07)}
 .hero-tagline{font-size:17px;font-weight:700;color:var(--blue);margin-bottom:18px}
 .hero-tagline .twi{font-size:13px;color:var(--gray);font-weight:500;margin-left:6px}
 .hero-p{font-size:16px;line-height:1.75;color:var(--gray);max-width:400px;margin-bottom:28px}
-.dl-btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;font-size:15px;font-weight:800;padding:14px 28px;border-radius:100px;border:none;cursor:pointer;font-family:inherit;transition:opacity .15s,transform .15s;margin-bottom:36px;animation:glow 3s ease infinite}
-.dl-btn:hover{opacity:.87;transform:translateY(-2px) scale(1.02)}
+.dl-btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;font-size:15px;font-weight:800;padding:15px 30px;border-radius:100px;border:none;cursor:pointer;font-family:inherit;transition:transform .25s cubic-bezier(.16,.84,.44,1),box-shadow .25s;margin-bottom:36px;box-shadow:0 8px 24px rgba(6,162,180,.32)}
+.dl-btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(6,162,180,.42)}
+.dl-btn:active{transform:translateY(-1px)}
 .stats{display:flex;gap:36px}
 .stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:4px}
 .stat-val{font-size:30px;font-weight:900;letter-spacing:-1px}
