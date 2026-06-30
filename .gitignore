@@ -1,0 +1,16 @@
+# Netlify CLI local state
+.netlify/
+
+# Local video / source backups (not part of the deploy)
+*.orig.mp4
+
+# Local UI template backups (kept on disk per the backup rule, not in git)
+*.bak-*
+index.html.bak-*
+
+# Dependencies / OS / editor
+node_modules/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
