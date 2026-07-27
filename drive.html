@@ -3,52 +3,288 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Drive with Rydon — Rydon Ghana</title>
-<meta name="description" content="Become a Rydon driver — keep 80% of every fare, get paid daily to MoMo."/>
+<title>Drive with Rydon — Keep 90% of every fare</title>
+<meta name="description" content="Drive with Rydon Ghana and keep 90% of every fare — in writing. Tips are 100% yours. Paid weekly to MoMo, cash out anytime. Apply in 2 minutes."/>
+<meta property="og:title" content="Drive with Rydon — Keep 90% of every fare"/>
+<meta property="og:description" content="90% yours, in writing. Tips 100% yours. Weekly MoMo payouts. Apply in 2 minutes."/>
+<meta property="og:image" content="https://rydonghana.com/logo.png"/>
 <link rel="icon" href="rider-logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#070e14;color:#f1f6f8;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .card{max-width:400px;width:100%;text-align:center}
-  .logo{width:88px;height:88px;border-radius:22px;margin:0 auto 22px;display:block;box-shadow:0 14px 40px rgba(21,197,216,.25)}
-  h1{font-size:26px;letter-spacing:-.5px;margin-bottom:10px}
-  h1 span{color:#15c5d8}
-  p{font-size:14.5px;color:#9fb1b8;line-height:1.7;margin-bottom:26px}
-  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:14px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:12px;border:none;cursor:pointer}
-  .btn-primary{background:linear-gradient(135deg,#15c5d8,#0a8fa0);color:#fff;box-shadow:0 10px 30px rgba(21,197,216,.3)}
-  .btn-ghost{background:rgba(255,255,255,.06);color:#f1f6f8;border:1px solid rgba(255,255,255,.16)}
-  .soon{font-size:11px;font-weight:800;letter-spacing:.6px;background:rgba(21,197,216,.15);color:#15c5d8;padding:3px 9px;border-radius:99px;text-transform:uppercase}
-  .note{font-size:12px;color:#5d717a;margin-top:18px;line-height:1.6}
-  .badges{display:flex;gap:10px;justify-content:center;margin-top:8px;opacity:.55}
-  .badges img{height:40px}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F8F6F1;--white:#FFFFFF;--black:#141414;--dark:#1A1A1A;
+  --gray:#5F6B6E;--light:#E6E2D8;--blue:#06a2b4;--blue-bg:#e6f7f9;--blue-bd:#9dd8df;
+  --sh-md:0 2px 6px rgba(16,24,32,.04),0 12px 32px rgba(16,24,32,.07);
+  --sh-lg:0 4px 12px rgba(16,24,32,.05),0 26px 58px rgba(16,24,32,.13);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--black);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+nav{background:var(--dark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+nav .logo{display:flex;align-items:center;gap:10px}
+nav .logo img{width:38px;height:38px;border-radius:10px}
+nav .logo span{color:#fff;font-size:17px;font-weight:800}
+nav a.back{color:#fff;font-size:13.5px;opacity:.75;font-weight:600}
+nav a.back:hover{opacity:1}
+
+.wrap{max-width:680px;margin:0 auto;padding:0 22px}
+
+.hero{padding:64px 0 40px;text-align:center}
+.hero .eyebrow{display:inline-block;background:var(--blue-bg);border:1.5px solid var(--blue-bd);color:#04707d;font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;border-radius:100px;padding:7px 16px;margin-bottom:22px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(34px,7vw,52px);line-height:1.12;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p.sub{font-size:17px;color:var(--gray);line-height:1.65;margin:18px auto 30px;max-width:480px}
+.cta{display:inline-block;background:var(--blue);color:#fff;font-size:16px;font-weight:800;border-radius:100px;padding:16px 38px;box-shadow:var(--sh-lg);transition:transform .15s}
+.cta:hover{transform:translateY(-2px)}
+.hero .trust{font-size:12.5px;color:var(--gray);margin-top:14px}
+
+.calc{background:var(--white);border:1.5px solid var(--light);border-radius:24px;box-shadow:var(--sh-lg);padding:28px 24px;margin:26px 0 8px}
+.calc h2{font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--gray);text-align:center;margin-bottom:18px}
+.seg{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.seg button{font-family:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--light);background:var(--cream);color:var(--black);border-radius:100px;padding:10px 18px;cursor:pointer;transition:.12s}
+.seg button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.seg.cities button{font-size:12.5px;padding:8px 14px}
+.calc .figure{text-align:center;padding:18px 0 6px}
+.calc .figure .amt{font-family:'Playfair Display',serif;font-size:54px;font-weight:700;color:var(--black)}
+.calc .figure .amt span{color:var(--blue)}
+.calc .figure .per{font-size:14px;color:var(--gray);font-weight:600;margin-top:2px}
+.calc .note{font-size:11.5px;color:var(--gray);text-align:center;margin-top:12px;line-height:1.6}
+
+.section{padding:44px 0 8px}
+.section h2{font-family:'Playfair Display',serif;font-size:28px;text-align:center;margin-bottom:26px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+.step{background:var(--white);border:1.5px solid var(--light);border-radius:18px;padding:20px 18px;box-shadow:var(--sh-md)}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.step h3{font-size:15.5px;margin-bottom:6px}
+.step p{font-size:13px;color:var(--gray);line-height:1.6}
+
+.why{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.why{grid-template-columns:1fr}}
+.why .card{background:var(--white);border:1.5px solid var(--light);border-radius:16px;padding:17px 16px;box-shadow:var(--sh-md);display:flex;gap:12px;align-items:flex-start}
+.why .card .ic{font-size:20px;line-height:1.4}
+.why .card b{display:block;font-size:14.5px;margin-bottom:3px}
+.why .card span{font-size:12.5px;color:var(--gray);line-height:1.55}
+
+.req{background:var(--white);border:1.5px solid var(--light);border-radius:20px;box-shadow:var(--sh-md);padding:22px}
+.req li{list-style:none;display:flex;gap:10px;align-items:center;font-size:14.5px;font-weight:600;padding:9px 0;border-bottom:1px solid var(--cream)}
+.req li:last-child{border-bottom:none}
+.req li::before{content:"✓";color:var(--blue);font-weight:900}
+
+.form{background:var(--dark);border-radius:24px;box-shadow:var(--sh-lg);padding:30px 24px;margin:44px 0 20px;color:#fff}
+.form h2{font-family:'Playfair Display',serif;font-size:26px;text-align:center}
+.form p.fsub{font-size:13.5px;color:rgba(255,255,255,.65);text-align:center;margin:8px 0 20px;line-height:1.6}
+.form label{display:block;font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.55);margin:14px 0 6px}
+.form input,.form select{width:100%;font-family:inherit;font-size:15.5px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.18);border-radius:12px;padding:13px 14px;color:#fff;outline:none}
+.form input::placeholder{color:rgba(255,255,255,.35)}
+.form input:focus,.form select:focus{border-color:var(--blue)}
+.form select{appearance:none;-webkit-appearance:none}
+.form select option{color:#141414}
+.form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.form .row{grid-template-columns:1fr}}
+.form button{width:100%;font-family:inherit;font-size:16px;font-weight:800;background:var(--blue);color:#fff;border:none;border-radius:100px;padding:16px;margin-top:20px;cursor:pointer;transition:.15s}
+.form button:hover{filter:brightness(1.08)}
+.form button:disabled{opacity:.55;cursor:default}
+.form .msg{font-size:13px;text-align:center;margin-top:12px;min-height:18px;line-height:1.5}
+.form .ok{color:#39d98a}.form .err{color:#ff7a70}
+.fineprint{font-size:11.5px;color:rgba(255,255,255,.4);text-align:center;margin-top:14px;line-height:1.6}
+
+.badges{display:flex;gap:10px;justify-content:center;margin:8px 0 4px;opacity:.55}
+.badges img{height:38px}
+footer{padding:34px 22px 46px;text-align:center;font-size:12.5px;color:var(--gray)}
+footer a{color:var(--blue);font-weight:700}
 </style>
 </head>
 <body>
-<div class="card">
-  <img class="logo" src="rider-logo.png" alt="Rydon"/>
-  <h1>Drive with <span>Rydon</span></h1>
-  <p>Keep <b>80%</b> of every fare. Daily payouts to MoMo.<br/>Drive your own hours, your own car or okada.</p>
 
-  <!-- ACTIVE: early access via waitlist (update this page when the stores go live —
-       the printed QR never changes, it always points here) -->
-  <a class="btn btn-primary" href="https://rydonghana.com/#waitlist">🚗 Apply to drive</a>
-  <a class="btn btn-ghost" href="https://rydonghana.com/#drivers">📋 Learn more about driving</a>
+<nav>
+  <a class="logo" href="/"><img src="logo.png" alt=""/><span>Rydon</span></a>
+  <a class="back" href="/">← rydonghana.com</a>
+</nav>
 
-  <div class="note">
-    Coming soon to <b>App Store</b> &amp; <b>Google Play</b> <span class="soon">soon</span>
-    <div class="badges">
-      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"/>
-      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"/>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">🇬🇭 Now recruiting drivers</span>
+    <h1>Keep <em>90%</em> of<br/>every fare.</h1>
+    <p class="sub">Not 75%. Not 80%. <b>90% — written into your contract.</b> Tips are 100% yours. Paid weekly to your MoMo, or cash out anytime.</p>
+    <a class="cta" href="#apply">Apply in 2 minutes →</a>
+    <p class="trust">No fees to join · Approval usually within 24 hours</p>
+  </header>
+
+  <!-- Earnings calculator — same numbers the driver app shows -->
+  <section class="calc" id="earnings">
+    <h2>What could you earn?</h2>
+    <div class="seg" id="segVehicle">
+      <button data-v="car">🚗 Car</button>
+      <button data-v="okada" class="on">🏍️ Okada</button>
+      <button data-v="pragyia">🛺 Pragyia</button>
     </div>
+    <div class="seg cities" id="segCity"></div>
+    <div class="figure">
+      <div class="amt">₵<span id="amt">2,150</span></div>
+      <div class="per">per week · after Rydon's 10%</div>
+    </div>
+    <p class="note">Estimate based on active Rydon drivers, ~45 hrs/week. Your earnings depend on your hours and demand.</p>
+  </section>
+
+  <section class="section">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Apply below</h3><p>Name, number, city — takes 2 minutes. We'll text you the signup link.</p></div>
+      <div class="step"><div class="n">2</div><h3>Verify in the app</h3><p>Ghana Card, licence, insurance &amp; roadworthiness photos, plus a quick selfie.</p></div>
+      <div class="step"><div class="n">3</div><h3>Start earning</h3><p>Approved within ~24 hours. Go online whenever you want — you're the boss.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Why drivers choose Rydon</h2>
+    <div class="why">
+      <div class="card"><div class="ic">📜</div><div><b>90% in writing</b><span>Your split is in your contract — with 14 days' written notice before any change.</span></div></div>
+      <div class="card"><div class="ic">💸</div><div><b>Weekly MoMo payouts</b><span>Automatic every week — or cash out anytime from the app.</span></div></div>
+      <div class="card"><div class="ic">🔒</div><div><b>Your money, protected</b><span>Payout number verified by SMS and locked with your personal PIN.</span></div></div>
+      <div class="card"><div class="ic">🛟</div><div><b>Safety first</b><span>In-app SOS, verified riders, and 24/7 support when you need it.</span></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>What you'll need</h2>
+    <ul class="req">
+      <li>18 or older with a valid driver's licence</li>
+      <li>Ghana Card</li>
+      <li>Your own car, okada, or pragyia</li>
+      <li>Insurance &amp; roadworthiness certificate</li>
+      <li>A MoMo number for payouts</li>
+    </ul>
+  </section>
+
+  <!-- Application form -->
+  <section class="form" id="apply">
+    <h2>Apply to drive</h2>
+    <p class="fsub">Leave your details — we'll text you the signup link the moment driver onboarding opens in your city.</p>
+    <form id="leadForm" onsubmit="return submitLead(event)">
+      <label for="fName">Full name</label>
+      <input id="fName" type="text" placeholder="e.g. Kwame Mensah" autocomplete="name" maxlength="120"/>
+      <label for="fPhone">Phone number (MoMo)</label>
+      <input id="fPhone" type="tel" placeholder="0241234567" autocomplete="tel" maxlength="10" required/>
+      <div class="row">
+        <div>
+          <label for="fCity">Your city</label>
+          <select id="fCity"></select>
+        </div>
+        <div>
+          <label for="fVehicle">Your vehicle</label>
+          <select id="fVehicle">
+            <option value="car">Car</option>
+            <option value="okada" selected>Okada (motorbike)</option>
+            <option value="pragyia">Pragyia (tricycle)</option>
+          </select>
+        </div>
+      </div>
+      <button id="fBtn" type="submit">Count me in →</button>
+      <p class="msg" id="fMsg"></p>
+    </form>
+    <p class="fineprint">We'll only text you about driving with Rydon. No spam, ever.</p>
+  </section>
+
+  <div class="badges">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play — coming soon"/>
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store — coming soon"/>
   </div>
+
 </div>
+
+<footer>
+  Questions? <a href="mailto:support@rydonghana.com">support@rydonghana.com</a> ·
+  <a href="/driver-guidelines.html">Driver guidelines</a>
+  <br/><br/>© Rydon Ghana
+</footer>
+
 <script>
-  // When the apps go live, set these and the page auto-redirects by platform.
-  var PLAY_URL  = '';  // e.g. 'https://play.google.com/store/apps/details?id=com.rydon.ghana.rider'
-  var APPLE_URL = '';  // e.g. 'https://apps.apple.com/app/id...'
-  var ua = navigator.userAgent || '';
-  if (PLAY_URL && /android/i.test(ua)) location.replace(PLAY_URL);
-  else if (APPLE_URL && /iphone|ipad|ipod/i.test(ua)) location.replace(APPLE_URL);
+// ── Earnings calculator — EXACT same numbers as the driver app's Hook screen ──
+var VEHICLES = { car: 1400, okada: 1650, pragyia: 1200 };
+var CITIES = [
+  ['Accra',1.30],['Tema',1.20],['Kumasi',1.18],['Takoradi',1.12],
+  ['Tamale',1.06],['Cape Coast',1.05],['Koforidua',1.02],['Sunyani',1.00],
+  ['Ho',0.98],['Techiman',0.97],['Wa',0.93],['Bolgatanga',0.92]
+];
+var vehicle = 'okada', city = CITIES[0];
+
+var segCity = document.getElementById('segCity');
+var fCity   = document.getElementById('fCity');
+CITIES.forEach(function(c, i){
+  var b = document.createElement('button');
+  b.type = 'button'; b.textContent = c[0]; if (i === 0) b.className = 'on';
+  b.onclick = function(){ city = c; sync(b, segCity); fCity.value = c[0]; recalc(); };
+  segCity.appendChild(b);
+  var o = document.createElement('option');
+  o.value = o.textContent = c[0];
+  fCity.appendChild(o);
+});
+document.querySelectorAll('#segVehicle button').forEach(function(b){
+  b.onclick = function(){
+    vehicle = b.dataset.v; sync(b, document.getElementById('segVehicle'));
+    document.getElementById('fVehicle').value = vehicle; recalc();
+  };
+});
+function sync(btn, seg){ seg.querySelectorAll('button').forEach(function(x){ x.className=''; }); btn.className = 'on'; }
+function recalc(){
+  var est = Math.round((VEHICLES[vehicle] * city[1]) / 10) * 10;
+  document.getElementById('amt').textContent = est.toLocaleString();
+}
+recalc();
+
+// ── Lead capture → POST /api/leads (real backend, deduped by phone) ──
+var API = 'https://api.rydonghana.com';
+function submitLead(e){
+  e.preventDefault();
+  var btn = document.getElementById('fBtn'), msg = document.getElementById('fMsg');
+  var phone = document.getElementById('fPhone').value.replace(/\D/g, '');
+  if (!/^0[235679]\d{8}$/.test(phone)) {
+    msg.textContent = '⚠️ Enter a valid Ghana number, e.g. 0241234567';
+    msg.className = 'msg err'; return false;
+  }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  fetch(API + '/api/leads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      kind: 'driver',
+      phone: phone,
+      name: document.getElementById('fName').value.trim() || null,
+      city: document.getElementById('fCity').value,
+      vehicle: document.getElementById('fVehicle').value,
+      source: 'drive-page'
+    })
+  }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+    .then(function(res){
+      if (res.ok) {
+        msg.textContent = '✅ You’re on the list! We’ll text ' + phone + ' with your signup link.';
+        msg.className = 'msg ok';
+        document.getElementById('leadForm').reset();
+      } else {
+        msg.textContent = '⚠️ ' + (res.d.error || 'Could not save — please try again.');
+        msg.className = 'msg err';
+      }
+    })
+    .catch(function(){
+      msg.textContent = '⚠️ Network problem — please try again.';
+      msg.className = 'msg err';
+    })
+    .finally(function(){ btn.disabled = false; btn.textContent = 'Count me in →'; });
+  return false;
+}
+
+// ── When the apps go live, set these and the page auto-redirects by platform ──
+var PLAY_URL  = '';  // e.g. 'https://play.google.com/store/apps/details?id=com.rydon.ghana.driver'
+var APPLE_URL = '';  // e.g. 'https://apps.apple.com/app/id...'
+var ua = navigator.userAgent || '';
+if (PLAY_URL && /android/i.test(ua)) location.replace(PLAY_URL);
+else if (APPLE_URL && /iphone|ipad|ipod/i.test(ua)) location.replace(APPLE_URL);
 </script>
 </body>
 </html>

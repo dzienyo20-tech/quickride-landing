@@ -1326,15 +1326,26 @@ function scrollToWaitlist(){
   setTimeout(()=>document.getElementById('wlPhone').focus(),600);
 }
 function joinWaitlist(){
-  const p=document.getElementById('wlPhone').value.trim();
+  const p=document.getElementById('wlPhone').value.replace(/\D/g,'');
   const m=document.getElementById('wlMsg');
-  if(!p||p.length<10){m.textContent='⚠️ Enter a valid Ghana number (e.g. 0241234567)';m.style.color='#FF2D55';return;}
-  riderCount++;
-  riderEls.forEach(el=>{if(el)el.textContent=riderCount.toLocaleString();});
-  showToast('🇬🇭 '+p+' added to waitlist!');
-  m.textContent='✅ '+p+' added! We will SMS you at launch.';
-  m.style.color='#00B86B';
-  document.getElementById('wlPhone').value='';
+  if(!/^0[235679]\d{8}$/.test(p)){m.textContent='⚠️ Enter a valid Ghana number (e.g. 0241234567)';m.style.color='#FF2D55';return;}
+  m.textContent='Saving…';m.style.color='rgba(255,255,255,.5)';
+  // Real capture — stored server-side (deduped by phone), visible in admin
+  fetch('https://api.rydonghana.com/api/leads',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({kind:'rider',phone:p,source:'homepage-waitlist'})
+  }).then(r=>{
+    if(!r.ok) throw new Error();
+    riderCount++;
+    riderEls.forEach(el=>{if(el)el.textContent=riderCount.toLocaleString();});
+    showToast('🇬🇭 '+p+' added to waitlist!');
+    m.textContent='✅ '+p+' added! We will SMS you at launch.';
+    m.style.color='#00B86B';
+    document.getElementById('wlPhone').value='';
+  }).catch(()=>{
+    m.textContent='⚠️ Could not save — please try again.';
+    m.style.color='#FF2D55';
+  });
 }
 document.getElementById('wlPhone').addEventListener('keydown',e=>{if(e.key==='Enter')joinWaitlist();});
 
