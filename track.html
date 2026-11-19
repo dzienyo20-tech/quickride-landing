@@ -540,43 +540,70 @@
     }
   }
 
-  // ── Create-or-move the driver car marker ─────────────────────
-  // Works whether the position arrives from the REST /live poll OR a live
-  // `driver:location` socket event — either one creates the marker if it
-  // doesn't exist yet, then animates it on every subsequent update.
-  function placeDriver(lat, lng) {
+  // ── Driver vehicle marker — matches the Rydon app's own map markers ──
+  // Top-down car (car-marker.png) or scooter (scooter-marker.png, the branded
+  // Rydon okada), chosen by the trip's ride type, rotated to the travel heading,
+  // with a soft teal "assigned driver" glow. The PNGs are pre-loaded to data
+  // URIs so they can be embedded (and rotated) inside the Google Maps icon SVG.
+  const VEH = {
+    car:     { url: 'car-marker.png',     w: 29, h: 57, data: null },
+    scooter: { url: 'scooter-marker.png', w: 24, h: 60, data: null },
+  };
+  Object.keys(VEH).forEach((k) => {
+    fetch(VEH[k].url).then((r) => r.blob()).then((b) => {
+      const fr = new FileReader();
+      fr.onload = () => { VEH[k].data = fr.result; refreshDriverIcon(); };
+      fr.readAsDataURL(b);
+    }).catch(() => {});
+  });
+  function vehicleKind(t) { return /okada|prag(y|i)a|bike|moto|scooter/i.test(t || '') ? 'scooter' : 'car'; }
+  let currentHeading = 0, _iconKey = '';
+
+  function vehIcon() {
+    const kind = vehicleKind(lastTripData && lastTripData.ride_type);
+    const v = VEH[kind];
+    const SZ = 88, c = SZ / 2;
+    const x = (SZ - v.w) / 2, y = (SZ - v.h) / 2;
+    const img = v.data ? `<image href="${v.data}" x="${x}" y="${y}" width="${v.w}" height="${v.h}"/>` : '';
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SZ}" height="${SZ}" viewBox="0 0 ${SZ} ${SZ}">`
+      + `<circle cx="${c}" cy="${c}" r="${c}" fill="#0E9AA5" opacity="0.10"/>`
+      + `<circle cx="${c}" cy="${c}" r="${c * 0.72}" fill="#0E9AA5" opacity="0.16"/>`
+      + `<circle cx="${c}" cy="${c}" r="${c * 0.46}" fill="#0E9AA5" opacity="0.24"/>`
+      + `<g transform="rotate(${currentHeading} ${c} ${c})">${img}</g></svg>`;
+    return {
+      url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg),
+      scaledSize: new google.maps.Size(SZ, SZ),
+      anchor: new google.maps.Point(c, c),
+    };
+  }
+  function refreshDriverIcon() {
+    if (!driverMarker) return;
+    const kind = vehicleKind(lastTripData && lastTripData.ride_type);
+    const key = kind + '|' + Math.round(currentHeading / 4) + '|' + (VEH[kind].data ? '1' : '0');
+    if (key === _iconKey) return;
+    _iconKey = key;
+    driverMarker.setIcon(vehIcon());
+  }
+
+  // Create-or-move the driver marker. Works from the REST /live poll OR a live
+  // `driver:location` socket event; either creates the marker if it doesn't
+  // exist yet, then animates it. `heading` (degrees, 0=north) rotates the vehicle.
+  function placeDriver(lat, lng, heading) {
     lat = parseFloat(lat); lng = parseFloat(lng);
     if (!map || isNaN(lat) || isNaN(lng)) return;
+    if (heading != null && !isNaN(parseFloat(heading))) currentHeading = parseFloat(heading);
     const pos = { lat, lng };
     if (!driverMarker) {
       currentDriverPos = pos;
       driverMarker = new google.maps.Marker({
-        position: pos, map,
-        icon: {
-          // Rydon-branded car marker (from car.svg) on a white chip.
-          url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" width="66" height="50" viewBox="0 0 66 50">
-              <rect x="4" y="7" width="58" height="38" rx="13" fill="rgba(4,23,27,0.20)"/>
-              <rect x="4" y="5" width="58" height="38" rx="13" fill="#ffffff" stroke="rgba(6,162,180,0.35)" stroke-width="1.5"/>
-              <g transform="translate(8,13) scale(0.76)">
-                <g stroke="#04171B" stroke-width="1.3" stroke-linejoin="round">
-                  <path d="M3 21 C3 16 7 15 12 14 L20 8.5 C23 7 27 6.5 33 6.5 L45 6.5 C50 6.5 53 8.5 56 12 L61 14 C63.5 14.5 63.5 18 63.5 20 L63.5 21.5 C63.5 22.6 62.6 23 61.5 23 L4.5 23 C3.6 23 3 22.3 3 21 Z" fill="#ffffff"/>
-                  <path d="M21 10 L31 9 L31 13.5 L16.5 13.6 C17.5 12 19 10.8 21 10 Z" fill="#a9e0e8"/>
-                  <path d="M33 9 L44 9 C47.5 9 49.5 10.8 51.5 13.5 L33 13.6 Z" fill="#a9e0e8"/>
-                </g>
-                <path d="M5 20 L61 20 L61 21.5 C61 22.6 60.2 23 59 23 L6 23 C4.4 23 3.6 22.2 3.6 21 Z" fill="#06a2b4"/>
-                <circle cx="17" cy="23" r="5.4" fill="#141414"/><circle cx="17" cy="23" r="2" fill="#8a8f92"/>
-                <circle cx="49" cy="23" r="5.4" fill="#141414"/><circle cx="49" cy="23" r="2" fill="#8a8f92"/>
-              </g>
-            </svg>`),
-          scaledSize: new google.maps.Size(66, 50),
-          anchor: new google.maps.Point(33, 25),
-        },
+        position: pos, map, icon: vehIcon(),
         title: (lastTripData && lastTripData.driver && lastTripData.driver.name) || 'Driver',
         zIndex: 10,
       });
+      _iconKey = vehicleKind(lastTripData && lastTripData.ride_type) + '|' + Math.round(currentHeading / 4) + '|' + (VEH[vehicleKind(lastTripData && lastTripData.ride_type)].data ? '1' : '0');
       map.panTo(pos);
     } else {
+      refreshDriverIcon();
       const from = currentDriverPos || pos;
       animateTo(driverMarker, from, pos, 700);
       map.panTo(pos);
@@ -709,7 +736,7 @@
       // Live driver location from socket — creates the marker on the first
       // event if the REST poll hasn't placed it yet, then animates it.
       socket.on('driver:location', ({ lat, lng, heading }) => {
-        placeDriver(lat, lng);
+        placeDriver(lat, lng, heading);
 
         // Re-render ETA if we have trip data
         if (lastTripData) renderContent(lastTripData);
