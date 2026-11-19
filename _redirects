@@ -1,2 +1,15 @@
 # Rewrite /track/:id → track.html (JS reads window.location.pathname for the trip ID)
 /track/*  /track.html  200
+# Dedicated pages — clean URLs
+/ride            /ride.html            200
+/drive           /drive.html           200
+/business        /business.html        200
+/careers         /careers.html         200
+/get             /get.html             200
+/safety          /safety.html          200
+/about           /about.html           200
+/contact         /contact.html         200
+/news            /news.html            200
+/privacy         /privacy.html         200
+/terms           /terms.html           200
+/delete-account  /delete-account.html  200

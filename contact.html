@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-GH">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact &amp; Support — Rydon Ghana</title>
+<meta name="description" content="Get in touch with Rydon Ghana. Rider and driver support, business enquiries and press — reach us by form or at support@rydonghana.com."/>
+<link rel="canonical" href="https://rydonghana.com/contact"/>
+<meta property="og:title" content="Contact &amp; Support — Rydon"/>
+<meta property="og:description" content="Rider and driver support, business enquiries and press — we're here to help."/>
+<meta property="og:url" content="https://rydonghana.com/contact"/>
+<meta name="theme-color" content="#04171B"/>
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-page="contact">
+<div id="site-header"></div>
+
+<header class="page-hero" style="min-height:48vh">
+  <div class="hero-media"><img src="brand-accra.webp" alt="Rydon in Accra"/></div>
+  <div class="wrap">
+    <span class="kicker hero-reveal">Contact &amp; support</span>
+    <h1 class="hero-reveal">We're here to help.</h1>
+    <p class="hero-reveal">Riders, drivers, businesses and press — reach the right team below, or email us any time at support@rydonghana.com.</p>
+  </div>
+</header>
+
+<section class="chapter">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <h2 class="h-sec" style="color:#fff;font-size:clamp(1.6rem,3vw,2.2rem)">Reach us</h2>
+      <div class="contact-chan">
+        <div class="chan"><svg><use href="#i-phone"/></svg><div><b>Rider &amp; driver support</b><span>In-app support is fastest, or email <a href="mailto:support@rydonghana.com">support@rydonghana.com</a></span></div></div>
+        <div class="chan"><svg><use href="#i-briefcase"/></svg><div><b>Business enquiries</b><span><a href="mailto:support@rydonghana.com?subject=Rydon%20for%20Business">support@rydonghana.com</a> — subject "Business"</span></div></div>
+        <div class="chan"><svg><use href="#i-layers"/></svg><div><b>Press</b><span><a href="mailto:support@rydonghana.com?subject=Press%20enquiry">support@rydonghana.com</a> — subject "Press"</span></div></div>
+        <div class="chan"><svg><use href="#i-flag"/></svg><div><b>Social</b><span>Find us <a href="https://instagram.com/rydonghana">@rydonghana</a> on Instagram, TikTok, X and Facebook.</span></div></div>
+      </div>
+    </div>
+
+    <form class="form reveal" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact?sent=1">
+      <input type="hidden" name="form-name" value="contact"/>
+      <p hidden><label>Don't fill this out: <input name="bot-field"/></label></p>
+      <div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" required autocomplete="name"/></div>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"/></div>
+      <div class="field"><label for="phone">Phone (optional)</label><input id="phone" name="phone" type="tel" autocomplete="tel" pattern="[0-9+ ]{7,15}"/></div>
+      <div class="field"><label for="topic">I'm reaching out about</label>
+        <select id="topic" name="topic">
+          <option>Rider support</option><option>Driver support</option><option>Rydon for Business</option><option>Press</option><option>Something else</option>
+        </select>
+      </div>
+      <div class="field"><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center"><svg><use href="#i-arrow"/></svg>Send message</button>
+      <p style="font-size:.8rem;color:var(--slate);margin-top:12px">We'll reply to your email. By sending, you agree to our <a href="/privacy" style="color:var(--teal-deep)">privacy policy</a>.</p>
+    </form>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="app.js"></script>
+<script>
+/* show a thank-you if redirected back with ?sent=1 */
+if(location.search.indexOf('sent=1')>-1){
+  var f=document.querySelector('form.contact,form[name="contact"]');
+  if(f){f.innerHTML='<h3 style="color:#fff;font-family:var(--disp)">Thank you — message sent.</h3><p style="color:var(--silver);margin-top:10px">We\'ve received your message and will reply to your email shortly.</p>';}
+}
+</script>
+</body>
+</html>
