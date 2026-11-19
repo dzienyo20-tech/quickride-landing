@@ -359,8 +359,10 @@
           : initials)
       : '';
 
-    // Vehicle description: colour + make + model
-    const vehicleDesc = data.driver?.vehicle || '';
+    // Vehicle description: colour + make + model (API: vehicle_color/vehicle_model)
+    const vehicleDesc = [data.driver?.vehicle_color, data.driver?.vehicle_make, data.driver?.vehicle_model]
+      .filter(Boolean).join(' ') || data.driver?.vehicle || '';
+    const plate = data.driver?.plate_number || data.driver?.plate || '';
 
     const content = document.getElementById('content');
     content.innerHTML = `
@@ -389,10 +391,10 @@
         <div class="driver-avatar">${avatarHtml}</div>
         <div style="flex:1;min-width:0">
           <div class="driver-name">${data.driver.name}</div>
-          <div class="driver-sub">⭐ ${(data.driver.rating||4.8).toFixed(1)}</div>
+          <div class="driver-sub">⭐ ${Number(data.driver.rating || 4.8).toFixed(1)}</div>
           ${vehicleDesc ? `<div class="driver-vehicle">🚗 ${vehicleDesc}</div>` : ''}
         </div>
-        ${data.driver.plate ? `<div class="plate">${data.driver.plate}</div>` : ''}
+        ${plate ? `<div class="plate">${plate}</div>` : ''}
       </div>
       ` : `
       <div style="text-align:center;padding:14px 0 18px;color:#94a3b8;font-size:14px;font-weight:600">
@@ -540,7 +542,7 @@
       }
       renderContent(data);
       updateMap(data);
-    } catch { /* silently retry */ }
+    } catch (e) { console.warn('[track] fetchTrip/render failed:', e); /* keep polling */ }
   }
 
   function showError(icon, title, sub) {
