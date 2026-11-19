@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rydon markers</title>
+<style>
+  :root { --teal:#0E9AA5; --ink:#0A1628; --muted:#64748b; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; font-family:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:#eef2f6; color:var(--ink);
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+  }
+  .wrap { text-align:center; padding:28px; }
+  h1 { font-size:20px; font-weight:800; margin:0 0 4px; }
+  .sub { font-size:13px; color:var(--muted); margin:0 0 26px; font-weight:600; }
+  .row { display:flex; gap:28px; justify-content:center; flex-wrap:wrap; }
+  .cell {
+    background:#f6f8fa; border:1px solid #e2e8f0; border-radius:20px;
+    width:260px; padding:22px 18px 20px;
+    background-image:
+      linear-gradient(#e7edf2 1px, transparent 1px),
+      linear-gradient(90deg, #e7edf2 1px, transparent 1px);
+    background-size: 34px 34px, 34px 34px;
+  }
+  .stage { height:210px; display:flex; align-items:center; justify-content:center; position:relative; }
+  .marker { position:relative; width:180px; height:180px; display:flex; align-items:center; justify-content:center; }
+  .glow { position:absolute; border-radius:50%; background:var(--teal); }
+  .g1 { width:180px; height:180px; opacity:.10; }
+  .g2 { width:130px; height:130px; opacity:.16; }
+  .g3 { width:84px; height:84px; opacity:.24; }
+  .veh { position:relative; z-index:2; display:block; }
+  .car { height:150px; }
+  .scoot { height:156px; }
+  .pin { margin-top:14px; }
+  .pin .name { font-size:16px; font-weight:800; }
+  .pin .kinds { font-size:12px; color:var(--muted); font-weight:600; margin-top:2px; }
+  .tag { display:inline-block; margin-top:8px; font-size:11px; font-weight:800; letter-spacing:.04em;
+         text-transform:uppercase; color:#065f63; background:rgba(14,154,165,.14);
+         padding:4px 10px; border-radius:999px; }
+  .foot { margin-top:22px; font-size:12px; color:var(--muted); font-weight:600; }
+  .foot b { color:var(--ink); font-weight:800; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Rydon driver markers</h1>
+    <p class="sub">Picked automatically by the trip's ride type &middot; teal glow = your assigned driver</p>
+    <div class="row">
+      <div class="cell">
+        <div class="stage">
+          <div class="marker">
+            <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+            <img class="veh car" src="car-marker.png" alt="Rydon car marker"/>
+          </div>
+        </div>
+        <div class="pin">
+          <div class="name">Car</div>
+          <div class="kinds">taxi &middot; comfort &middot; quickgo</div>
+          <span class="tag">car-marker.png</span>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="stage">
+          <div class="marker">
+            <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+            <img class="veh scoot" src="scooter-marker.png" alt="Rydon okada marker"/>
+          </div>
+        </div>
+        <div class="pin">
+          <div class="name">Okada</div>
+          <div class="kinds">motorbike &middot; pragya &middot; bike</div>
+          <span class="tag">scooter-marker.png</span>
+        </div>
+      </div>
+    </div>
+    <p class="foot">Both markers <b>rotate to the driver's heading</b> live &mdash; the same assets the Rydon app shows on its own map.</p>
+  </div>
+</body>
+</html>
