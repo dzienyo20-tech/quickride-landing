@@ -24,6 +24,8 @@
       --amber: #F59E0B;
       --red:   #EF4444;
       --cyan:  #00C3F7;
+      --teal:  #06a2b4;
+      --teal-d:#048293;
       --bg:    #f1f5f9;
     }
     body {
@@ -181,12 +183,13 @@
     .cta-section { text-align: center; padding: 10px 0; }
     .dl-btn {
       display: inline-flex; align-items: center; gap: 8px;
-      background: var(--navy); color: #fff;
+      background: linear-gradient(135deg, var(--teal), var(--teal-d)); color: #fff;
       padding: 14px 30px; border-radius: 14px;
       font-size: 15px; font-weight: 700; text-decoration: none;
-      transition: opacity .15s;
+      box-shadow: 0 6px 18px rgba(6, 162, 180, 0.28);
+      transition: opacity .15s, transform .15s;
     }
-    .dl-btn:hover { opacity: 0.9; }
+    .dl-btn:hover { opacity: 0.92; transform: translateY(-1px); }
     .cta-note { font-size: 12px; color: #94a3b8; margin-top: 9px; }
 
     /* ── States ──────────────────────────────────────────────── */
@@ -248,7 +251,7 @@
   </div>
 
   <div class="cta-section">
-    <a class="dl-btn" href="https://play.google.com/store/apps/details?id=com.rydon.ghana.rider" target="_blank">
+    <a class="dl-btn" id="dl-btn" href="https://apps.apple.com/app/id6795666932" target="_blank" rel="noopener">
       📱 Download Rydon
     </a>
     <p class="cta-note">Book safe, affordable rides anywhere in Ghana</p>
@@ -266,6 +269,17 @@
   const GMAPS_KEY = 'AIzaSyBMZlh8wJQbTp0HPosGmXplT2CS10qTDhs';
   const API_BASE  = 'https://api.rydonghana.com/api';
   const WS_BASE   = 'https://api.rydonghana.com';
+
+  // ── "Download Rydon" CTA → route to the right store for the visitor's phone ──
+  // Android → Google Play, iPhone/iPad → App Store, anything else → App Store.
+  (function setDownloadLink() {
+    const RIDER_PLAY  = 'https://play.google.com/store/apps/details?id=com.rydon.ghana.rider';
+    const RIDER_APPLE = 'https://apps.apple.com/app/id6795666932';
+    const ua = navigator.userAgent || '';
+    const isAndroid = /android/i.test(ua);
+    const btn = document.getElementById('dl-btn');
+    if (btn) btn.href = isAndroid ? RIDER_PLAY : RIDER_APPLE;
+  })();
 
   // ── Trip ID from URL (/track/TRIPID  or  ?id=TRIPID) ──────────
   function getTripId() {
@@ -420,6 +434,38 @@
     }
   }
 
+  // ── Create-or-move the driver car marker ─────────────────────
+  // Works whether the position arrives from the REST /live poll OR a live
+  // `driver:location` socket event — either one creates the marker if it
+  // doesn't exist yet, then animates it on every subsequent update.
+  function placeDriver(lat, lng) {
+    lat = parseFloat(lat); lng = parseFloat(lng);
+    if (!map || isNaN(lat) || isNaN(lng)) return;
+    const pos = { lat, lng };
+    if (!driverMarker) {
+      currentDriverPos = pos;
+      driverMarker = new google.maps.Marker({
+        position: pos, map,
+        icon: {
+          url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="52" viewBox="0 0 40 52">
+              <rect width="40" height="52" rx="12" fill="white" stroke="rgba(24,85,244,0.18)" stroke-width="1.5"/>
+              <text x="20" y="33" font-size="26" text-anchor="middle">🚗</text>
+            </svg>`),
+          scaledSize: new google.maps.Size(40, 52),
+          anchor: new google.maps.Point(20, 26),
+        },
+        title: (lastTripData && lastTripData.driver && lastTripData.driver.name) || 'Driver',
+        zIndex: 10,
+      });
+      map.panTo(pos);
+    } else {
+      const from = currentDriverPos || pos;
+      animateTo(driverMarker, from, pos, 700);
+      map.panTo(pos);
+    }
+  }
+
   // ── Update map markers ────────────────────────────────────────
   function updateMap(data) {
     if (!map) return;
@@ -459,35 +505,12 @@
       });
     }
 
-    // Driver car marker
-    if (data.driver?.current_lat && data.driver?.current_lng) {
-      const dPos = {
-        lat: parseFloat(data.driver.current_lat),
-        lng: parseFloat(data.driver.current_lng),
-      };
-
-      if (!driverMarker) {
-        currentDriverPos = dPos;
-        driverMarker = new google.maps.Marker({
-          position: dPos, map,
-          icon: {
-            url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="52" viewBox="0 0 40 52">
-                <rect width="40" height="52" rx="12" fill="white" stroke="rgba(24,85,244,0.18)" stroke-width="1.5"/>
-                <text x="20" y="33" font-size="26" text-anchor="middle">🚗</text>
-              </svg>`),
-            scaledSize: new google.maps.Size(40, 52),
-            anchor: new google.maps.Point(20, 26),
-          },
-          title: data.driver.name,
-          zIndex: 10,
-        });
-        map.panTo(dPos);
-      } else {
-        const from = currentDriverPos || dPos;
-        animateTo(driverMarker, from, dPos, 700);
-        map.panTo(dPos);
-      }
+    // Driver car marker — the /live API returns the driver position as
+    // driver_lat/driver_lng (fall back to current_lat/current_lng just in case).
+    const dLat = data.driver?.driver_lat ?? data.driver?.current_lat;
+    const dLng = data.driver?.driver_lng ?? data.driver?.current_lng;
+    if (dLat != null && dLng != null) {
+      placeDriver(dLat, dLng);
     } else {
       // No driver yet — fit pickup + dropoff
       if (!isNaN(dropoffLat)) {
@@ -566,13 +589,10 @@
         if (pollTimer) { clearInterval(pollTimer); pollTimer = setInterval(fetchTrip, 5000); }
       });
 
-      // Live driver location from socket
+      // Live driver location from socket — creates the marker on the first
+      // event if the REST poll hasn't placed it yet, then animates it.
       socket.on('driver:location', ({ lat, lng, heading }) => {
-        if (!map || !driverMarker) return;
-        const to = { lat: parseFloat(lat), lng: parseFloat(lng) };
-        const from = currentDriverPos || to;
-        animateTo(driverMarker, from, to, 700);
-        map.panTo(to);
+        placeDriver(lat, lng);
 
         // Re-render ETA if we have trip data
         if (lastTripData) renderContent(lastTripData);
